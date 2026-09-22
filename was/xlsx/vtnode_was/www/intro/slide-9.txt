@@ -1,0 +1,6 @@
+일반적인 웹 시스템은 Web Server와 Backend Program, Database, 배포 환경 등을 각각 준비해야 하므로 전문 개발 지식이 많이 필요합니다.
+
+반면 VTNode WAS for XLSX는 VTNode Runtime과 Excel VBA, Excel Sheet를 이용해 익숙한 환경에서 작은 서비스부터 시작할 수 있습니다.
+
+모든 웹 시스템을 Excel로 대체하려는 것이 아니라, Excel 사용자가 웹서비스를 시작하는 문턱을 낮추는 것이 목표입니다.
+

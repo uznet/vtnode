@@ -1,0 +1,6 @@
+한 문장으로 정리해 보겠습니다.
+
+VTNode WAS for XLSX는 Excel과 VBA를 이용해 Web Service를 만들 수 있게 해주는 Runtime입니다.
+
+Excel 사용자에게 중요한 것은 복잡한 서버 기술 그 자체가 아닙니다. 내가 이미 알고 있고 사용하고 있는 Excel 업무를 웹에서도 사용할 수 있다는 점입니다. 익숙한 Excel에서 시작해 업무의 연결 범위를 넓히는 것, 이것이 VTNode의 핵심입니다.
+
