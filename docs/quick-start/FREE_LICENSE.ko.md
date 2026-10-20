@@ -31,7 +31,7 @@ VTNode Runtime을 설치한 후 무료 라이선스를 발급받아 등록하는
 
 [VTNode 다운로드 페이지](https://vtnode.io/downloads/)에서 최신 Windows x64 Runtime을 내려받아 설치합니다.
 
-설치 프로그램이 `VTNODE_HOME` 환경 변수를 자동으로 설정합니다. 설치 후 `VTNodeCheck64.exe`를 실행하여 최종 상태가 `OK`인지 확인하세요.
+설치 프로그램이 `VTNODE_HOME` 환경 변수를 자동으로 설정합니다. 설치 후 `VTCheck64.exe`를 실행하여 최종 상태가 `OK`인지 확인하세요.
 
 ## 2. Reg Code 생성
 
@@ -129,7 +129,7 @@ id = bc0f9373-782d-46da-ab5c-4725b668d152
 
 ## 최종 확인
 
-- `VTNodeCheck64.exe`의 결과가 `Status : OK`입니다.
+- `VTCheck64.exe`의 결과가 `Status : OK`입니다.
 - 라이선스를 사용할 PC에서 Reg Code를 생성했습니다.
 - Reg Code를 생성한 동일한 PC에서 Meta Code를 활성화했습니다.
 - 온라인 활성화가 정상적으로 완료되었습니다.
@@ -142,7 +142,7 @@ id = bc0f9373-782d-46da-ab5c-4725b668d152
 ### Reg Code 파일이 생성되지 않는 경우
 
 - `VTNODE_HOME`이 정상적으로 설정되어 있는지 확인합니다.
-- `VTNodeCheck64.exe`를 실행하여 Runtime 설치 상태를 확인합니다.
+- `VTCheck64.exe`를 실행하여 Runtime 설치 상태를 확인합니다.
 - `licenses` 폴더에 파일을 쓸 수 있는지 확인합니다.
 
 ### Meta Code 활성화에 실패하는 경우

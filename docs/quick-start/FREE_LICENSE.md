@@ -31,7 +31,7 @@ This guide explains how to issue and install a free VTNode license after install
 
 Download and install the latest Windows x64 Runtime from the [VTNode Downloads page](https://vtnode.io/en/downloads/).
 
-The installer configures `VTNODE_HOME` automatically. Run `VTNodeCheck64.exe` after installation and confirm that the final status is `OK`.
+The installer configures `VTNODE_HOME` automatically. Run `VTCheck64.exe` after installation and confirm that the final status is `OK`.
 
 ## 2. Create a Reg Code
 
@@ -129,7 +129,7 @@ Restart the VTNode WAS application after saving the file. The Runtime finds the 
 
 ## Final checklist
 
-- `VTNodeCheck64.exe` reports `Status : OK`.
+- `VTCheck64.exe` reports `Status : OK`.
 - The Reg Code was created on the PC that will use the license.
 - The Meta Code was activated on the same PC.
 - Online activation completed successfully.
@@ -142,7 +142,7 @@ Restart the VTNode WAS application after saving the file. The Runtime finds the 
 ### The Reg Code file is not created
 
 - Confirm that `VTNODE_HOME` is configured correctly.
-- Run `VTNodeCheck64.exe` and check the Runtime installation.
+- Run `VTCheck64.exe` and check the Runtime installation.
 - Confirm that the `licenses` folder is writable.
 
 ### Meta Code activation fails

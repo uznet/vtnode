@@ -11,7 +11,7 @@ VTNode Runtime을 설치하고 Excel/VBA가 브라우저 요청에 응답하는 
 ```text
 01 VTNode Runtime 설치
         ↓
-02 VTNodeCheck64로 설치 확인
+02 VTCheck64로 설치 확인
         ↓
 03 GitHub에서 Excel 예제 다운로드
         ↓
@@ -48,7 +48,7 @@ VTNode-Setup-<version>-x64.exe
 ☑ VTNode 설치 상태 확인
 ```
 
-설치를 마치면 `VTNodeCheck64.exe`가 자동으로 실행되어 다음 항목을 검사합니다.
+설치를 마치면 `VTCheck64.exe`가 자동으로 실행되어 다음 항목을 검사합니다.
 
 - `VTNODE_HOME`에 설정된 Runtime 경로
 - 설치된 VTNode 패키지 버전
@@ -66,7 +66,7 @@ Required Files  : OK
 Status          : OK
 ```
 
-설치 완료 화면에서 확인 항목을 해제했거나 나중에 다시 검사하려면 설치 폴더의 `VTNodeCheck64.exe`를 직접 실행합니다.
+설치 완료 화면에서 확인 항목을 해제했거나 나중에 다시 검사하려면 설치 폴더의 `VTCheck64.exe`를 직접 실행합니다.
 
 `Status : ERROR`가 표시되면 함께 출력된 원인을 확인한 후 설치 상태를 다시 점검하세요.
 
@@ -126,7 +126,7 @@ GitHub에서 내려받은 예제의 실제 VBA 모듈을 AI에 첨부한 후 다
 ### Excel에서 Runtime을 찾지 못하는 경우
 
 - 설치 후 이미 실행 중이던 Excel을 완전히 종료하고 다시 실행합니다.
-- `VTNodeCheck64.exe`를 실행하여 `VTNODE_HOME`과 필수 파일 상태를 확인합니다.
+- `VTCheck64.exe`를 실행하여 `VTNODE_HOME`과 필수 파일 상태를 확인합니다.
 
 ### 매크로가 실행되지 않는 경우
 
@@ -135,7 +135,7 @@ GitHub에서 내려받은 예제의 실제 VBA 모듈을 AI에 첨부한 후 다
 
 ### 브라우저 응답이 없는 경우
 
-- `VTNodeCheck64.exe`의 최종 상태가 `OK`인지 확인합니다.
+- `VTCheck64.exe`의 최종 상태가 `OK`인지 확인합니다.
 - Excel에서 VTNode WAS가 시작된 상태인지 확인합니다.
 - Excel 화면에 표시된 주소를 정확히 입력했는지 확인합니다.
 

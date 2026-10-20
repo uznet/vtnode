@@ -11,7 +11,7 @@ Install the VTNode Runtime and run your first example in which Excel/VBA respond
 ```text
 01 Install the VTNode Runtime
         ↓
-02 Verify the installation with VTNodeCheck64
+02 Verify the installation with VTCheck64
         ↓
 03 Download the Excel example from GitHub
         ↓
@@ -48,7 +48,7 @@ The **Check the VTNode Runtime installation** option is selected by default on t
 ☑ Check the VTNode Runtime installation
 ```
 
-When setup finishes, `VTNodeCheck64.exe` runs automatically and checks:
+When setup finishes, `VTCheck64.exe` runs automatically and checks:
 
 - The Runtime path configured in `VTNODE_HOME`
 - The installed VTNode package version
@@ -66,7 +66,7 @@ Required Files  : OK
 Status          : OK
 ```
 
-If you clear the check option during setup, or want to verify the installation again later, run `VTNodeCheck64.exe` from the installation directory.
+If you clear the check option during setup, or want to verify the installation again later, run `VTCheck64.exe` from the installation directory.
 
 If the result shows `Status : ERROR`, review the accompanying reason and check the installation again.
 
@@ -126,7 +126,7 @@ Providing the actual example module helps prevent the AI from inventing VTNode A
 ### Excel cannot find the Runtime
 
 - Completely close and restart Excel if it was running during installation.
-- Run `VTNodeCheck64.exe` and verify `VTNODE_HOME` and the required files.
+- Run `VTCheck64.exe` and verify `VTNODE_HOME` and the required files.
 
 ### Macros do not run
 
@@ -135,7 +135,7 @@ Providing the actual example module helps prevent the AI from inventing VTNode A
 
 ### The browser receives no response
 
-- Confirm that `VTNodeCheck64.exe` reports a final status of `OK`.
+- Confirm that `VTCheck64.exe` reports a final status of `OK`.
 - Confirm that VTNode WAS is running in Excel.
 - Enter the address shown in Excel exactly as displayed.
 
