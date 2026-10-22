@@ -1,18 +1,20 @@
+[English](README.md) | [한글](README.ko.md)
+
 # VTNode Build My App
 
 > **Run it first. Then build it yourself.**
 
-`vtnode_build_myapp`은 VTNode WAS for XLSX (VBA)가  
-Excel Workbook 안에서 어떻게 구성되고 동작하는지를 직접 경험하기 위한 프로젝트입니다.
+`vtnode_build_myapp` is a hands-on project for learning how VTNode WAS for XLSX (VBA)
+is assembled and runs inside an Excel workbook.
 
-이미 완성된 `vtnode_hello.xlsm`을 실행해 보았다면,  
-이번에는 동일한 Application을 직접 만들어 볼 차례입니다.
+If you have already run the ready-to-use `vtnode_hello.xlsm`,
+it is time to build the same application yourself.
 
 ---
 
 ## From Hello to My App
 
-`vtnode_hello`는 이미 완성된 Example입니다.
+`vtnode_hello` is a ready-to-run example.
 
 ```text
 vtnode_hello.xlsm
@@ -22,9 +24,9 @@ vtnode_hello.xlsm
 Hello, VTNode!
 ```
 
-`vtnode_build_myapp`은 다릅니다.
+In `vtnode_build_myapp`, you assemble the application yourself.
 
-처음에는 UI만 준비된 Excel Workbook에서 시작합니다.
+You start with an Excel workbook that contains only the UI.
 
 ```text
 vtnode_ui_only.xlsx
@@ -34,25 +36,25 @@ vtnode_ui_only.xlsx
 vtnode_myapp.xlsm
 ```
 
-`vtnode_ui_only.xlsx`의 **MyApp** Sheet는  
-`vtnode_hello`와 동일한 기본 UI를 사용합니다.
+The **MyApp** sheet in `vtnode_ui_only.xlsx` uses
+the same basic UI as `vtnode_hello`.
 
-하지만 VTNode WAS 기능은 아직 연결되어 있지 않습니다.
+The VTNode WAS functionality has not been connected yet.
 
-제공되는 VBA Source와 구성요소를 직접 연결하면서  
-하나의 동작하는 VTNode WAS Application을 완성하게 됩니다.
+Connect the provided VBA source code and components
+to create a working VTNode WAS application.
 
 ---
 
 # What Will You Learn?
 
-이 프로젝트의 목적은 VTNode Runtime API를 공부하는 것이 아닙니다.
+You do not need to study the VTNode Runtime API for this project.
 
-또한 처음부터 Web Server를 프로그래밍하는 것도 아닙니다.
+You do not need to program a web server from scratch either.
 
-목적은 **Excel Workbook과 VTNode WAS가 어떻게 연결되는지를 직접 조립하면서 이해하는 것**입니다.
+The goal is to **understand how an Excel workbook connects to VTNode WAS by assembling it yourself**.
 
-완료하고 나면 다음 구조가 자연스럽게 보이게 됩니다.
+By the end, you will understand the following structure:
 
 ```text
                 Browser
@@ -74,10 +76,10 @@ vtnode_myapp.xlsm
 
 ## 1. An Excel Workbook Can Become a Web Application
 
-Excel Workbook은 Worksheet와 VBA만 사용하는  
-Local Application에 머물 필요가 없습니다.
+An Excel workbook can do more than run locally
+with worksheets and VBA.
 
-VTNode WAS를 연결하면:
+Connect it to VTNode WAS:
 
 ```text
 Excel / VBA
@@ -92,7 +94,7 @@ HTTP / WebSocket
 Browser
 ```
 
-형태로 Browser와 통신할 수 있습니다.
+This lets it communicate with a browser.
 
 **Excel becomes a Network Node.**
 
@@ -100,7 +102,7 @@ Browser
 
 ## 2. You Don't Have to Build Everything from Scratch
 
-`vtnode_build_myapp`에는 필요한 구성요소가 준비되어 있습니다.
+`vtnode_build_myapp` includes the components you need.
 
 ```text
 vtnode_build_myapp/
@@ -118,23 +120,23 @@ vtnode_build_myapp/
    └─ default.html
 ```
 
-사용자는 Web Server Engine이나 Runtime Library를  
-처음부터 개발하지 않습니다.
+You do not have to develop a web server engine or runtime library
+from scratch.
 
-준비된 구성요소가 어떤 역할을 하고  
-어떻게 하나의 Excel Application으로 연결되는지를 경험합니다.
+You will learn what the provided components do
+and how they fit together in a single Excel application.
 
 ---
 
 ## 3. UI and Functionality Are Different Layers
 
-처음 제공되는:
+The starting workbook is:
 
 ```text
 vtnode_ui_only.xlsx
 ```
 
-에는 UI가 이미 존재합니다.
+Its UI is already in place.
 
 Sheet Name:
 
@@ -142,10 +144,10 @@ Sheet Name:
 MyApp
 ```
 
-화면은 `vtnode_hello`를 기본으로 하지만  
-아직 실제 기능은 연결되어 있지 않습니다.
+The screen is based on `vtnode_hello`,
+but its functionality has not been connected yet.
 
-이것을 통해 Excel Application에서도:
+This illustrates the following layers in an Excel application:
 
 ```text
 UI
@@ -166,14 +168,14 @@ VBA Logic
 VTNode Runtime
 ```
 
-처럼 **UI와 실행 기능을 분리해서 생각할 수 있다는 것**을 알 수 있습니다.
+**You can think of the UI and executable functionality as separate layers.**
 
 ---
 
 ## 4. VBA Connects Excel to VTNode
 
-제공되는 `src/`에는 VTNode WAS Application을 구성하기 위한  
-VBA Module, Class, UserForm 등이 포함되어 있습니다.
+The provided `src/` directory contains VBA modules, classes,
+UserForms, and other components for building a VTNode WAS application.
 
 ```text
 src/
@@ -183,7 +185,7 @@ src/
 └─ *.frm
 ```
 
-이들을 Workbook에 구성하면서:
+Assemble them in the workbook:
 
 ```text
 Excel UI
@@ -195,26 +197,26 @@ VBA
 VTNode Runtime
 ```
 
-이라는 연결 관계를 이해할 수 있습니다.
+This helps you understand how these layers connect.
 
-중요한 것은 Runtime API 자체를 암기하는 것이 아니라  
-**각 구성요소가 Application 안에서 어떤 역할을 하는지를 이해하는 것**입니다.
+The goal is to **understand each component's role in the application**,
+without having to memorize the runtime API.
 
 ---
 
 ## 5. Web Contents Are Just Web Contents
 
-Web Page는 `www/`에서 관리할 수 있습니다.
+You can manage web pages in `www/`.
 
 ```text
 www/
 └─ default.html
 ```
 
-HTML / CSS / JavaScript로 만든 Web UI를  
-Excel/VBA Application과 연결할 수 있습니다.
+Connect a web UI built with HTML, CSS, and JavaScript
+to your Excel/VBA application.
 
-즉:
+The resulting structure is:
 
 ```text
 Excel / VBA                 Browser
@@ -223,32 +225,32 @@ Excel / VBA                 Browser
      └──── VTNode WAS ─────────┘
 ```
 
-구조가 됩니다.
+The browser and Excel/VBA communicate through VTNode WAS.
 
-기존 Web 기술과 Excel을 서로 대체하는 것이 아니라  
-**연결해서 사용하는 것**이 핵심입니다.
+The key is to **connect existing web technologies with Excel**
+so you can use them together.
 
 ---
 
 # What You Will Build
 
-시작할 때는:
+You start with:
 
 ```text
 vtnode_ui_only.xlsx
 ```
 
-입니다.
+This is the workbook you will build on.
 
-완료하면:
+By the end, you will have:
 
 ```text
 vtnode_myapp.xlsm
 ```
 
-이 됩니다.
+This is your working application workbook.
 
-그리고 Browser에서는:
+In your browser, you will see:
 
 ```text
 Hello, VTNode!
@@ -260,20 +262,20 @@ VTNode WAS for XLSX (VBA)
 ● Server is running
 ```
 
-을 확인할 수 있습니다.
+This confirms that the application is running.
 
-결과 화면은 `vtnode_hello`와 비슷합니다.
+The result looks similar to `vtnode_hello`.
 
-하지만 중요한 차이가 있습니다.
+There is one key difference:
 
-**이번에는 완성된 Example을 실행한 것이 아니라  
-직접 구성해서 동작시킨 것입니다.**
+**This time, you assembled the components yourself
+and got the application running.**
 
 ---
 
 # Run It → Build It → Change It
 
-VTNode WAS for XLSX를 이해하는 가장 간단한 흐름입니다.
+This is a simple path to understanding VTNode WAS for XLSX.
 
 ```text
 vtnode_hello
@@ -294,10 +296,10 @@ vtnode_myapp.xlsm
 Your Application
 ```
 
-`vtnode_build_myapp`의 최종 목적은  
-`vtnode_myapp.xlsm` 자체가 아닙니다.
+The goal of `vtnode_build_myapp` extends beyond
+creating `vtnode_myapp.xlsm`.
 
-한 번 직접 만들어 본 후:
+Once you have built it yourself, you can:
 
 ```text
 Change the UI
@@ -308,43 +310,60 @@ Add HTTP Requests
 Add WebSocket
 ```
 
-처럼 자신의 Application으로 확장할 수 있다는 것을  
-이해하는 것이 더 중요합니다.
+The aim is to understand how to extend it
+into your own application.
+
+---
+
+# No Python Required
+
+**No Python** means that you do not need to install Python or have any Python knowledge
+to build and run this example. It does not prohibit integration with Python;
+you can integrate with Python when needed.
+
+### [Download VTNode Runtime](https://vtnode.io/downloads/)
 
 ---
 
 # Build Manual
 
-이 README는 상세한 제작 절차를 설명하지 않습니다.
+This README provides an overview of the project.
 
-`vtnode_ui_only.xlsx`에서 시작하여  
-`vtnode_myapp.xlsm`을 완성하는 단계별 과정은  
-별도의 **VTNode WAS for XLSX Build Manual**에서 제공합니다.
+Step-by-step instructions for going from `vtnode_ui_only.xlsx`
+to `vtnode_myapp.xlsm` are planned for the separate
+**VTNode WAS for XLSX Build Manual**.
 
-### [Download Build Manual](https://vtnode.io/docs/was-xlsx/build-myapp)
+### [Download Build Manual](https://github.com/uznet/vtnode/blob/main/docs/quick-start/BUILD_MYAPP.md)
 
 ```text
-vtnode.io
+github.com/uznet/vtnode
     ↓
-VTNode WAS for XLSX
+docs/quick-start/
     ↓
-Build My App
-    ↓
-Email Verification
-    ↓
-Download Manual
+BUILD_MYAPP.md
 ```
 
-Manual에서는 실제 Excel 화면과 VBA Editor를 따라가면서  
-하나씩 구성하는 과정을 설명합니다.
+The manual is being prepared. It will walk you through the assembly process
+using Excel screens and the VBA Editor.
+
+---
+
+# What's Next?
+
+Explore multiple applications and live HTTP / WebSocket monitoring in the
+[VTNode WAS Main Demo](https://github.com/uznet/vtnode/tree/main/was/xlsx/vtnode_was).
+
+**VTNode XEvent for XLSX (VBA)** is another related topic to explore next.
 
 ---
 
 # Start
 
-먼저 `vtnode_hello.xlsm`을 실행해 보세요.
+### [Quick Start](https://github.com/uznet/vtnode/blob/main/docs/quick-start/QUICK_START.md) | [VTNode Hello](https://github.com/uznet/vtnode/tree/main/was/xlsx/vtnode_hello) | [Build My App](https://github.com/uznet/vtnode/tree/main/was/xlsx/vtnode_build_myapp) | [Documentation](https://vtnode.io/docs/docs_login)
 
-그리고 여기로 돌아오세요.
+Run `vtnode_hello.xlsm` first.
+
+Then return here.
 
 ```text
 Run It.
