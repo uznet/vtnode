@@ -332,14 +332,16 @@ Python 연동을 금지한다는 의미가 아니며, 필요한 경우 Python과
 `vtnode_myapp.xlsm`을 완성하는 단계별 과정은  
 별도의 **VTNode WAS for XLSX Build Manual**에서 제공할 예정입니다.
 
-### [Download Build Manual](https://github.com/uznet/vtnode/blob/main/docs/quick-start/BUILD_MYAPP.md)
+### [Download Build Manual](https://github.com/uznet/vtnode/blob/main/docs/quick-start/MYAPP_BUILD_GUIDE.ko.md)
+
+[한글](https://github.com/uznet/vtnode/blob/main/docs/quick-start/MYAPP_BUILD_GUIDE.ko.md) | [English](https://github.com/uznet/vtnode/blob/main/docs/quick-start/MYAPP_BUILD_GUID.en.md)
 
 ```text
 github.com/uznet/vtnode
     ↓
 docs/quick-start/
     ↓
-BUILD_MYAPP.md
+MYAPP_BUILD_GUIDE.ko.md
 ```
 
 Manual은 현재 **준비중 ...**이며, 실제 Excel 화면과 VBA Editor를 따라가면서  
@@ -380,3 +382,4 @@ Change It.
 
 **VTNode WAS for XLSX (VBA)**  
 *Enable web service with VBA.*
+

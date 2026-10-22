@@ -333,14 +333,16 @@ Step-by-step instructions for going from `vtnode_ui_only.xlsx`
 to `vtnode_myapp.xlsm` are planned for the separate
 **VTNode WAS for XLSX Build Manual**.
 
-### [Download Build Manual](https://github.com/uznet/vtnode/blob/main/docs/quick-start/BUILD_MYAPP.md)
+### [Download Build Manual](https://github.com/uznet/vtnode/blob/main/docs/quick-start/MYAPP_BUILD_GUID.en.md)
+
+[한글](https://github.com/uznet/vtnode/blob/main/docs/quick-start/MYAPP_BUILD_GUIDE.ko.md) | [English](https://github.com/uznet/vtnode/blob/main/docs/quick-start/MYAPP_BUILD_GUID.en.md)
 
 ```text
 github.com/uznet/vtnode
     ↓
 docs/quick-start/
     ↓
-BUILD_MYAPP.md
+MYAPP_BUILD_GUID.en.md
 ```
 
 The manual is being prepared. It will walk you through the assembly process
@@ -381,3 +383,4 @@ Change It.
 
 **VTNode WAS for XLSX (VBA)**  
 *Enable web service with VBA.*
+
