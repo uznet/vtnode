@@ -1,19 +1,21 @@
+[English](README.md) | [한글](README.ko.md)
+
 # VTNode WAS for XLSX (VBA)
 
 > **Enable web service with VBA.**
 
-`vtnode_was.xlsm`은 **VTNode WAS for XLSX (VBA)**의 Main Demo Workbook입니다.
+`vtnode_was.xlsm` is the Main Demo workbook for **VTNode WAS for XLSX (VBA)**.
 
-HTTP / WebSocket Server를 실행하고, 여러 Application을 실행하면서  
-**HTTP Request / Response와 WebSocket Connection Session을 Excel 화면에서 직접 확인할 수 있습니다.**
+Run an HTTP / WebSocket server and multiple applications while
+**viewing HTTP requests and responses and WebSocket connection sessions directly in Excel.**
 
-### [Download Runtime](https://vtnode.io/download/runtime) | [Quick Start](https://github.com/vtnode/vtnode_hello) | [Build My App](https://github.com/vtnode/vtnode_build_myapp) | [User Manual](https://vtnode.io/docs/was-xlsx/manual)
+### [Download Runtime](https://vtnode.io/downloads/) | [Quick Start](https://github.com/uznet/vtnode/blob/main/docs/quick-start/QUICK_START.md) | [Build My App](https://github.com/uznet/vtnode/tree/main/was/xlsx/vtnode_build_myapp) | [User Manual](https://vtnode.io/docs/docs_login)
 
 ---
 
 # What is `vtnode_was.xlsm`?
 
-`vtnode_hello`는 가장 작은 Quick Start Example입니다.
+`vtnode_hello` is the smallest Quick Start example.
 
 ```text
 Excel
@@ -25,9 +27,9 @@ Browser
 Hello, VTNode!
 ```
 
-`vtnode_was.xlsm`은 그 다음 단계입니다.
+`vtnode_was.xlsm` is the next step.
 
-단순히 Web Page를 실행하는 것을 넘어:
+It goes beyond serving a web page:
 
 ```text
                     vtnode_was.xlsm
@@ -43,14 +45,14 @@ Hello, VTNode!
            Demo   Order    Request/Response     Sessions
 ```
 
-Application을 실행하는 동시에  
-**Network Activity를 Excel에서 직접 확인할 수 있습니다.**
+Run applications while
+**viewing network activity directly in Excel.**
 
 ---
 
 # Main Screen
 
-`vtnode_was.xlsm`의 Main Screen은 크게 네 영역으로 구성됩니다.
+The main screen of `vtnode_was.xlsm` has four main areas.
 
 ```text
 ┌───────────────────────────────────────────────────────────┐
@@ -72,21 +74,21 @@ Application을 실행하는 동시에
 └───────────────────────────────────────────────────────────┘
 ```
 
-이 화면 하나에서:
+From this single screen, you can:
 
-- Server를 시작하고 중지할 수 있습니다.
-- VTNode Runtime 상태를 확인할 수 있습니다.
-- ACCESS URL을 확인할 수 있습니다.
-- Example Application을 실행할 수 있습니다.
-- HTTP Request / Response Activity를 확인할 수 있습니다.
-- WebSocket Connection Session을 확인할 수 있습니다.
+- Start and stop the server.
+- Check the VTNode Runtime status.
+- View the ACCESS URL.
+- Run example applications.
+- View HTTP request and response activity.
+- View WebSocket connection sessions.
 
 ---
 
 # Server / Runtime
 
-왼쪽 상단의 **SERVER / RUNTIME** 영역은  
-VTNode WAS Server의 실행 상태를 제어하고 확인합니다.
+The **SERVER / RUNTIME** area at the top left lets you
+control and check the VTNode WAS server's status.
 
 ```text
 [ START SERVER ]     [ STOP SERVER ]
@@ -103,31 +105,31 @@ HTTP OFF / HTTPS OFF
 
 ### START SERVER
 
-VTNode WAS HTTP / WebSocket Server를 시작합니다.
+Starts the VTNode WAS HTTP / WebSocket server.
 
 ### STOP SERVER
 
-실행 중인 Server를 중지합니다.
+Stops the running server.
 
 ### SHOW RUNTIME
 
-VTNode Runtime Console을 표시합니다.
+Displays the VTNode Runtime Console.
 
 ### SERVER STATUS
 
-현재 Server의 실행 상태를 표시합니다.
+Displays the server's current status.
 
 ### ACCESS URL
 
-Browser 또는 같은 Network의 다른 Device에서  
-접속할 수 있는 URL을 표시합니다.
+Displays the URL you can open in a browser
+or on another device on the same network.
 
 ---
 
 # Applications
 
-오른쪽 상단의 **APPLICATIONS** 영역에서는  
-하나의 Excel Workbook에서 여러 Application을 실행할 수 있습니다.
+The **APPLICATIONS** area at the top right lets you
+run multiple applications from a single Excel workbook.
 
 ```text
 APPLICATIONS
@@ -141,7 +143,7 @@ APPLICATIONS
 [ + YOUR APP ]
 ```
 
-각 Application은 자신의 URI Route를 가질 수 있습니다.
+Each application can have its own URI route.
 
 ```text
 Excel Apps
@@ -155,18 +157,18 @@ Excel Apps
         URI Routing
 ```
 
-즉, 하나의 VTNode WAS에서 여러 Excel/Web Application으로  
-확장할 수 있다는 개념을 보여줍니다.
+This shows how a single VTNode WAS instance can support
+multiple Excel/web applications.
 
 ---
 
 # Request → Response Activity
 
-`vtnode_hello`와 비교했을 때  
-`vtnode_was.xlsm`의 중요한 차이 중 하나입니다.
+This is one of the key differences between
+`vtnode_was.xlsm` and `vtnode_hello`.
 
-HTTP Request가 들어오고 Response가 반환되는 과정을  
-Excel 화면에서 실시간으로 확인할 수 있습니다.
+You can watch HTTP requests arrive and responses return
+in real time on the Excel screen.
 
 ```text
 Browser
@@ -192,7 +194,7 @@ Browser
 REQUEST → RESPONSE ACTIVITY
 ```
 
-Log에는 다음과 같은 정보가 표시됩니다.
+The log displays information such as:
 
 ```text
 TIME
@@ -203,7 +205,7 @@ DURATION
 DETAIL
 ```
 
-예를 들어 Browser에서 Page를 요청하면:
+For example, when a browser requests a page:
 
 ```text
 GET
@@ -215,16 +217,16 @@ Excel / VBA
 200 OK
 ```
 
-와 같은 Request / Response 흐름을 Excel에서 확인할 수 있습니다.
+You can follow this request/response flow in Excel.
 
 ---
 
 # See HTTP Working
 
-VTNode WAS의 HTTP 처리는 화면 뒤에서만 일어나지 않습니다.
+VTNode WAS makes HTTP processing visible.
 
-Browser에서 Application을 사용하면서  
-Excel 화면의 **REQUEST → RESPONSE ACTIVITY**를 보면:
+While using an application in your browser, watch
+**REQUEST → RESPONSE ACTIVITY** in Excel:
 
 ```text
 Browser Action
@@ -245,23 +247,23 @@ HTTP Response
 Excel Log
 ```
 
-의 흐름을 직접 관찰할 수 있습니다.
+You can observe this flow directly.
 
-따라서 `vtnode_was.xlsm`은 Application Demo인 동시에  
-VTNode WAS의 동작을 이해하기 위한 **Live Monitor** 역할도 합니다.
+Alongside its application demos, `vtnode_was.xlsm` serves as a
+**Live Monitor** that helps you understand how VTNode WAS works.
 
 ---
 
 # WebSocket Connection Sessions
 
-두 번째 Monitoring 영역은:
+The second monitoring area is:
 
 **WEBSOCKET CONNECTION SESSIONS**
 
-입니다.
 
-WebSocket Client가 연결되면 각 Connection을 Session 단위로  
-Excel 화면에서 확인할 수 있습니다.
+
+When a WebSocket client connects, you can view each connection
+as an individual session in Excel.
 
 ```text
 Browser
@@ -280,7 +282,7 @@ Excel / VBA
 WEBSOCKET CONNECTION SESSIONS
 ```
 
-Session 영역에서는 다음 정보를 확인할 수 있습니다.
+The session area displays the following information:
 
 ```text
 ID
@@ -296,9 +298,9 @@ LAST ACTIVITY
 
 # WebSocket Sessions Stay Visible
 
-WebSocket은 HTTP Request / Response와 동작 방식이 다릅니다.
+WebSocket connections work differently from HTTP requests and responses.
 
-HTTP는:
+An HTTP exchange follows this pattern:
 
 ```text
 Request
@@ -308,7 +310,7 @@ Response
 Completed
 ```
 
-형태이지만 WebSocket은:
+A WebSocket connection follows this pattern instead:
 
 ```text
 Connect
@@ -324,10 +326,10 @@ Receive / Send
 CLOSED
 ```
 
-처럼 Connection을 유지합니다.
+The connection stays open for ongoing communication.
 
-따라서 `vtnode_was.xlsm`에서는 WebSocket Connection을  
-**Session 단위로 관리하고 관찰할 수 있습니다.**
+In `vtnode_was.xlsm`, you can
+**manage and observe WebSocket connections as individual sessions.**
 
 ```text
 Session #1    OPEN
@@ -335,16 +337,16 @@ Session #2    OPEN
 Session #3    CLOSED
 ```
 
-Connection이 종료된 후에도 해당 Row를 유지하여  
-마지막 상태와 Activity를 확인할 수 있습니다.
+Each row remains after its connection closes,
+so you can review the final status and activity.
 
-완료된 Session은 **CLEAR CLOSED**를 사용하여 정리할 수 있습니다.
+Use **CLEAR CLOSED** to clear completed sessions.
 
 ---
 
 # HTTP and WebSocket at a Glance
 
-Main Screen에서 두 Network Model을 동시에 비교할 수 있습니다.
+The main screen lets you compare both network models side by side.
 
 ```text
 HTTP
@@ -376,15 +378,15 @@ Excel / VBA
 WEBSOCKET CONNECTION SESSIONS
 ```
 
-이 두 영역은 VTNode WAS for XLSX의 Connectivity를  
-눈으로 확인하기 위한 핵심 Monitoring UI입니다.
+These two areas are the main monitoring views for seeing
+VTNode WAS for XLSX connectivity in action.
 
 ---
 
 # WebSocket Demo
 
-**WEBSOCKET DEMO**는 WebSocket Connection과  
-Message 송수신을 직접 확인하기 위한 Example입니다.
+**WEBSOCKET DEMO** is an example for observing WebSocket connections
+and sending and receiving messages.
 
 ```text
 Browser
@@ -396,10 +398,10 @@ VTNode WAS
 Excel / VBA
 ```
 
-Browser에서 Connection을 생성하면  
-Excel의 **WEBSOCKET CONNECTION SESSIONS**에 Session이 나타납니다.
+When you establish a connection in the browser,
+a session appears under **WEBSOCKET CONNECTION SESSIONS** in Excel.
 
-Message를 주고받으면:
+As messages are exchanged, check these fields:
 
 ```text
 RECEIVED MESSAGE
@@ -409,17 +411,17 @@ SEND MESSAGE
 LAST ACTIVITY
 ```
 
-등을 통해 현재 Session의 동작을 확인할 수 있습니다.
+These fields show activity in the current session.
 
-즉, WebSocket 기능을 단순히 설명하는 것이 아니라  
-**실제 Connection을 Excel에서 눈으로 볼 수 있습니다.**
+**You can see an actual WebSocket connection in Excel**
+and observe how it behaves.
 
 ---
 
 # Table Order
 
-**TABLE ORDER**는 VTNode WAS를 실제 Application 형태로  
-확장하는 Example입니다.
+**TABLE ORDER** demonstrates how to build a practical application
+with VTNode WAS.
 
 ```text
 Smartphone Browser
@@ -435,18 +437,18 @@ Smartphone Browser
     Excel Data
 ```
 
-사용자는 Smartphone Browser에서 Application을 사용하고,  
-Excel에서는 Application Logic과 Data를 처리합니다.
+Users interact with the application in a smartphone browser,
+while Excel handles the application logic and data.
 
-동시에 HTTP Activity가 발생하면 Main Screen의:
+You can also view HTTP activity on the main screen under:
 
 ```text
 REQUEST → RESPONSE ACTIVITY
 ```
 
-에서 확인할 수 있습니다.
+This view updates as HTTP activity occurs.
 
-따라서 Table Order는 단순한 UI Demo가 아니라:
+Table Order shows how the following pieces work together:
 
 ```text
 Web UI
@@ -458,14 +460,14 @@ Excel/VBA
 Excel Data
 ```
 
-가 하나의 Application으로 연결되는 것을 보여줍니다.
+Together, they form a single application.
 
 ---
 
 # One Workbook, Multiple Apps
 
-`vtnode_was.xlsm`의 중요한 개념 중 하나는  
-**하나의 Excel Workbook에서 여러 Application을 운영할 수 있다는 것**입니다.
+A key concept in `vtnode_was.xlsm` is that
+**a single Excel workbook can host multiple applications.**
 
 ```text
                     Browser
@@ -484,16 +486,16 @@ Excel Data
                                   Excel Data
 ```
 
-각 Application은 URI에 따라 분기할 수 있습니다.
+Requests can be directed to different applications based on their URI.
 
-Main Screen의:
+The main screen includes:
 
 ```text
 + YOUR APP
 ADD ANY URI ROUTE
 ```
 
-는 이 구조가 새로운 Application으로 계속 확장될 수 있다는 것을 의미합니다.
+These labels indicate that you can extend this structure with new applications.
 
 ---
 
@@ -530,54 +532,54 @@ Main Demo / Application Portal / Network Activity Monitor.
 
 ### `src/`
 
-Workbook을 구성하는 VBA Module, Class 및 UserForm Source.
+The VBA module, class, and UserForm source code that makes up the workbook.
 
 ### `audio/`
 
-Application과 Runtime에서 사용하는 Audio Resources.
+Audio resources used by the applications and runtime.
 
 ### `www/`
 
-Browser에 서비스되는 HTML / CSS / JavaScript 및 Media Contents.
+HTML, CSS, JavaScript, and media content served to browsers.
 
 ---
 
 # What Makes `vtnode_was` Different?
 
-VTNode WAS for XLSX의 Example들은 각각 목적이 다릅니다.
+Each VTNode WAS for XLSX example has a different purpose.
 
 ```text
 vtnode_hello
 ────────────────────────
 Run It
 
-가장 작은 Example을
-바로 실행해 본다.
+Run the smallest example
+right away.
 
 
 vtnode_build_myapp
 ────────────────────────
 Build It
 
-UI와 제공된 VBA Source를
-직접 조립해 본다.
+Assemble the UI and
+provided VBA source code yourself.
 
 
 vtnode_was
 ────────────────────────
 Explore It
 
-여러 Application을 실행하고
+Run multiple applications and observe
 
 HTTP Request / Response
 
 WebSocket Sessions
 
-을 실시간으로 관찰한다.
+in real time.
 ```
 
-`vtnode_was.xlsm`에서는 단순히 결과만 보는 것이 아니라  
-**Browser와 Excel 사이에서 실제로 무엇이 일어나고 있는지 볼 수 있습니다.**
+With `vtnode_was.xlsm`,
+**you can see what actually happens between the browser and Excel.**
 
 ---
 
@@ -605,17 +607,21 @@ WebSocket Sessions
                          HTTP Activity      WebSocket Sessions
 ```
 
-Excel은 Application Logic과 Data를 가지고 있으면서  
-동시에 Network Activity를 직접 확인할 수 있는 실행 환경이 됩니다.
+Excel becomes an environment that runs application logic, manages data,
+and lets you observe network activity directly.
 
 **Excel becomes a Network Node.**
 
 ---
 
-# No Apache. No Node.js.
+# No Apache. No Node.js. No Python.
 
-별도의 Apache나 Node.js Application Server를 구성하지 않고  
-VTNode Runtime과 Excel/VBA를 이용합니다.
+**No Python** means that you do not need to install Python or have any Python knowledge
+to run this demo. It does not prohibit integration with Python;
+you can integrate with Python when needed.
+
+Use VTNode Runtime and Excel/VBA without setting up
+a separate Apache or Node.js application server.
 
 ```text
 Microsoft Excel
@@ -633,8 +639,8 @@ Browser / Smartphone
 
 # Where Should I Start?
 
-처음 사용하는 경우 `vtnode_was.xlsm`보다  
-먼저 `vtnode_hello`부터 시작하는 것을 권장합니다.
+If you are getting started, we recommend running
+`vtnode_hello` before exploring `vtnode_was.xlsm`.
 
 ```text
 01. vtnode_hello
@@ -656,15 +662,15 @@ Browser / Smartphone
     Your Excel + Web
 ```
 
-### [Quick Start](https://github.com/vtnode/vtnode_hello)
+### [Quick Start](https://github.com/uznet/vtnode/blob/main/docs/quick-start/QUICK_START.md)
 
-### [Build My App](https://github.com/vtnode/vtnode_build_myapp)
+### [Build My App](https://github.com/uznet/vtnode/tree/main/was/xlsx/vtnode_build_myapp)
 
 ---
 
 # What's Next?
 
-VTNode WAS의 Connectivity는 Web에서 더 확장될 수 있습니다.
+VTNode WAS connectivity can extend beyond the web.
 
 ```text
 Hello
@@ -684,17 +690,19 @@ AI Connectivity
 Voice / Phone
 ```
 
-HTTP / WebSocket에서 시작하여  
-Local Excel Data와 Cloud AI를 연결하는 Connectivity로 확장할 수 있습니다.
+Start with HTTP / WebSocket, then expand to connectivity
+between local Excel data and cloud AI.
+
+**VTNode XEvent for XLSX (VBA)** is another related topic to explore next.
 
 ---
 
 # Documentation
 
-VTNode WAS for XLSX를 직접 구성하는 단계별 과정은  
-공식 Documentation에서 제공합니다.
+The official documentation provides step-by-step instructions
+for setting up VTNode WAS for XLSX yourself.
 
-### [Download User Manual](https://vtnode.io/docs/was-xlsx/manual)
+### [Download User Manual](https://vtnode.io/docs/docs_login)
 
 ```text
 vtnode.io
@@ -710,7 +718,7 @@ User Manual
 
 # Start Here
 
-### [Download Runtime](https://vtnode.io/download/runtime) | [Quick Start](https://github.com/vtnode/vtnode_hello) | [Build My App](https://github.com/vtnode/vtnode_build_myapp) | [User Manual](https://vtnode.io/docs/was-xlsx/manual)
+### [Download Runtime](https://vtnode.io/downloads/) | [Quick Start](https://github.com/uznet/vtnode/blob/main/docs/quick-start/QUICK_START.md) | [Build My App](https://github.com/uznet/vtnode/tree/main/was/xlsx/vtnode_build_myapp) | [User Manual](https://vtnode.io/docs/docs_login)
 
 ---
 
