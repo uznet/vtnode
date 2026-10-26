@@ -41,11 +41,11 @@ UI만 준비된 Excel 파일에 VBA 소스와 VTNode Runtime을 연결하여 웹
 | `www/` | 브라우저에 제공할 웹 콘텐츠 |
 | `audio/` | 효과음 리소스 |
 
-공통 VBA 런타임은 작업 폴더 안이 아니라, 나란히 있는 **`vtnode_vba_rt64` 폴더**에 있습니다.
+먼저 가져올 공통 VBA 런타임 소스는 작업 폴더와 나란히 있는 **`vtnode_vba_rt64/src` 폴더**에 있습니다. 이 폴더의 `.bas`, `.cls`, `.frm` 파일을 MyApp 프로젝트에 직접 추가합니다.
 
 ```text
 작업 폴더 기준 상대 경로:
-..\vtnode_vba_rt64\vtnode_vba_rt64.xlsm
+..\vtnode_vba_rt64\src\
 ```
 
 파일이나 폴더가 빠져 있으면 다운로드한 예제와 압축 해제 상태를 먼저 확인합니다. VTNode Runtime 설치와 Excel 매크로 실행 환경도 준비된 상태에서 진행합니다.
@@ -57,19 +57,43 @@ UI만 준비된 Excel 파일에 VBA 소스와 VTNode Runtime을 연결하여 웹
 3. 같은 폴더에 `vtnode_myapp.xlsm`으로 저장합니다.
 4. 파일 형식은 **Excel 매크로 사용 통합 문서 (*.xlsm)**를 선택합니다.
 
-## 2. VBA 소스 가져오기
+## 2. 공통 VBA 런타임 소스 먼저 가져오기
 
 1. **개발 도구 → Visual Basic**을 선택하거나 `Alt+F11`을 눌러 VBA 편집기를 엽니다.
 2. 프로젝트 탐색기에서 **VBAProject (vtnode_myapp.xlsm)**을 선택합니다.
-3. **파일 → 파일 가져오기**에서 작업 폴더 아래 `src/`의 모든 `.cls`, `.bas` 파일을 가져옵니다. 여러 번 가져와 같은 모듈이 중복되지 않도록 확인합니다.
+3. **파일 → 파일 가져오기**에서 작업 폴더의 상위 폴더인 `xlsx`로 이동한 뒤 **`vtnode_vba_rt64/src`** 폴더를 엽니다.
+4. 이 폴더의 **모든 `.bas`, `.cls`, `.frm` 파일**을 MyApp 프로젝트에 가져옵니다. 같은 모듈을 중복해서 가져오지 않도록 확인합니다.
+5. `VtRuntimeConsole.frm`을 가져올 때는 **`VtRuntimeConsole.frx`가 같은 폴더에 있는 상태**를 유지합니다. `.frx`는 폼 리소스 파일이므로 별도로 가져오지 않습니다.
 
-## 3. VTNodeRuntime 참조 추가하기
+### Microsoft Forms 2.0 Object Library 참조 추가
 
-1. MyApp 프로젝트를 선택한 상태에서 **도구 → 참조**를 엽니다.
-2. **찾아보기**에서 작업 폴더의 상위 폴더인 `xlsx`로 이동한 뒤, `vtnode_vba_rt64` 폴더 안의 `vtnode_vba_rt64.xlsm`을 선택합니다. 파일이 보이지 않으면 파일 형식 필터를 변경합니다.
-3. `VTNodeRuntime` 참조가 추가되었는지 확인하고 **확인**을 누릅니다.
+1. **VBAProject (vtnode_myapp.xlsm)**을 선택한 상태에서 **도구 → 참조**를 엽니다.
+2. 목록에서 **Microsoft Forms 2.0 Object Library**를 찾아 체크합니다. 이미 체크되어 있다면 그대로 유지합니다.
+3. **확인**을 눌러 적용합니다.
 
-이 참조를 통해 MyApp의 VBA 코드가 공통 런타임 기능을 사용합니다.
+런타임의 UserForm을 사용하려면 이 참조가 필요합니다. `.frm` 파일을 가져온 뒤에도 참조가 선택되어 있는지 확인합니다.
+
+공통 런타임을 MyApp 안에 소스로 포함하는 방식입니다. `vtnode_vba_rt64.xlsm`을 **도구 → 참조**에 추가하는 단계는 필요하지 않습니다.
+
+### VBA 소스 내보내기 모듈용 참조 추가
+
+`ExportProjectSources.bas`의 `Dim comp As VBComponent` 및 `vbext_` 상수를 컴파일하려면 다음 참조도 필요합니다.
+
+1. **도구 → 참조**를 엽니다.
+2. **Microsoft Visual Basic for Applications Extensibility 5.3**을 체크하고 **확인**을 누릅니다.
+3. **디버그 → VBAProject 컴파일**을 실행하여 확인합니다.
+
+`VBComponent`에서 “사용자 정의 형식이 정의되지 않았습니다” 오류가 발생하면 이 참조를 확인합니다. 앞에서 추가한 `Microsoft Forms 2.0 Object Library`와는 별도의 참조입니다.
+
+`ExportProjectSources`는 VBA 소스를 파일로 내보내는 도구입니다. 내보내기 기능이 필요 없다면 이 모듈을 가져오지 않아도 됩니다. 내보내기 매크로를 실제로 실행하려면 Excel 보안 센터의 **VBA 프로젝트 개체 모델에 안전하게 액세스할 수 있음** 설정도 필요하지만, 이 설정만 변경해서는 위 컴파일 오류가 해결되지 않습니다.
+
+## 3. 애플리케이션 VBA 소스 가져오기
+
+1. 같은 **VBAProject (vtnode_myapp.xlsm)**을 선택합니다.
+2. **파일 → 파일 가져오기**에서 작업 폴더인 `vtnode_build_myapp` 아래의 **`src/`** 폴더를 엽니다.
+3. 이 폴더의 모든 `.cls`, `.bas` 파일을 가져옵니다. 같은 모듈을 중복해서 가져오지 않도록 확인합니다.
+
+가져오는 순서는 **`vtnode_vba_rt64/src`의 공통 런타임 소스 → `vtnode_build_myapp/src`의 애플리케이션 소스**입니다. 두 폴더의 소스를 모두 하나의 MyApp 프로젝트에 추가합니다.
 
 ## 4. 통합 문서 열기·닫기 코드 추가하기
 
@@ -190,8 +214,10 @@ End Sub
 ## 완료 확인
 
 - [ ] `vtnode_myapp.xlsm`으로 저장했다.
-- [ ] `src/`의 `.cls`, `.bas` 파일을 가져왔다.
-- [ ] `VTNodeRuntime` 참조를 추가했다.
+- [ ] `vtnode_vba_rt64/src`의 `.bas`, `.cls`, `.frm` 파일을 먼저 가져왔다.
+- [ ] `Microsoft Forms 2.0 Object Library` 참조를 추가했다.
+- [ ] `ExportProjectSources`를 포함했다면 `Microsoft Visual Basic for Applications Extensibility 5.3` 참조를 추가했다.
+- [ ] `vtnode_build_myapp/src`의 `.cls`, `.bas` 파일을 같은 프로젝트에 가져왔다.
 - [ ] `현재_통합_문서`에 열기·닫기 이벤트 코드를 추가했다.
 - [ ] 저장 후 다시 열어 START로 서비스를 실행했다.
 - [ ] SHOW RUNTIME과 브라우저 접속을 확인했다.
@@ -199,6 +225,9 @@ End Sub
 
 
 정리일: 2026-10-22
+
+
+
 
 
 

@@ -41,11 +41,11 @@ Confirm that the following files and folders are available in the working folder
 | `www/` | Web content served to the browser |
 | `audio/` | Sound effect resources |
 
-The shared VBA runtime is in the **sibling `vtnode_vba_rt64` folder**, outside the working folder.
+The shared VBA runtime source files are in **`vtnode_vba_rt64/src`**, in the sibling runtime folder. Import its `.bas`, `.cls`, and `.frm` files directly into the MyApp project first.
 
 ```text
 Path relative to the working folder:
-..\vtnode_vba_rt64\vtnode_vba_rt64.xlsm
+..\vtnode_vba_rt64\src\
 ```
 
 If any files or folders are missing, check the downloaded examples and make sure the archive was fully extracted. VTNode Runtime must also be installed, and Excel must be ready to run macros.
@@ -57,19 +57,43 @@ If any files or folders are missing, check the downloaded examples and make sure
 3. Save it as `vtnode_myapp.xlsm` in the same folder.
 4. Select **Excel Macro-Enabled Workbook (*.xlsm)** as the file type.
 
-## 2. Import the VBA source code
+## 2. Import the shared VBA runtime source files first
 
 1. Select **Developer → Visual Basic**, or press `Alt+F11`, to open the VBA editor.
 2. Select **VBAProject (vtnode_myapp.xlsm)** in Project Explorer.
-3. Select **File → Import File** and import all `.cls` and `.bas` files from the working folder’s `src/` folder. Avoid importing the same module more than once.
+3. Select **File → Import File**, navigate up from the working folder to `xlsx`, and open **`vtnode_vba_rt64/src`**.
+4. Import **all `.bas`, `.cls`, and `.frm` files** from this folder into the MyApp project. Avoid importing the same module more than once.
+5. When importing `VtRuntimeConsole.frm`, keep **`VtRuntimeConsole.frx` in the same folder**. The `.frx` file contains form resources and should not be imported separately.
 
-## 3. Add the VTNodeRuntime reference
+### Add the Microsoft Forms 2.0 Object Library reference
 
-1. With the MyApp project selected, open **Tools → References**.
-2. Click **Browse**, navigate up to the `xlsx` folder, and select `vtnode_vba_rt64.xlsm` inside the `vtnode_vba_rt64` folder. Change the file type filter if the workbook is not visible.
-3. Confirm that the `VTNodeRuntime` reference is selected, then click **OK**.
+1. With **VBAProject (vtnode_myapp.xlsm)** selected, open **Tools → References**.
+2. Find and select **Microsoft Forms 2.0 Object Library**. If it is already selected, leave it selected.
+3. Click **OK** to apply the reference.
 
-This reference allows MyApp’s VBA code to use the shared runtime functions.
+This reference is required for the runtime UserForm. After importing the `.frm` file, confirm that the reference is selected.
+
+This includes the shared runtime source code directly in MyApp. You do not need to add a reference to `vtnode_vba_rt64.xlsm` through **Tools → References**.
+
+### Add the reference for the source export module
+
+Compiling `Dim comp As VBComponent` and the `vbext_` constants in `ExportProjectSources.bas` also requires this reference:
+
+1. Open **Tools → References**.
+2. Select **Microsoft Visual Basic for Applications Extensibility 5.3**, then click **OK**.
+3. Select **Debug → Compile VBAProject** to check compilation.
+
+If `VBComponent` produces a “User-defined type not defined” error, check this reference. It is separate from `Microsoft Forms 2.0 Object Library`.
+
+`ExportProjectSources` exports VBA source code to files. You may omit this module if you do not need source export. Running the export macro also requires **Trust access to the VBA project object model** in Excel's Trust Center settings; changing that setting alone does not resolve the compilation error above.
+
+## 3. Import the application VBA source files
+
+1. Select the same **VBAProject (vtnode_myapp.xlsm)**.
+2. Select **File → Import File** and open **`src/` inside the working folder, `vtnode_build_myapp`**.
+3. Import all `.cls` and `.bas` files from this folder. Avoid importing the same module more than once.
+
+Import the source files in this order: **shared runtime source from `vtnode_vba_rt64/src` → application source from `vtnode_build_myapp/src`**. Add both sets of source files to the same MyApp project.
 
 ## 4. Add the workbook open and close code
 
@@ -185,12 +209,17 @@ Although workbook close code is included, finish the exercise in this order: **S
 ## Completion checklist
 
 - [ ] Saved the workbook as `vtnode_myapp.xlsm`.
-- [ ] Imported the `.cls` and `.bas` files from `src/`.
-- [ ] Added the `VTNodeRuntime` reference.
+- [ ] Imported the `.bas`, `.cls`, and `.frm` files from `vtnode_vba_rt64/src` first.
+- [ ] Added the `Microsoft Forms 2.0 Object Library` reference.
+- [ ] Added the `Microsoft Visual Basic for Applications Extensibility 5.3` reference if including `ExportProjectSources`.
+- [ ] Imported the `.cls` and `.bas` files from `vtnode_build_myapp/src` into the same project.
 - [ ] Added the open and close event code to `ThisWorkbook`.
 - [ ] Saved and reopened the workbook, then started the service with START.
 - [ ] Checked SHOW RUNTIME and browser access.
 - [ ] Stopped the service with STOP before closing the workbook.
 
 Prepared: 2026-10-22
+
+
+
 
