@@ -158,7 +158,7 @@ Private Function GetAudioFilePath( _
     End Select
 
     GetAudioFilePath = _
-        ThisWorkbook.path & "\" & _
+        ThisWorkbook.Path & "\" & _
         AUDIO_FOLDER & "\" & _
         fileName
 

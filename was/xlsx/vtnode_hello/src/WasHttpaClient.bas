@@ -54,12 +54,12 @@ Public Sub HandleResponse(ByVal httpaSession As CVtHttpaSession)
     Const PROC_NAME As String = "HandleResponse"
     Dim summary As String
     
-    summary = httpaSession.response.ToSummary()
+    summary = httpaSession.Response.ToSummary()
                 
     Call VtLogInfo(MODULE_NAME, PROC_NAME, "----------------------------------------------------------")
     Call VtLogInfo(MODULE_NAME, PROC_NAME, ">>> HTTP RESPONSE:" & summary)
                 
-    summary = httpaSession.response.Contents.ToSummary()
+    summary = httpaSession.Response.Contents.ToSummary()
     Call VtLogInfo(MODULE_NAME, PROC_NAME, ">>> RESPONSE CONTENTS:" & summary)
 
 End Sub

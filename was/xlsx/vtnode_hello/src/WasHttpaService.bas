@@ -51,11 +51,11 @@ Private Sub PrintEventHeader(ByVal s As CVtHttpaSession)
     Dim remoteTarget As String
     Dim localTarget  As String
 
-    If Not s.socket Is Nothing Then
-        laddr = s.socket.LocalAddr
-        lport = s.socket.LocalPort
-        raddr = s.socket.RemoteAddr
-        rport = s.socket.RemotePort
+    If Not s.Socket Is Nothing Then
+        laddr = s.Socket.LocalAddr
+        lport = s.Socket.LocalPort
+        raddr = s.Socket.RemoteAddr
+        rport = s.Socket.RemotePort
     Else
         laddr = "0.0.0.0"
         lport = 0
@@ -65,15 +65,15 @@ Private Sub PrintEventHeader(ByVal s As CVtHttpaSession)
 
     ' [핵심] IP(15자)와 Port(5자)의 서식을 고정 폭으로 포맷팅 (총 21자 규격)
     ' 예: "192.168.0.4     :55207" 형태로 우측 공백 패딩 처리
-    remoteTarget = Left(raddr & Space(15), 15) & ":" & Left(rport & Space(5), 5)
-    localTarget = Left(laddr & Space(15), 15) & ":" & Left(lport & Space(5), 5)
+    remoteTarget = left(raddr & Space(15), 15) & ":" & left(rport & Space(5), 5)
+    localTarget = left(laddr & Space(15), 15) & ":" & left(lport & Space(5), 5)
 
     ' 이벤트 명 폭 고정 (24자)
-    ename = Left(ename & Space(24), 24)
+    ename = left(ename & Space(24), 24)
 
     ' CID 폭 고정 (8자 패딩하여 정렬 유지)
     Dim cidStr As String
-    cidStr = Left("CID:" & Hex(s.CID) & Space(8), 8)
+    cidStr = left("CID:" & Hex(s.CID) & Space(8), 8)
 
     ' 세션 역할(Role)에 따른 데이터 흐름 방향 정렬
     If s.Role = VTHTTPA_SESSION_ROLE_SERVER Then
@@ -183,7 +183,7 @@ Private Sub Init()
 
     If mHttpaService Is Nothing Then
         Set mHttpaService = _
-            VTNodeRuntime.VtHttpaFactory.VtHttpaCreateService()
+            VtHttpaFactory.VtHttpaCreateService()
     End If
     
 End Sub
@@ -200,9 +200,9 @@ Private Sub Uninit()
 End Sub
 
 Public Function WasHttpaServiceStatusToString( _
-    ByVal status As WasHttpaServiceStatus) As String
+    ByVal Status As WasHttpaServiceStatus) As String
 
-    Select Case status
+    Select Case Status
         Case WAS_HTTPA_SERVICE_UNINITIALIZED
             WasHttpaServiceStatusToString = "UNINITIALIZED"
 
@@ -223,13 +223,13 @@ Public Function WasHttpaServiceStatusToString( _
 
         Case Else
             WasHttpaServiceStatusToString = _
-                "UNKNOWN(" & CStr(status) & ")"
+                "UNKNOWN(" & CStr(Status) & ")"
     End Select
 End Function
 Public Function WasHttpaLoopStatusToString( _
-    ByVal status As WasHttpaLoopStatus) As String
+    ByVal Status As WasHttpaLoopStatus) As String
 
-    Select Case status
+    Select Case Status
         Case WAS_HTTPA_LOOP_IDLE
             WasHttpaLoopStatusToString = "IDLE"
 
@@ -256,7 +256,7 @@ Public Function WasHttpaLoopStatusToString( _
 
         Case Else
             WasHttpaLoopStatusToString = _
-                "UNKNOWN(" & CStr(status) & ")"
+                "UNKNOWN(" & CStr(Status) & ")"
     End Select
 End Function
 
@@ -462,10 +462,14 @@ Public Function RequestStart( _
         Exit Function
     End If
 
+
+    
+    
     startResult = mHttpaService.Begin( _
                         vtnodeHomeDir, _
                         vbaHomeDir, _
                         configFile)
+                        
 
     If Not startResult.success Then
         mHttpaStatus = WAS_HTTPA_SERVICE_FAULTED
@@ -1120,18 +1124,18 @@ Private Function CollectRuntimeState() As VtNodeRuntimeState
 
     Dim state As VtNodeRuntimeState
 
-    state.status = CollectRuntimeStatus()
+    state.Status = CollectRuntimeStatus()
 
     Call CollectAppInfo(state.App)
-    Call CollectNetworkInfo(state.network)
+    Call CollectNetworkInfo(state.Network)
 
     If Not mHttpaService Is Nothing Then
 
         state.Http = _
-            mHttpaService.GetHttpInfo(state.network)
+            mHttpaService.GetHttpInfo(state.Network)
 
         state.Https = _
-            mHttpaService.GetHttpsInfo(state.network)
+            mHttpaService.GetHttpsInfo(state.Network)
 
         state.Timing = _
             mHttpaService.GetTimingInfo()
@@ -1238,11 +1242,11 @@ Private Sub ShowRuntimeStatesOnSheet( _
     Set ws = ThisWorkbook.Worksheets(SHEET_NAME)
 
     ' Update only the three runtime fields exposed by the VTNode WAS MVP shell.
-    statusText = VtRuntimeStatusToString(state.status)
+    statusText = VtRuntimeStatusToString(state.Status)
 
-    If state.Http.enabled And Len(Trim$(state.Http.HttpUrl)) > 0 Then
+    If state.Http.Enabled And Len(Trim$(state.Http.HttpUrl)) > 0 Then
         serviceUrl = Trim$(state.Http.HttpUrl)
-    ElseIf state.Https.enabled And Len(Trim$(state.Https.HttpsUrl)) > 0 Then
+    ElseIf state.Https.Enabled And Len(Trim$(state.Https.HttpsUrl)) > 0 Then
         serviceUrl = Trim$(state.Https.HttpsUrl)
     Else
         serviceUrl = "-"
@@ -1254,7 +1258,7 @@ Private Sub ShowRuntimeStatesOnSheet( _
     With ws.Range("E11:I13")
         .Cells(1, 1).Value2 = statusText
 
-        Select Case state.status
+        Select Case state.Status
             Case VT_RUNTIME_RUNNING
                 .Font.Color = RGB(21, 128, 61)
             Case VT_RUNTIME_STARTING, VT_RUNTIME_STOPPING
@@ -1270,7 +1274,7 @@ Private Sub ShowRuntimeStatesOnSheet( _
     ' Synchronize the QR image with the new D27 value.
     '
     SetQRCode _
-        IsRunning:=state.Http.enabled, _
+        IsRunning:=state.Http.Enabled, _
         serviceUrl:=serviceUrl
 
     Exit Sub
