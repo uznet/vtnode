@@ -6,13 +6,13 @@ Option Explicit
 '
 ' Purpose
 '   - Manage relationship between VTNode WAS application workbooks
-'     and vtnode_rt64.xlsm
+'     and vtnode_vba_rt64.xlsm
 '   - Register / unregister runtime clients
 '   - Hide / show VTNode Runtime worksheet
 '   - Show / hide VTNode Runtime UserForm
 '
 ' Policy
-'   - vtnode_rt64.xlsm is NOT automatically closed.
+'   - vtnode_vba_rt64.xlsm is NOT automatically closed.
 '   - While at least one client is attached, Runtime worksheet is hidden.
 '   - When the last client is detached, Runtime worksheet is shown.
 '   - HTTP Listener ownership / channel allocation are NOT managed here.
@@ -23,10 +23,10 @@ Option Explicit
 ' Configuration
 '-------------------------------------------------------------------------------
 
-Private Const VTNODE_RUNTIME_WORKBOOK As String = "vtnode_rt64.xlsm"
+Private Const VTNODE_RUNTIME_WORKBOOK As String = "vtnode_vba_rt64.xlsm"
 Private Const VTNODE_RUNTIME_SHEET As String = "Runtime"
 
-' UserForm name inside vtnode_rt64.xlsm
+' UserForm name inside vtnode_vba_rt64.xlsm
 Private Const VTNODE_RUNTIME_FORM As String = "VtRuntimeConsole"
 
 
@@ -268,7 +268,7 @@ Public Sub VtRuntimeShow()
 
 
     '
-    ' Run public procedure inside vtnode_rt64.xlsm.
+    ' Run public procedure inside vtnode_vba_rt64.xlsm.
     '
     Application.Run _
         "'" & wb.Name & "'!VtRuntimeUIShow"

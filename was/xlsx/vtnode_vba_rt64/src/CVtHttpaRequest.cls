@@ -275,7 +275,7 @@ Private Function InitFromRequestHandle( _
             RequestHandle)
 
     mMethod = _
-        VtHttpaType.VTHttpaMethodFromString( _
+        VtHttpaTypes.VTHttpaMethodFromString( _
             methodText)
 
     mVersion = _
@@ -592,7 +592,7 @@ Public Function ToSummary() As String
         result = result & mLine
     Else
         result = result & _
-                 VtHttpaType.VTHttpaMethodToString(mMethod) & _
+                 VtHttpaTypes.VTHttpaMethodToString(mMethod) & _
                  " " & _
                  mUri & _
                  " " & _

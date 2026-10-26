@@ -21,40 +21,40 @@ EH:
               Err.Description
 End Sub
 
-Public Sub ShowDemoUI()
-    On Error GoTo EH
-
-    With VtRuntimeConsole
-        .SetRuntimeStatus "RUNNING"
-        .SetRuntimeOwner "get-started.xlsm", _
-                         "C:\VTNode\examples\get-started\get-started.xlsm"
-        .SetNetworkAddresses "192.168.0.4", _
-                             "211.123.124.2"
-        .SetHttpServer 12345, _
-                       "http://192.168.0.4:12345", _
-                       "ws://192.168.0.4:12345"
-        .SetHttpsServer True, _
-                        8080, _
-                        "https://192.168.0.4:8080", _
-                        "wss://192.168.0.4:8080"
-        .SetRuntimeTiming "2026-08-28 09:32:10", _
-                          "00:12:35"
-        .SetStats 127, 2
-        .SetLatestActivity _
-            "15:42:35  200 OK" & vbCrLf _
-            & "15:42:35  GET /favicon.ico" & vbCrLf _
-            & "15:42:31  200 OK" & vbCrLf _
-            & "15:42:31  GET /index.html"
-        .Show vbModeless
-    End With
-
-    Exit Sub
-
-EH:
-    Err.Raise Err.Number, _
-              MODULE_NAME & ".ShowDemoUI", _
-              Err.Description
-End Sub
+'Public Sub ShowDemoUI()
+'    On Error GoTo EH
+'
+'    With VtRuntimeConsole
+'        .SetRuntimeStatus "RUNNING"
+'        .SetRuntimeOwner "get-started.xlsm", _
+'                         "C:\VTNode\examples\get-started\get-started.xlsm"
+'        .SetNetworkAddresses "192.168.0.4", _
+'                             "211.123.124.2"
+'        .SetHttpServer 12345, _
+'                       "http://192.168.0.4:12345", _
+'                       "ws://192.168.0.4:12345"
+'        .SetHttpsServer True, _
+'                        8080, _
+'                        "https://192.168.0.4:8080", _
+'                        "wss://192.168.0.4:8080"
+'        .SetRuntimeTiming "2026-08-28 09:32:10", _
+'                          "00:12:35"
+'        .SetStats 127, 2
+'        .SetLatestActivity _
+'            "15:42:35  200 OK" & vbCrLf _
+'            & "15:42:35  GET /favicon.ico" & vbCrLf _
+'            & "15:42:31  200 OK" & vbCrLf _
+'            & "15:42:31  GET /index.html"
+'        .Show vbModeless
+'    End With
+'
+'    Exit Sub
+'
+'EH:
+'    Err.Raise Err.Number, _
+'              MODULE_NAME & ".ShowDemoUI", _
+'              Err.Description
+'End Sub
 
 Public Sub HideVtRuntimeUI()
     Dim runtimeForm As Object

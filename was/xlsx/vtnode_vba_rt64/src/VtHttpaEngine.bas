@@ -49,7 +49,8 @@ Option Explicit
 Public Function VtHttpaStart(ByVal homeDir As String, ByVal iniFile As String) As VTHttpaEngineStartResult
     Dim utf8Home() As Byte
     Dim utf8Ini() As Byte
-    Dim eout(0 To 1023) As Byte
+    Dim utf8LicenseId() As Byte
+    Dim eout(0 To 1024) As Byte
     Dim pHome As LongPtr
     Dim pIni As LongPtr
     Dim result As Long
@@ -78,8 +79,12 @@ Public Function VtHttpaStart(ByVal homeDir As String, ByVal iniFile As String) A
         pIni = 0 ' C의 NULL
     End If
     
+    
+    
+    
     ' 4. 네이티브 C 엔진 가동 호출
     ' BOOL(__stdcall) 반환값은 0이 False, 0이 아니면 True입니다.
+    
     result = vtnode_httpa_start(pHome, pIni, VarPtr(eout(0)), 1024)
     
     ' 5. 결과 매핑

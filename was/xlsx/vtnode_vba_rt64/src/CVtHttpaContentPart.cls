@@ -342,7 +342,7 @@ End Property
 
 Public Sub SetDataType(ByVal DType As VTHttpaContentDataType)
    
-   'Dim DType As VtHttpaType.VTHttpaContentDataType
+   'Dim DType As VtHttpaTypes.VTHttpaContentDataType
    
    DType = Me.DataType Or DType
    

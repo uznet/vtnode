@@ -253,6 +253,9 @@ Private Sub Parse(ByVal s As CVtHttpaSession, ByVal eid As LongLong)
             'RaiseEvent OnWsBinaryReceived(s)
 
         Case VTHTTPA_EVENT_WS_CLOSED
+        
+             mWebsocketClients = mWebsocketClients - 1
+             
             s.Websocket.state = VTHTTPA_WEBSOCKET_STATE_CLOSED
             
             'RaiseEvent OnWsClosed(s)
@@ -391,7 +394,7 @@ End Sub
 ' 2. (추가 제안) 관리 중인 모든 세션 정리
 Public Sub DisconnectAll()
     Dim s As CVtHttpaSession
-    For Each s In m_Sessions
+    For Each s In mSessions
         Call VtHttpaDisconnect(s.IID)
     Next s
     ' 컬렉션 비우기
@@ -664,8 +667,8 @@ Public Sub AddActivity_Response( _
 End Sub
 
 Public Function GetLastError() As String
-  
-  GetLastError = "Last Error"
-  
-   
+
+  GetLastError = ""
+
+
 End Function
