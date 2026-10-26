@@ -63,15 +63,15 @@ Private Sub ClearPictureArea( _
         Set targetRange = targetRange.MergeArea
     End If
 
-    targetLeft = targetRange.Left
-    targetTop = targetRange.Top
-    targetRight = targetRange.Left + targetRange.Width
-    targetBottom = targetRange.Top + targetRange.Height
+    targetLeft = targetRange.left
+    targetTop = targetRange.top
+    targetRight = targetRange.left + targetRange.width
+    targetBottom = targetRange.top + targetRange.height
 
     '
     ' Iterate backwards because shapes can be deleted.
     '
-    For index = ws.Shapes.Count To 1 Step -1
+    For index = ws.Shapes.count To 1 Step -1
 
         Set picture = ws.Shapes(index)
 
@@ -114,13 +114,13 @@ Private Function ShapeOverlapsArea( _
     Dim shapeRight As Double
     Dim shapeBottom As Double
 
-    shapeRight = item.Left + item.Width
-    shapeBottom = item.Top + item.Height
+    shapeRight = item.left + item.width
+    shapeBottom = item.top + item.height
 
     ShapeOverlapsArea = _
-        item.Left < areaRight _
+        item.left < areaRight _
         And shapeRight > areaLeft _
-        And item.Top < areaBottom _
+        And item.top < areaBottom _
         And shapeBottom > areaTop
 
 End Function
@@ -146,10 +146,10 @@ Private Sub SetPicture( _
                       fileName:=imagePath, _
                       LinkToFile:=msoFalse, _
                       SaveWithDocument:=msoTrue, _
-                      Left:=targetRange.Left + QRCODE_PADDING, _
-                      Top:=targetRange.Top + QRCODE_PADDING, _
-                      Width:=-1, _
-                      Height:=-1)
+                      left:=targetRange.left + QRCODE_PADDING, _
+                      top:=targetRange.top + QRCODE_PADDING, _
+                      width:=-1, _
+                      height:=-1)
 
     picture.Name = QRCODE_SHAPE_NAME
     FitPictureToRange picture, targetRange, QRCODE_PADDING
@@ -169,10 +169,10 @@ Private Sub FitPictureToRange( _
 
     Dim pictureSize As Double
 
-    pictureSize = targetRange.Width - padding * 2
+    pictureSize = targetRange.width - padding * 2
 
-    If pictureSize > targetRange.Height - padding * 2 Then
-        pictureSize = targetRange.Height - padding * 2
+    If pictureSize > targetRange.height - padding * 2 Then
+        pictureSize = targetRange.height - padding * 2
     End If
 
     If pictureSize <= 0 Then Exit Sub
@@ -182,14 +182,14 @@ Private Sub FitPictureToRange( _
     ' complete L19 merged area, then center it horizontally and vertically.
     '
     picture.LockAspectRatio = msoFalse
-    picture.Width = pictureSize
-    picture.Height = pictureSize
+    picture.width = pictureSize
+    picture.height = pictureSize
 
-    picture.Left = targetRange.Left _
-                 + (targetRange.Width - pictureSize) / 2
+    picture.left = targetRange.left _
+                 + (targetRange.width - pictureSize) / 2
 
-    picture.Top = targetRange.Top _
-                + (targetRange.Height - pictureSize) / 2
+    picture.top = targetRange.top _
+                + (targetRange.height - pictureSize) / 2
 
     picture.Placement = xlMoveAndSize
 

@@ -112,7 +112,7 @@ Public Sub HandleRequest(ByVal httpaSession As CVtHttpaSession)
     'WasAudio.Play AUDIO_REQUEST_RECEIVED
                     
                      
-    summary = httpaSession.request.ToSummary()
+    summary = httpaSession.Request.ToSummary()
                 
     
     'Call WasHttpaStatus.WriteLog(summary)
@@ -121,7 +121,7 @@ Public Sub HandleRequest(ByVal httpaSession As CVtHttpaSession)
     Call VtLogInfo(MODULE_NAME, PROC_NAME, ">>> HTTP REQUEST:" & vbCrLf & summary)
     
                 
-    summary = httpaSession.request.Contents.ToSummary()
+    summary = httpaSession.Request.Contents.ToSummary()
     Call VtLogInfo(MODULE_NAME, PROC_NAME, ">>> REQUEST CONTENTS:" & vbCrLf & summary)
                 
                   
@@ -136,7 +136,7 @@ Public Sub HandleRequest(ByVal httpaSession As CVtHttpaSession)
     'Call UISheetLog.SetRequestInfo(httpaSession, CustomData)
 
 
-    lowPath = LCase(httpaSession.request.path)
+    lowPath = LCase(httpaSession.Request.path)
 
     'Debug.Print "request.path=" & lowPath
     
@@ -229,7 +229,7 @@ Public Function ParseAsFilePath( _
         If SlashPos = 1 Then
             outPath = "/"
         Else
-            outPath = Left$(path, SlashPos - 1)
+            outPath = left$(path, SlashPos - 1)
         End If
 
         outFilename = Mid$(path, SlashPos + 1)
@@ -331,7 +331,7 @@ Public Sub RespondNotFound( _
     ByVal CustomData As CWasCustomData)
 
     Const PROC_NAME As String = "RespondNotFound"
-    Dim response As VTNodeRuntime.CVtHttpaResponse
+    Dim response As CVtHttpaResponse
     Dim SendRes As Boolean
     Dim SendError As String
     Dim rspMsg As String
@@ -342,7 +342,7 @@ Public Sub RespondNotFound( _
     ' --------------------------------------------------------
     ' 1. Create Response
     ' --------------------------------------------------------
-    Set response = VTNodeRuntime.VtHttpaFactory.VtHttpaCreateResponse()
+    Set response = VtHttpaFactory.VtHttpaCreateResponse()
     
     
 
@@ -401,7 +401,7 @@ Public Sub RespondBadRequest( _
     ' --------------------------------------------------------
     ' 1. Create Response
     ' --------------------------------------------------------
-     Set response = VTNodeRuntime.VtHttpaFactory.VtHttpaCreateResponse()
+     Set response = VtHttpaFactory.VtHttpaCreateResponse()
 
 
     ' --------------------------------------------------------
@@ -469,7 +469,7 @@ Public Sub RespondOK( _
     ' --------------------------------------------------------
     ' 1. Create Response
     ' --------------------------------------------------------
-   Set response = VTNodeRuntime.VtHttpaFactory.VtHttpaCreateResponse()
+   Set response = VtHttpaFactory.VtHttpaCreateResponse()
 
     Call response.Headers.SetHeader("Connection", "close")
     
@@ -534,7 +534,7 @@ Public Sub RespondJson( _
     ' --------------------------------------------------------
     ' 2. Create Response
     ' --------------------------------------------------------
-  Set response = VTNodeRuntime.VtHttpaFactory.VtHttpaCreateResponse()
+  Set response = VtHttpaFactory.VtHttpaCreateResponse()
 
     response.StatusCode = 200
 
@@ -588,7 +588,7 @@ Public Function URIToLocalPath( _
     ' URI path -> local directory
     If Len(uriPath) > 0 And uriPath <> "/" Then
 
-        If Left$(uriPath, 1) = "/" Then
+        If left$(uriPath, 1) = "/" Then
             uriPath = Mid$(uriPath, 2)
         End If
 
@@ -712,7 +712,7 @@ Public Function GetContentTypeFromFilePath( _
 
     ext = LCase$(VtPathUtils.VtPathGetExtension(filePath))
 
-    If Left$(ext, 1) = "." Then
+    If left$(ext, 1) = "." Then
         ext = Mid$(ext, 2)
     End If
 

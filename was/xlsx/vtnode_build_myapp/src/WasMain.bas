@@ -1,132 +1,184 @@
 Attribute VB_Name = "WasMain"
+'Attribute VB_Name = "WasMain"
 
 Option Explicit
 
 Private Const MODULE_NAME As String = "WasMain"
 Private mHomeDirectory As String
 Private mVTNodeHomeDirectory As String
+Private mInitialized As Boolean
 
-'Private mExcelEvents As CWasExcelEvents
+Private mExcelEvents As CWasExcelEvents
 
 
 
-
+' =========================================================
+' Excel Application 이벤트 모니터 시작
+' =========================================================
 Public Sub BeginExcelCloseMonitor()
 
-      Debug.Print "BeginExcelCloseMonitor:1"
+    On Error GoTo EH
+
     If mExcelEvents Is Nothing Then
-      Debug.Print "BeginExcelCloseMonitor:2"
-      Set mExcelEvents = New CWasExcelEvents
-      Set mExcelEvents.App = Application
-    End If
-    
-End Sub
-Public Function WasInit() As Boolean
-    Const PROC_NAME As String = "WasInit"
-
-    Dim logDirectory As String
-    Dim initResult As VTNodeInitResult
-    Dim verifyResult As VTNodeVerifyResult
-
-    On Error GoTo EH
-
-    
-   ' Call BeginExcelCloseMonitor
-    
-    
-    WasInit = False
-   ' WasUILogger.InitLog
-    
-    mHomeDirectory = ThisWorkbook.path
-    mVTNodeHomeDirectory = VtEnv.VtGetEnv("VTNODE_HOME", vbNullString)
-
-    If Len(Trim$(mVTNodeHomeDirectory)) = 0 Then
-        MsgBox "VTNODE_HOME 환경변수가 설정되지 않았습니다.", _
-               vbCritical, _
-               "VTNode Initialization"
-
-        Exit Function
+        Set mExcelEvents = New CWasExcelEvents
+        Set mExcelEvents.App = Application
     End If
 
-    logDirectory = mHomeDirectory _
-                 & Application.PathSeparator _
-                 & "logs"
-
-    VtLogInitialize logDirectory
-
-    VtLogInfo MODULE_NAME, _
-                PROC_NAME, _
-                "WasInit() started. VTNODE_HOME=" & mVTNodeHomeDirectory
-
-    initResult = VtNode.VtNodeInit()
-
-    If Not initResult.success Then
-        VtLogError MODULE_NAME, _
-                   PROC_NAME, _
-                   "VtNodeInit() failed. reason=" & initResult.emsg
-
-        Exit Function
-    End If
-
-    VtLogInfo MODULE_NAME, _
-              PROC_NAME, _
-              "VtNodeInit() success"
-
-    verifyResult = VtNode.VtNodeVerify(mVTNodeHomeDirectory)
-
-    If Not verifyResult.success Then
-        VtLogError MODULE_NAME, _
-                   PROC_NAME, _
-                   "VtNodeVerify() failed. reason=" & verifyResult.emsg
-
-        Exit Function
-    End If
-
-    VtLogInfo MODULE_NAME, _
-              PROC_NAME, _
-              "VtNodeVerify() success"
-
-    WasInit = True
-    Exit Function
-
-EH:
-    VtLogError MODULE_NAME, _
-               PROC_NAME, _
-               "Unexpected error. number=" & CStr(Err.Number) _
-               & ", description=" & Err.description
-
-    WasInit = False
-End Function
-
-Public Sub WasUninit()
-    Const PROC_NAME As String = "WasUninit"
-
-    On Error GoTo EH
-
-    VtLogInfo MODULE_NAME, PROC_NAME, "WasUninit() started"
-
-    VtNode.VtNodeUnInit
-
-    VtLogInfo MODULE_NAME, PROC_NAME, "VtNodeUnInit() success"
-
-CleanUp:
-    VtLogClose
+    Debug.Print "BeginExcelCloseMonitor: success"
     Exit Sub
 
 EH:
-    VtLogError MODULE_NAME, _
-               PROC_NAME, _
-               "Unexpected error. number=" & CStr(Err.Number) _
-               & ", description=" & Err.description
+    MsgBox "Excel event monitor failed." & vbCrLf & _
+           Err.description, vbExclamation, "VTNode"
 
-    Resume CleanUp
 End Sub
 
+
+' =========================================================
+' Excel Application 이벤트 모니터 해제
+' =========================================================
+Public Sub EndExcelCloseMonitor()
+
+    On Error Resume Next
+
+    If Not mExcelEvents Is Nothing Then
+        Set mExcelEvents.App = Nothing
+        Set mExcelEvents = Nothing
+    End If
+
+End Sub
+' =========================================================
+' VTNode Native Runtime 초기화
+' =========================================================
+Public Function WasInit() As Boolean
+
+    Const PROC_NAME As String = "WasInit"
+
+    Dim LogDirectory As String
+    Dim initResult As VTNodeInitResult
+    Dim verifyResult As VTNodeVerifyResult
+    Dim nativeInitialized As Boolean
+
+    On Error GoTo EH
+
+    WasInit = False
+
+    ' 이미 초기화되어 있으면 재초기화하지 않는다.
+    If mInitialized Then
+        WasInit = True
+        Exit Function
+    End If
+
+    mHomeDirectory = ThisWorkbook.path
+    mVTNodeHomeDirectory = _
+        VtEnv.VtGetEnv("VTNODE_HOME", vbNullString)
+
+    ' Application Home 확인
+    If Len(Trim$(mHomeDirectory)) = 0 Then
+        MsgBox "Application Home directory is empty.", _
+               vbCritical, "VTNode Initialization"
+        Exit Function
+    End If
+
+    ' VTNode Home 확인
+    If Len(Trim$(mVTNodeHomeDirectory)) = 0 Then
+        MsgBox "VTNODE_HOME 환경변수가 설정되지 않았습니다.", _
+               vbCritical, "VTNode Initialization"
+        Exit Function
+    End If
+
+    LogDirectory = mHomeDirectory & _
+                   Application.PathSeparator & "logs"
+
+    VtLogInitialize LogDirectory
+
+    VtLogInfo MODULE_NAME, PROC_NAME, _
+              "WasInit() started. VTNODE_HOME=" & _
+              mVTNodeHomeDirectory
+
+    ' Native Runtime 초기화
+    initResult = VtNode.VtNodeInit()
+
+    If Not initResult.success Then
+
+        VtLogError MODULE_NAME, PROC_NAME, _
+                   "VtNodeInit() failed. reason=" & _
+                   initResult.emsg
+
+        MsgBox "VtNodeInit() failed." & vbCrLf & _
+               initResult.emsg, vbCritical, "VTNode"
+
+        GoTo InitFailed
+    End If
+
+    nativeInitialized = True
+
+    VtLogInfo MODULE_NAME, PROC_NAME, _
+              "VtNodeInit() success"
+
+    ' Runtime 설치 및 환경 검증
+    verifyResult = VtNode.VtNodeVerify(mVTNodeHomeDirectory)
+
+    If Not verifyResult.success Then
+
+        VtLogError MODULE_NAME, PROC_NAME, _
+                   "VtNodeVerify() failed. reason=" & _
+                   verifyResult.emsg
+
+        MsgBox "VtNodeVerify() failed." & vbCrLf & _
+               verifyResult.emsg, vbCritical, "VTNode"
+
+        GoTo InitFailed
+    End If
+
+    VtLogInfo MODULE_NAME, PROC_NAME, _
+              "VtNodeVerify() success"
+
+    mInitialized = True
+    WasInit = True
+
+    VtLogInfo MODULE_NAME, PROC_NAME, _
+              "WasInit() completed successfully"
+
+    Exit Function
+
+InitFailed:
+    On Error Resume Next
+
+    If nativeInitialized Then
+        VtNode.VtNodeUnInit
+    End If
+
+    mInitialized = False
+    VtLogClose
+    Exit Function
+
+EH:
+    Dim errNumber As Long
+    Dim errDescription As String
+
+    errNumber = Err.Number
+    errDescription = Err.description
+
+    MsgBox "WasInit() unexpected error." & vbCrLf & _
+           "Number: " & CStr(errNumber) & vbCrLf & _
+           "Description: " & errDescription, _
+           vbCritical, "VTNode"
+
+    Resume InitFailed
+
+End Function
+
+
+' =========================================================
+' VTNode HTTPA Service 시작
+' =========================================================
 Public Function WasStartHttpa() As Boolean
+
     Const PROC_NAME As String = "WasStartHttpa"
 
     Dim httpaConfigFile As String
-    Dim errorMessage As String
+    Dim ErrorMessage As String
     Dim requestAccepted As Boolean
     Dim errNumber As Long
     Dim errDescription As String
@@ -135,106 +187,101 @@ Public Function WasStartHttpa() As Boolean
 
     WasStartHttpa = False
 
-   ' WasUILogger.InitLog
+    ' Native Runtime 초기화 확인
+    If Not mInitialized Then
 
-    '
-    ' Application Home 검증
-    '
+        If Not WasInit() Then
+            Exit Function
+        End If
+
+    End If
+
+    ' Application Home 확인
     If Len(Trim$(mHomeDirectory)) = 0 Then
-        VtLogError MODULE_NAME, _
-                   PROC_NAME, _
+
+        VtLogError MODULE_NAME, PROC_NAME, _
                    "Application home directory is empty."
 
         Exit Function
     End If
 
-    '
-    ' VTNode Home 검증
-    '
+    ' VTNode Home 확인
     If Len(Trim$(mVTNodeHomeDirectory)) = 0 Then
-        VtLogError MODULE_NAME, _
-                   PROC_NAME, _
+
+        VtLogError MODULE_NAME, PROC_NAME, _
                    "VTNODE_HOME is empty."
 
         Exit Function
     End If
 
-    '
-    ' HTTPA 설정 파일 경로 생성
-    '
+    ' HTTPA 설정 파일 경로
     httpaConfigFile = VtPathUtils.VtPathCombine( _
-                            mHomeDirectory, _
-                            "vtnode_httpa_params.ini")
+                          mHomeDirectory, _
+                          "vtnode_httpa_params.ini")
 
     If Len(dir$(httpaConfigFile, vbNormal)) = 0 Then
-        VtLogError MODULE_NAME, _
-                   PROC_NAME, _
-                   "HTTPA configuration file not found. path=" _
-                   & httpaConfigFile
 
+        ErrorMessage = _
+            "HTTPA configuration file not found." & _
+            vbCrLf & httpaConfigFile
+
+        VtLogError MODULE_NAME, PROC_NAME, ErrorMessage
+
+        MsgBox ErrorMessage, vbCritical, "VTNode"
         Exit Function
     End If
 
-    VtLogInfo MODULE_NAME, _
-              PROC_NAME, _
+    VtLogInfo MODULE_NAME, PROC_NAME, _
               "---------------------------------------------"
 
-    VtLogInfo MODULE_NAME, _
-              PROC_NAME, _
+    VtLogInfo MODULE_NAME, PROC_NAME, _
               "Requesting VTNode HTTPA Service start."
 
-    VtLogInfo MODULE_NAME, _
-              PROC_NAME, _
+    VtLogInfo MODULE_NAME, PROC_NAME, _
               " - Application Home : " & mHomeDirectory
 
-    VtLogInfo MODULE_NAME, _
-              PROC_NAME, _
+    VtLogInfo MODULE_NAME, PROC_NAME, _
               " - VTNode Home      : " & mVTNodeHomeDirectory
 
-    VtLogInfo MODULE_NAME, _
-              PROC_NAME, _
+    VtLogInfo MODULE_NAME, PROC_NAME, _
               " - Config File      : " & httpaConfigFile
 
-    '
-    ' RequestStart의 True는 HTTPA Engine 시작 및
-    ' Event Loop 예약 요청이 정상 처리됐다는 의미다.
-    '
-    
+    ' HTTPA Service 시작 요청
     requestAccepted = WasHttpaService.RequestStart( _
-                            mVTNodeHomeDirectory, _
-                            mHomeDirectory, _
-                            httpaConfigFile, _
-                            errorMessage)
+                          mVTNodeHomeDirectory, _
+                          mHomeDirectory, _
+                          httpaConfigFile, _
+                          ErrorMessage)
 
     If Not requestAccepted Then
-        VtLogError MODULE_NAME, _
-                   PROC_NAME, _
-                   "HTTPA Service start request failed. reason=" _
-                   & errorMessage
+
+        VtLogError MODULE_NAME, PROC_NAME, _
+                   "HTTPA Service start request failed. reason=" & _
+                   ErrorMessage
+
+        MsgBox "HTTPA Service start failed." & vbCrLf & _
+               ErrorMessage, vbCritical, "VTNode"
 
         Exit Function
     End If
 
-    VtLogInfo MODULE_NAME, _
-              PROC_NAME, _
-              "HTTPA Service start request accepted. message=" _
-              & errorMessage
+    VtLogInfo MODULE_NAME, PROC_NAME, _
+              "HTTPA Service start request accepted. message=" & _
+              ErrorMessage
 
-    VtLogInfo MODULE_NAME, _
-              PROC_NAME, _
-              "Httpa status=" _
-              & WasHttpaServiceStatusToString( _
-                    WasHttpaService.HttpaStatus)
+    VtLogInfo MODULE_NAME, PROC_NAME, _
+              "Httpa status=" & _
+              WasHttpaServiceStatusToString( _
+                  WasHttpaService.HttpaStatus)
 
-    VtLogInfo MODULE_NAME, _
-              PROC_NAME, _
-              "Loop status=" _
-              & WasHttpaLoopStatusToString( _
-                    WasHttpaService.LoopStatus)
+    VtLogInfo MODULE_NAME, PROC_NAME, _
+              "Loop status=" & _
+              WasHttpaLoopStatusToString( _
+                  WasHttpaService.LoopStatus)
 
-  '  WasHttpaService.UpdateRuntimeStates
-    
     WasHttpaService.TraceState "WasStartHttpa"
+
+    ' True는 시작 요청이 수락되었음을 의미한다.
     WasStartHttpa = True
     Exit Function
 
@@ -242,19 +289,23 @@ EH:
     errNumber = Err.Number
     errDescription = Err.description
 
-    VtLogError MODULE_NAME, _
-               PROC_NAME, _
-               "Unexpected error. number=" & CStr(errNumber) _
-               & ", description=" & errDescription
+    On Error Resume Next
+
+    VtLogError MODULE_NAME, PROC_NAME, _
+               "Unexpected error. number=" & _
+               CStr(errNumber) & _
+               ", description=" & errDescription
+
+    MsgBox "WasStartHttpa() failed." & vbCrLf & _
+           errDescription, vbCritical, "VTNode"
 
     WasStartHttpa = False
+
 End Function
-
-
 Public Function WasStopHttpa() As Boolean
     Const PROC_NAME As String = "WasStopHttpa"
 
-    Dim errorMessage As String
+    Dim ErrorMessage As String
     Dim requestAccepted As Boolean
     Dim errNumber As Long
     Dim errDescription As String
@@ -290,7 +341,7 @@ Public Function WasStopHttpa() As Boolean
     '
     
     requestAccepted = _
-        WasHttpaService.RequestStop(errorMessage)
+        WasHttpaService.RequestStop(ErrorMessage)
 
    
     
@@ -298,7 +349,7 @@ Public Function WasStopHttpa() As Boolean
         VtLogError MODULE_NAME, _
                    PROC_NAME, _
                    "Stop request rejected. reason=" _
-                   & errorMessage
+                   & ErrorMessage
 
         '
         ' RequestStop 처리 과정에서 상태가 FAULTED로
@@ -314,7 +365,7 @@ Public Function WasStopHttpa() As Boolean
     VtLogInfo MODULE_NAME, _
               PROC_NAME, _
               "Stop request accepted. message=" _
-              & errorMessage
+              & ErrorMessage
 
     VtLogInfo MODULE_NAME, _
               PROC_NAME, _
@@ -348,7 +399,7 @@ Public Function WasConfirmForceTerminate() As Boolean
 
     Dim prompt As String
     Dim answer As VbMsgBoxResult
-    Dim errorMessage As String
+    Dim ErrorMessage As String
 
     On Error GoTo EH
 
@@ -384,11 +435,11 @@ Public Function WasConfirmForceTerminate() As Boolean
         Exit Function
     End If
 
-    If Not WasHttpaService.ForceTerminate(errorMessage) Then
+    If Not WasHttpaService.ForceTerminate(ErrorMessage) Then
         MsgBox _
             "강제 종료에 실패했습니다." _
             & vbCrLf & vbCrLf _
-            & errorMessage, _
+            & ErrorMessage, _
             vbCritical Or vbOKOnly, _
             "VTNode 강제 종료 실패"
 
@@ -427,6 +478,8 @@ Public Function WasHomeDirectory() As String
  
   
 End Function
+
+
 
 
 
