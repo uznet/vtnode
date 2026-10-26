@@ -1,5 +1,7 @@
 [English](README.md) | [한글](README.ko.md)
 
+> **[필독 / Read first — Unblock the downloaded ZIP before extracting](../../README.md)**
+
 # VTNode Hello
 
 > **Your first VTNode WAS for XLSX (VBA) example.**
@@ -405,3 +407,4 @@ Voice / Phone
 **Excel becomes a Network Node.**
 
 [VTNode Website](https://vtnode.io)
+
