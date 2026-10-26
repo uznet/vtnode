@@ -1,5 +1,7 @@
 [English](README.md) | [한글](README.ko.md)
 
+> **[필독 — 다운로드한 ZIP 파일은 압축을 해제하기 전에 차단을 해제하세요](../../README.ko.md)**
+
 # VTNode WAS for XLSX (VBA)
 
 > **Enable web service with VBA.**

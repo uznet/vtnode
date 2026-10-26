@@ -1,5 +1,7 @@
 [English](README.md) | [한글](README.ko.md)
 
+> **[필독 / Read first — Unblock the downloaded ZIP before extracting](../../README.md)**
+
 # VTNode WAS for XLSX (VBA)
 
 > **Enable web service with VBA.**
