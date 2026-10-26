@@ -100,10 +100,10 @@ Private Sub CreateActionButton( _
 
     Set buttonShape = ws.Shapes.AddShape( _
         Type:=msoShapeRectangle, _
-        Left:=targetRange.Left, _
-        Top:=targetRange.Top, _
-        Width:=targetRange.Width, _
-        Height:=targetRange.Height)
+        left:=targetRange.left, _
+        top:=targetRange.top, _
+        width:=targetRange.width, _
+        height:=targetRange.height)
 
     qualifiedMacroName = "'" & _
         Replace(ThisWorkbook.Name, "'", "''") & _
@@ -113,11 +113,11 @@ Private Sub CreateActionButton( _
         .Name = shapeName
         .Fill.Visible = msoTrue
         .Fill.Solid
-        .Fill.ForeColor.RGB = RGB(14, 165, 233)
+        .Fill.foreColor.RGB = RGB(14, 165, 233)
         .Fill.Transparency = 0
-        .Line.Visible = msoTrue
-        .Line.ForeColor.RGB = RGB(2, 132, 199)
-        .Line.Weight = 1.5
+        .line.Visible = msoTrue
+        .line.foreColor.RGB = RGB(2, 132, 199)
+        .line.Weight = 1.5
         .OnAction = qualifiedMacroName
         .AlternativeText = description
         .Placement = xlMoveAndSize
@@ -130,7 +130,7 @@ Private Sub CreateActionButton( _
             .TextRange.Font.Name = "Aptos Display"
             .TextRange.Font.Size = 14
             .TextRange.Font.Bold = msoTrue
-            .TextRange.Font.Fill.ForeColor.RGB = RGB(255, 255, 255)
+            .TextRange.Font.Fill.foreColor.RGB = RGB(255, 255, 255)
         End With
     End With
 End Sub
@@ -158,10 +158,10 @@ Private Sub CreateMacroOverlay( _
 
     Set overlay = ws.Shapes.AddShape( _
         Type:=msoShapeRectangle, _
-        Left:=targetRange.Left, _
-        Top:=targetRange.Top, _
-        Width:=targetRange.Width, _
-        Height:=targetRange.Height)
+        left:=targetRange.left, _
+        top:=targetRange.top, _
+        width:=targetRange.width, _
+        height:=targetRange.height)
 
     qualifiedMacroName = "'" & _
         Replace(ThisWorkbook.Name, "'", "''") & _
@@ -174,10 +174,10 @@ Private Sub CreateMacroOverlay( _
         ' Shape 전체 영역이 안정적으로 클릭됩니다.
         .Fill.Visible = msoTrue
         .Fill.Solid
-        .Fill.ForeColor.RGB = RGB(255, 255, 255)
+        .Fill.foreColor.RGB = RGB(255, 255, 255)
         .Fill.Transparency = 0.99
 
-        .Line.Visible = msoFalse
+        .line.Visible = msoFalse
 
         .OnAction = qualifiedMacroName
         .AlternativeText = description
@@ -310,13 +310,13 @@ Public Sub UI_SetNetwork( _
     Dim httpText As String
     Dim httpsText As String
 
-    If httpInfo.enabled Then
+    If httpInfo.Enabled Then
         httpText = "HTTP " & CStr(httpInfo.Port)
     Else
         httpText = "HTTP OFF"
     End If
 
-    If httpsInfo.enabled Then
+    If httpsInfo.Enabled Then
         httpsText = "HTTPS " & CStr(httpsInfo.Port)
     Else
         httpsText = "HTTPS OFF"
@@ -344,8 +344,8 @@ Public Sub UI_OpenInBrowser()
         Exit Sub
     End If
 
-    If LCase$(Left$(serverURL, 7)) <> "http://" And _
-       LCase$(Left$(serverURL, 8)) <> "https://" Then
+    If LCase$(left$(serverURL, 7)) <> "http://" And _
+       LCase$(left$(serverURL, 8)) <> "https://" Then
 
         serverURL = "http://" & serverURL
     End If

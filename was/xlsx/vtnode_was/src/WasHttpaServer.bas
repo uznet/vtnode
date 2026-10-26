@@ -112,7 +112,7 @@ Public Sub HandleRequest(ByVal httpaSession As CVtHttpaSession)
     'WasAudio.Play AUDIO_REQUEST_RECEIVED
                     
                      
-    summary = httpaSession.request.ToSummary()
+    summary = httpaSession.Request.ToSummary()
                 
     
     'Call WasHttpaStatus.WriteLog(summary)
@@ -121,14 +121,14 @@ Public Sub HandleRequest(ByVal httpaSession As CVtHttpaSession)
     Call VtLogInfo(MODULE_NAME, PROC_NAME, ">>> HTTP REQUEST:" & vbCrLf & summary)
     
                 
-    summary = httpaSession.request.Contents.ToSummary()
+    summary = httpaSession.Request.Contents.ToSummary()
     Call VtLogInfo(MODULE_NAME, PROC_NAME, ">>> REQUEST CONTENTS:" & vbCrLf & summary)
                 
                   
                   
     CustomData.IsRequest = True
     WasUILogger.OnBeginLog CustomData.RequestTimestamp
-    WasUILogger.OnRequestLog CustomData.RequestTimestamp, httpaSession.socket, httpaSession.request
+    WasUILogger.OnRequestLog CustomData.RequestTimestamp, httpaSession.Socket, httpaSession.Request
     
                        
     ' 대소문자 구분을 없애기 위해 LCase를 활용하는 것이 안전합니다.
@@ -136,7 +136,7 @@ Public Sub HandleRequest(ByVal httpaSession As CVtHttpaSession)
     'Call UISheetLog.SetRequestInfo(httpaSession, CustomData)
 
 
-    lowPath = LCase(httpaSession.request.path)
+    lowPath = LCase(httpaSession.Request.Path)
 
     'Debug.Print "request.path=" & lowPath
     
@@ -190,44 +190,44 @@ Public Sub HandleRequest(ByVal httpaSession As CVtHttpaSession)
 End Sub
 
 Public Function ParseAsFilePath( _
-    ByVal path As String, _
+    ByVal Path As String, _
     ByRef outPath As String, _
-    ByRef outFilename As String) As Boolean
+    ByRef OutFilename As String) As Boolean
 
     Dim SlashPos As Long
     Dim DotPos As Long
 
     outPath = vbNullString
-    outFilename = vbNullString
+    OutFilename = vbNullString
     ParseAsFilePath = False
 
-    If Len(path) = 0 Then Exit Function
+    If Len(Path) = 0 Then Exit Function
 
     ' --------------------------------------------------------
     ' Split Path / Filename
     ' --------------------------------------------------------
-    SlashPos = InStrRev(path, "/")
+    SlashPos = InStrRev(Path, "/")
 
     If SlashPos > 0 Then
 
         If SlashPos = 1 Then
             outPath = "/"
         Else
-            outPath = Left$(path, SlashPos - 1)
+            outPath = left$(Path, SlashPos - 1)
         End If
 
-        outFilename = Mid$(path, SlashPos + 1)
+        OutFilename = Mid$(Path, SlashPos + 1)
 
     Else
 
-        outFilename = path
+        OutFilename = Path
 
     End If
 
     ' --------------------------------------------------------
     ' Check Filename
     ' --------------------------------------------------------
-    If Len(outFilename) = 0 Then
+    If Len(OutFilename) = 0 Then
         
         ParseAsFilePath = True
         
@@ -238,10 +238,10 @@ Public Function ParseAsFilePath( _
     ' --------------------------------------------------------
     ' Check Extension
     ' --------------------------------------------------------
-    DotPos = InStrRev(outFilename, ".")
+    DotPos = InStrRev(OutFilename, ".")
 
     If DotPos <= 1 Then Exit Function
-    If DotPos >= Len(outFilename) Then Exit Function
+    If DotPos >= Len(OutFilename) Then Exit Function
 
     ParseAsFilePath = True
 
@@ -253,7 +253,7 @@ Public Sub RespondStatus(ByVal s As CVtHttpaSession, _
     
     Const PROC_NAME As String = "RespondStatus"
                          
-    Dim response As CVtHttpaResponse
+    Dim Response As CVtHttpaResponse
     Dim SendRes As Boolean
     Dim SendError As String
     Dim rspMsg As String
@@ -263,13 +263,13 @@ Public Sub RespondStatus(ByVal s As CVtHttpaSession, _
     ' --------------------------------------------------------
     ' 1. Create Response
     ' --------------------------------------------------------
-    Set response = VtHttpaFactory.VtHttpaCreateResponse()
+    Set Response = VtHttpaFactory.VtHttpaCreateResponse()
         
 
     ' --------------------------------------------------------
     ' 2. Send 404 Not Found
     ' --------------------------------------------------------
-    SendRes = response.SendStatus( _
+    SendRes = Response.SendStatus( _
                     s, _
                     StatusCode, _
                     SendError)
@@ -294,12 +294,12 @@ Public Sub RespondStatus(ByVal s As CVtHttpaSession, _
     CustomData.ResponseStatus = rspMsg
     Call VtLogInfo(MODULE_NAME, PROC_NAME, rspMsg)
 
-    WasUILogger.OnResponseLog CustomData.RequestTimestamp, response, rspMsg
+    WasUILogger.OnResponseLog CustomData.RequestTimestamp, Response, rspMsg
     
     
     
     
-    Set response = Nothing
+    Set Response = Nothing
 
 
                          
@@ -315,7 +315,7 @@ Public Sub RespondNotFound( _
     ByVal CustomData As CWasCustomData)
 
     Const PROC_NAME As String = "RespondNotFound"
-    Dim response As VTNodeRuntime.CVtHttpaResponse
+    Dim Response As CVtHttpaResponse
     Dim SendRes As Boolean
     Dim SendError As String
     Dim rspMsg As String
@@ -326,14 +326,14 @@ Public Sub RespondNotFound( _
     ' --------------------------------------------------------
     ' 1. Create Response
     ' --------------------------------------------------------
-    Set response = VTNodeRuntime.VtHttpaFactory.VtHttpaCreateResponse()
+    Set Response = VtHttpaFactory.VtHttpaCreateResponse()
     
     
 
     ' --------------------------------------------------------
     ' 2. Send 404 Not Found
     ' --------------------------------------------------------
-    SendRes = response.SendStatus( _
+    SendRes = Response.SendStatus( _
                     s, _
                     STATUS_NOT_FOUND, _
                     SendError)
@@ -362,20 +362,20 @@ Public Sub RespondNotFound( _
     CustomData.ResponseStatus = rspMsg
     Call VtLogInfo(MODULE_NAME, PROC_NAME, rspMsg)
     
-    WasUILogger.OnResponseLog CustomData.RequestTimestamp, response, rspMsg
+    WasUILogger.OnResponseLog CustomData.RequestTimestamp, Response, rspMsg
 
-    Set response = Nothing
+    Set Response = Nothing
 
 End Sub
 
 Public Sub RespondBadRequest( _
     ByVal s As CVtHttpaSession, _
     ByVal CustomData As CWasCustomData, _
-    Optional ByVal reason As String = vbNullString)
+    Optional ByVal Reason As String = vbNullString)
 
     Const PROC_NAME As String = "RespondBadRequest"
     Const STATUS_BAD_REQUEST As Long = 400
-    Dim response As CVtHttpaResponse
+    Dim Response As CVtHttpaResponse
     Dim SendRes As Boolean
     Dim SendError As String
     Dim rspMsg As String
@@ -385,13 +385,13 @@ Public Sub RespondBadRequest( _
     ' --------------------------------------------------------
     ' 1. Create Response
     ' --------------------------------------------------------
-     Set response = VTNodeRuntime.VtHttpaFactory.VtHttpaCreateResponse()
+     Set Response = VtHttpaFactory.VtHttpaCreateResponse()
 
 
     ' --------------------------------------------------------
     ' 2. Send 400 Bad Request
     ' --------------------------------------------------------
-    SendRes = response.SendStatus( _
+    SendRes = Response.SendStatus( _
                     s, _
                     STATUS_BAD_REQUEST, _
                     SendError)
@@ -417,8 +417,8 @@ Public Sub RespondBadRequest( _
     ' --------------------------------------------------------
     ' 4. Wasend Reason
     ' --------------------------------------------------------
-    If Len(reason) > 0 Then
-        rspMsg = rspMsg & " / Reason: " & reason
+    If Len(Reason) > 0 Then
+        rspMsg = rspMsg & " / Reason: " & Reason
     End If
 
 
@@ -431,9 +431,9 @@ Public Sub RespondBadRequest( _
     Call VtLogInfo(MODULE_NAME, PROC_NAME, rspMsg)
 
 
-    WasUILogger.OnResponseLog CustomData.RequestTimestamp, response, rspMsg
+    WasUILogger.OnResponseLog CustomData.RequestTimestamp, Response, rspMsg
 
-    Set response = Nothing
+    Set Response = Nothing
 
 End Sub
 
@@ -442,7 +442,7 @@ Public Sub RespondOK( _
     ByVal CustomData As CWasCustomData)
 
     Const PROC_NAME As String = "RespondOK"
-    Dim response As CVtHttpaResponse
+    Dim Response As CVtHttpaResponse
     Dim SendRes As Boolean
     Dim SendError As String
     Dim rspMsg As String
@@ -453,15 +453,15 @@ Public Sub RespondOK( _
     ' --------------------------------------------------------
     ' 1. Create Response
     ' --------------------------------------------------------
-   Set response = VTNodeRuntime.VtHttpaFactory.VtHttpaCreateResponse()
+   Set Response = VtHttpaFactory.VtHttpaCreateResponse()
 
-    Call response.Headers.SetHeader("Connection", "close")
+    Call Response.Headers.SetHeader("Connection", "close")
     
 
     ' --------------------------------------------------------
     ' 2. Send 200 OK
     ' --------------------------------------------------------
-    SendRes = response.SendStatus( _
+    SendRes = Response.SendStatus( _
                     s, _
                     STATUS_OK, _
                     SendError)
@@ -491,8 +491,8 @@ Public Sub RespondOK( _
     Call VtLogInfo(MODULE_NAME, PROC_NAME, rspMsg)
 
 
-    WasUILogger.OnResponseLog CustomData.RequestTimestamp, response, rspMsg
-    Set response = Nothing
+    WasUILogger.OnResponseLog CustomData.RequestTimestamp, Response, rspMsg
+    Set Response = Nothing
 
 End Sub
 
@@ -504,7 +504,7 @@ Public Sub RespondJson( _
     ByVal json As Object)
 
     Const PROC_NAME As String = "RespondJson"
-    Dim response As CVtHttpaResponse
+    Dim Response As CVtHttpaResponse
     Dim JsonText As String
     Dim SendRes As Boolean
     Dim SendError As String
@@ -518,11 +518,11 @@ Public Sub RespondJson( _
     ' --------------------------------------------------------
     ' 2. Create Response
     ' --------------------------------------------------------
-  Set response = VTNodeRuntime.VtHttpaFactory.VtHttpaCreateResponse()
+  Set Response = VtHttpaFactory.VtHttpaCreateResponse()
 
-    response.StatusCode = 200
+    Response.StatusCode = 200
 
-    Call response.Headers.SetHeader( _
+    Call Response.Headers.SetHeader( _
         "Content-Type", _
         "application/json; charset=utf-8")
 
@@ -531,7 +531,7 @@ Public Sub RespondJson( _
     ' --------------------------------------------------------
     SendError = vbNullString
 
-    SendRes = response.SendText( _
+    SendRes = Response.SendText( _
         s, _
         JsonText, _
         SendError)
@@ -555,9 +555,9 @@ Public Sub RespondJson( _
     CustomData.ResponseStatus = rspMsg
     Call VtLogInfo(MODULE_NAME, PROC_NAME, rspMsg & "," & JsonText)
     
-    WasUILogger.OnResponseLog CustomData.RequestTimestamp, response, rspMsg
+    WasUILogger.OnResponseLog CustomData.RequestTimestamp, Response, rspMsg
 
-    Set response = Nothing
+    Set Response = Nothing
 
 End Sub
 
@@ -572,7 +572,7 @@ Public Function URIToLocalPath( _
     ' URI path -> local directory
     If Len(uriPath) > 0 And uriPath <> "/" Then
 
-        If Left$(uriPath, 1) = "/" Then
+        If left$(uriPath, 1) = "/" Then
             uriPath = Mid$(uriPath, 2)
         End If
 
@@ -622,29 +622,29 @@ Public Sub RespondFile( _
     
     
     Dim rspMsg As String
-    Dim response As CVtHttpaResponse
+    Dim Response As CVtHttpaResponse
     Dim SendError As String
     'Dim SendRes As Boolean
     
     ' --------------------------------------------------------
     ' 4. Create VBA Response
     ' --------------------------------------------------------
-    Set response = VtHttpaFactory.VtHttpaCreateResponse()
+    Set Response = VtHttpaFactory.VtHttpaCreateResponse()
     
-    response.StatusCode = 200
+    Response.StatusCode = 200
 
-    Call response.Headers.SetHeader( _
+    Call Response.Headers.SetHeader( _
         "X-VTNODE", _
         "MVP")
 
-    Call response.Headers.SetHeader( _
+    Call Response.Headers.SetHeader( _
         "Content-Type", _
         GetContentTypeFromFilePath(LocalPath))
 
     ' --------------------------------------------------------
     ' 5. Send Response
     ' --------------------------------------------------------
-    If response.SendFile( _
+    If Response.SendFile( _
             s, _
             LocalPath, _
             SendError) Then
@@ -680,8 +680,8 @@ Public Sub RespondFile( _
     VtLogInfo MODULE_NAME, PROC_NAME, rspMsg
     CustomData.ResponseStatus = rspMsg
 
-    WasUILogger.OnResponseLog CustomData.RequestTimestamp, response, rspMsg
-    Set response = Nothing
+    WasUILogger.OnResponseLog CustomData.RequestTimestamp, Response, rspMsg
+    Set Response = Nothing
 
      
     
@@ -690,13 +690,13 @@ End Sub
 
 
 Public Function GetContentTypeFromFilePath( _
-    ByVal filePath As String) As String
+    ByVal FilePath As String) As String
 
     Dim ext As String
 
-    ext = LCase$(VtPathUtils.VtPathGetExtension(filePath))
+    ext = LCase$(VtPathUtils.VtPathGetExtension(FilePath))
 
-    If Left$(ext, 1) = "." Then
+    If left$(ext, 1) = "." Then
         ext = Mid$(ext, 2)
     End If
 

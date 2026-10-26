@@ -38,7 +38,7 @@ Public Sub GetStatus( _
     Dim StatusCode As Long
 
     Dim errorOut As String
-    Dim response As CVtHttpaResponse
+    Dim Response As CVtHttpaResponse
 
     Dim rspMsg As String
 
@@ -49,7 +49,7 @@ Public Sub GetStatus( _
     ' /vba/response/status?statusCode=404
     ' --------------------------------------------------------
     StatusCodeParam = _
-        s.request.QueryParams.GetParam("statusCode")
+        s.Request.QueryParams.GetParam("statusCode")
 
     ' --------------------------------------------------------
     ' 2. Determine Status Code
@@ -68,13 +68,13 @@ Public Sub GetStatus( _
     ' --------------------------------------------------------
     ' 3. Send Response
     ' --------------------------------------------------------
-    Set response = VtHttpaFactory.VtHttpaCreateResponse()
+    Set Response = VtHttpaFactory.VtHttpaCreateResponse()
 
-    response.StatusCode = StatusCode
-    Call response.Headers.AddHeader("X-VTNODE", "MVP")
+    Response.StatusCode = StatusCode
+    Call Response.Headers.AddHeader("X-VTNODE", "MVP")
         
 
-    If response.SendStatus( _
+    If Response.SendStatus( _
             s, _
             StatusCode, _
             errorOut) Then
@@ -105,7 +105,7 @@ Public Sub GetStatus( _
 
     'UISheetLog.WriteResponseToSheet s, rspMsg
 
-    Set response = Nothing
+    Set Response = Nothing
 
 End Sub
  
@@ -119,7 +119,7 @@ Public Sub GetText( _
     Dim userName As String
     Dim responseMsg As String
 
-    Dim response As CVtHttpaResponse
+    Dim Response As CVtHttpaResponse
     Dim errorOut As String
     Dim rspMsg As String
 
@@ -130,7 +130,7 @@ Public Sub GetText( _
     ' /vba/text?name=³¶¸¸CÀÎ
     ' --------------------------------------------------------
     userName = _
-        s.request.QueryParams.GetParam("name")
+        s.Request.QueryParams.GetParam("name")
 
     If Len(userName) = 0 Then
         userName = "Guest"
@@ -149,18 +149,18 @@ Public Sub GetText( _
     ' --------------------------------------------------------
     ' 3. Create VBA Response
     ' --------------------------------------------------------
-    Set response = VtHttpaFactory.VtHttpaCreateResponse()
+    Set Response = VtHttpaFactory.VtHttpaCreateResponse()
     
 
-    response.StatusCode = 200
+    Response.StatusCode = 200
 
-    Call response.Headers.SetHeader("X-VTNODE", "MVP")
-    Call response.Headers.SetHeader("Content-Type", "text/json; charset=utf-8")
+    Call Response.Headers.SetHeader("X-VTNODE", "MVP")
+    Call Response.Headers.SetHeader("Content-Type", "text/json; charset=utf-8")
 
     ' --------------------------------------------------------
     ' 4. Send Response
     ' --------------------------------------------------------
-    If response.SendText( _
+    If Response.SendText( _
             s, _
             responseMsg, _
             errorOut) Then
@@ -206,7 +206,7 @@ CleanUp:
     
     CustomData.ResponseStatus = rspMsg
 
-    Set response = Nothing
+    Set Response = Nothing
 
     'UISheetLog.WriteResponseToSheet s, responseMsg
 
@@ -223,7 +223,7 @@ Public Sub GetFile( _
     Dim fileName As String
     Dim FullPath As String
 
-    Dim response As CVtHttpaResponse
+    Dim Response As CVtHttpaResponse
     Dim errorOut As String
     Dim rspMsg As String
 
@@ -237,7 +237,7 @@ Public Sub GetFile( _
     ' --------------------------------------------------------
     FullPath = _
         VtPathCombine( _
-            ThisWorkbook.path, _
+            ThisWorkbook.Path, _
             fileName)
 
     ' --------------------------------------------------------
@@ -249,17 +249,17 @@ Public Sub GetFile( _
             "SendFile Error: File not found -> " & _
             FullPath
 
-        Set response = VtHttpaFactory.VtHttpaCreateResponse()
+        Set Response = VtHttpaFactory.VtHttpaCreateResponse()
         
 
-        response.StatusCode = 404
+        Response.StatusCode = 404
 
-        Call response.SendStatus( _
+        Call Response.SendStatus( _
             s, _
             404, _
             errorOut)
 
-        Set response = Nothing
+        Set Response = Nothing
 
         rspMsg = _
             "Response.SendFile(" & _
@@ -276,22 +276,22 @@ Public Sub GetFile( _
     ' --------------------------------------------------------
     ' 4. Create VBA Response
     ' --------------------------------------------------------
-    Set response = VtHttpaFactory.VtHttpaCreateResponse()
+    Set Response = VtHttpaFactory.VtHttpaCreateResponse()
     
-    response.StatusCode = 200
+    Response.StatusCode = 200
 
-    Call response.Headers.SetHeader( _
+    Call Response.Headers.SetHeader( _
         "X-VTNODE", _
         "MVP")
 
-    Call response.Headers.SetHeader( _
+    Call Response.Headers.SetHeader( _
         "Content-Type", _
         "audio/wav")
 
     ' --------------------------------------------------------
     ' 5. Send Response
     ' --------------------------------------------------------
-    If response.SendFile( _
+    If Response.SendFile( _
             s, _
             FullPath, _
             errorOut) Then
@@ -327,7 +327,7 @@ Public Sub GetFile( _
     VtLogInfo MODULE_NAME, PROC_NAME, rspMsg
     CustomData.ResponseStatus = rspMsg
 
-    Set response = Nothing
+    Set Response = Nothing
 
     'UISheetLog.WriteResponseToSheet s, rspMsg
 
@@ -340,27 +340,27 @@ Public Sub GetMultipart(ByVal s As CVtHttpaSession, ByVal CustomData As CWasCust
 
 
     Dim errorOut As String
-    Dim response As CVtHttpaResponse
+    Dim Response As CVtHttpaResponse
     
     ' --------------------------------------------------------
     ' 4. Create VBA Response
     ' --------------------------------------------------------
-    Set response = VtHttpaFactory.VtHttpaCreateResponse()
+    Set Response = VtHttpaFactory.VtHttpaCreateResponse()
 
 
-    Call response.Headers.SetHeader("X-VTNODE", "MVP")
+    Call Response.Headers.SetHeader("X-VTNODE", "MVP")
     
     
     
     Dim part As CVtHttpaContentPart
     
-    Set part = response.AddText("{""result"": ""success""}", "application/json", "form1")
+    Set part = Response.AddText("{""result"": ""success""}", "application/json", "form1")
     Call part.Headers.AddHeader("X-HEADER1", "My Header1")
     
     
     Dim fileName As String: fileName = "intro-16k-16bit.wav"
-    Dim FullPath As String: FullPath = VtPathCombine(ThisWorkbook.path, fileName)
-    Set part = response.AddFile(FullPath, "audio/wav", "form2")
+    Dim FullPath As String: FullPath = VtPathCombine(ThisWorkbook.Path, fileName)
+    Set part = Response.AddFile(FullPath, "audio/wav", "form2")
     Call part.Headers.AddHeader("X-HEADER2", "My Header2")
     
     
@@ -368,7 +368,7 @@ Public Sub GetMultipart(ByVal s As CVtHttpaSession, ByVal CustomData As CWasCust
     Dim rspMsg As String
     
     
-    Res = response.SendMultipart(s, "form-data", errorOut)
+    Res = Response.SendMultipart(s, "form-data", errorOut)
     
     If Res Then
     
@@ -388,10 +388,10 @@ CleanUp:
     VtLogInfo MODULE_NAME, PROC_NAME, rspMsg
     CustomData.ResponseStatus = rspMsg
     
-    Set response = Nothing
+    Set Response = Nothing
     
     If Not Res Then
-      Call s.request.QueryParams.AddParam("statusCode", "501")
+      Call s.Request.QueryParams.AddParam("statusCode", "501")
       Call GetStatus(s, CustomData)
     End If
     
@@ -418,7 +418,7 @@ Public Sub PostText( _
    
     Dim Body As CVtHttpaContentPart
     
-    Set Body = s.request.Body
+    Set Body = s.Request.Body
     
 
     VtLogInfo MODULE_NAME, PROC_NAME, "Body.Length=" & Body.ByteLength
@@ -440,7 +440,7 @@ Public Sub PostFile( _
     
      Const PROC_NAME As String = "PostFile"
      Dim Body As CVtHttpaContentPart
-     Set Body = s.request.Body
+     Set Body = s.Request.Body
     
     
      VtLogInfo MODULE_NAME, PROC_NAME, "Body.Length=" & Body.ByteLength
@@ -465,9 +465,9 @@ Public Sub PostMultipart( _
     Dim ContentPart As CVtHttpaContentPart
     Dim i As Long
 
-    Set Contents = s.request.Contents
+    Set Contents = s.Request.Contents
 
-    For i = 1 To Contents.Count
+    For i = 1 To Contents.count
 
         Set ContentPart = Contents.GetPartAt(i)
 

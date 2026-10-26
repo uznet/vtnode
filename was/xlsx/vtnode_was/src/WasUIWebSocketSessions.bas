@@ -176,7 +176,7 @@ CleanUp:
 End Sub
 
 Public Function OnOpen( _
-    ByVal websocket As CVtHttpaWebsocket, _
+    ByVal Websocket As CVtHttpaWebsocket, _
     ByRef errorOut As String _
 ) As Boolean
 
@@ -190,14 +190,14 @@ Public Function OnOpen( _
     errorOut = vbNullString
     previousEvents = Application.EnableEvents
 
-    If websocket Is Nothing Then
+    If Websocket Is Nothing Then
         errorOut = "The WebSocket object is Nothing."
         Exit Function
     End If
 
     Set ws = SessionWorksheet()
 
-    If FindRowByWebSocket(websocket) > 0 Then
+    If FindRowByWebSocket(Websocket) > 0 Then
         errorOut = "The WebSocket object is already registered."
         Exit Function
     End If
@@ -211,12 +211,12 @@ Public Function OnOpen( _
     Application.EnableEvents = False
 
     ResetSessionRow ws, sessionRow
-    Set mWebSockets(sessionRow) = websocket
+    Set mWebSockets(sessionRow) = Websocket
     SessionField(ws, COL_ID, sessionRow).Cells(1, 1).Value2 = _
         "WS-" & Format$(sessionRow - FIRST_SESSION_ROW + 1, "00")
     SessionField(ws, COL_STATUS, sessionRow).Cells(1, 1).Value2 = _
         STATUS_CONNECTED
-    SessionField(ws, COL_CONNECTED_AT, sessionRow).Cells(1, 1).Value = Now
+    SessionField(ws, COL_CONNECTED_AT, sessionRow).Cells(1, 1).value = Now
     UpdateLastActivity ws, sessionRow
 
     ' SEND remains disabled until SEND MESSAGE contains text.
@@ -232,18 +232,18 @@ ErrorHandler:
     errorOut = "OnOpen failed: " & Err.description
 End Function
 
-Public Sub OnClose(ByVal websocket As CVtHttpaWebsocket)
+Public Sub OnClose(ByVal Websocket As CVtHttpaWebsocket)
     Dim ws As Worksheet
     Dim sessionRow As Long
     Dim previousEvents As Boolean
 
     On Error GoTo CleanUp
 
-    If websocket Is Nothing Then Exit Sub
+    If Websocket Is Nothing Then Exit Sub
 
     previousEvents = Application.EnableEvents
     Set ws = SessionWorksheet()
-    sessionRow = FindRowByWebSocket(websocket)
+    sessionRow = FindRowByWebSocket(Websocket)
     If sessionRow = 0 Then Exit Sub
 
     Application.EnableEvents = False
@@ -264,7 +264,7 @@ CleanUp:
 End Sub
 
 Public Sub OnRecv( _
-    ByVal websocket As CVtHttpaWebsocket, _
+    ByVal Websocket As CVtHttpaWebsocket, _
     ByVal msg As String _
 )
     Dim ws As Worksheet
@@ -273,11 +273,11 @@ Public Sub OnRecv( _
 
     On Error GoTo CleanUp
 
-    If websocket Is Nothing Then Exit Sub
+    If Websocket Is Nothing Then Exit Sub
 
     previousEvents = Application.EnableEvents
     Set ws = SessionWorksheet()
-    sessionRow = FindRowByWebSocket(websocket)
+    sessionRow = FindRowByWebSocket(Websocket)
     If sessionRow = 0 Then Exit Sub
 
     Application.EnableEvents = False
@@ -335,11 +335,11 @@ ErrorHandler:
 End Sub
 
 Public Sub Send(ByVal sessionRow As Long)
-    Dim errorMessage As String
+    Dim ErrorMessage As String
 
-    If Not TrySend(sessionRow, errorMessage) Then
-        If Len(errorMessage) > 0 Then
-            MsgBox errorMessage, vbExclamation, "WebSocket Send"
+    If Not TrySend(sessionRow, ErrorMessage) Then
+        If Len(ErrorMessage) > 0 Then
+            MsgBox ErrorMessage, vbExclamation, "WebSocket Send"
         End If
     End If
 End Sub
@@ -350,7 +350,7 @@ Public Function TrySend( _
 ) As Boolean
 
     Dim ws As Worksheet
-    Dim websocket As CVtHttpaWebsocket
+    Dim Websocket As CVtHttpaWebsocket
     Dim message As String
     Dim previousEvents As Boolean
 
@@ -373,8 +373,8 @@ Public Function TrySend( _
         Exit Function
     End If
 
-    Set websocket = mWebSockets(sessionRow)
-    If websocket Is Nothing Then
+    Set Websocket = mWebSockets(sessionRow)
+    If Websocket Is Nothing Then
         errorOut = "The selected row does not contain a WebSocket object."
         Exit Function
     End If
@@ -386,7 +386,7 @@ Public Function TrySend( _
         Exit Function
     End If
 
-    If Not websocket.SendText(message) Then
+    If Not Websocket.SendText(message) Then
         errorOut = "CVtHttpaWebsocket.SendText returned False."
         Exit Function
     End If
@@ -463,19 +463,19 @@ Private Sub InitClearClosed()
 
     Set buttonShape = ws.Shapes.AddShape( _
         msoShapeRectangle, _
-        buttonRange.Left, _
-        buttonRange.Top, _
-        buttonRange.Width, _
-        buttonRange.Height)
+        buttonRange.left, _
+        buttonRange.top, _
+        buttonRange.width, _
+        buttonRange.height)
 
     With buttonShape
         .Name = CLEAR_CLOSED_SHAPE
         .OnAction = MacroActionName("OnClearClosed")
         .Placement = xlMoveAndSize
-        .Fill.ForeColor.RGB = CLEAR_CLOSED_COLOR
-        .Line.Visible = msoFalse
+        .Fill.foreColor.RGB = CLEAR_CLOSED_COLOR
+        .line.Visible = msoFalse
         .TextFrame2.TextRange.text = "CLEAR CLOSED"
-        .TextFrame2.TextRange.Font.Fill.ForeColor.RGB = TEXT_ENABLED_COLOR
+        .TextFrame2.TextRange.Font.Fill.foreColor.RGB = TEXT_ENABLED_COLOR
         .TextFrame2.TextRange.Font.Bold = msoTrue
         .TextFrame2.TextRange.ParagraphFormat.Alignment = msoAlignCenter
         .TextFrame2.VerticalAnchor = msoAnchorMiddle
@@ -485,7 +485,7 @@ End Sub
 Private Sub InitSendButtons()
     Dim ws As Worksheet
     Dim sessionRow As Long
-    Dim enabled As Boolean
+    Dim Enabled As Boolean
     Dim buttonRange As Range
     Dim buttonShape As Shape
     Dim shapeName As String
@@ -500,23 +500,23 @@ Private Sub InitSendButtons()
             COL_SEND_BUTTON & sessionRow)
         Set buttonShape = ws.Shapes.AddShape( _
             msoShapeRectangle, _
-            buttonRange.Left, _
-            buttonRange.Top, _
-            buttonRange.Width, _
-            buttonRange.Height)
+            buttonRange.left, _
+            buttonRange.top, _
+            buttonRange.width, _
+            buttonRange.height)
 
         With buttonShape
             .Name = shapeName
             .Placement = xlMoveAndSize
-            .Line.Visible = msoFalse
+            .line.Visible = msoFalse
             .TextFrame2.TextRange.ParagraphFormat.Alignment = msoAlignCenter
             .TextFrame2.VerticalAnchor = msoAnchorMiddle
         End With
 
-        enabled = IsConnectedRow(ws, sessionRow) And _
+        Enabled = IsConnectedRow(ws, sessionRow) And _
                   Len(Trim$(CStr( _
                       ws.Range(COL_SEND_TEXT & sessionRow).Value2))) > 0
-        SetSendButtonEnabled ws, sessionRow, enabled
+        SetSendButtonEnabled ws, sessionRow, Enabled
     Next sessionRow
 End Sub
 
@@ -544,14 +544,14 @@ NotInArea:
 End Function
 
 Private Function FindRowByWebSocket( _
-    ByVal websocket As CVtHttpaWebsocket _
+    ByVal Websocket As CVtHttpaWebsocket _
 ) As Long
 
     Dim sessionRow As Long
 
     For sessionRow = FIRST_SESSION_ROW To LAST_SESSION_ROW
         If Not mWebSockets(sessionRow) Is Nothing Then
-            If mWebSockets(sessionRow) Is websocket Then
+            If mWebSockets(sessionRow) Is Websocket Then
                 FindRowByWebSocket = sessionRow
                 Exit Function
             End If
@@ -651,7 +651,7 @@ End Function
 Private Sub SetSendButtonEnabled( _
     ByVal ws As Worksheet, _
     ByVal sessionRow As Long, _
-    ByVal enabled As Boolean _
+    ByVal Enabled As Boolean _
 )
     Dim buttonRange As Range
     Dim buttonShape As Shape
@@ -669,16 +669,16 @@ Private Sub SetSendButtonEnabled( _
     Set buttonShape = ws.Shapes(shapeName)
     buttonRange.ClearContents
 
-    If enabled Then
+    If Enabled Then
         buttonShape.OnAction = MacroActionName("OnSend")
-        buttonShape.Fill.ForeColor.RGB = SEND_ENABLED_COLOR
+        buttonShape.Fill.foreColor.RGB = SEND_ENABLED_COLOR
         buttonShape.TextFrame2.TextRange.text = SEND_ENABLED_TEXT
-        buttonShape.TextFrame2.TextRange.Font.Fill.ForeColor.RGB = _
+        buttonShape.TextFrame2.TextRange.Font.Fill.foreColor.RGB = _
             TEXT_ENABLED_COLOR
         buttonShape.TextFrame2.TextRange.Font.Bold = msoTrue
     Else
         buttonShape.OnAction = vbNullString
-        buttonShape.Fill.ForeColor.RGB = SEND_DISABLED_COLOR
+        buttonShape.Fill.foreColor.RGB = SEND_DISABLED_COLOR
         buttonShape.TextFrame2.TextRange.text = vbNullString
     End If
 End Sub
@@ -718,7 +718,7 @@ Private Sub UpdateLastActivity( _
     ByVal ws As Worksheet, _
     ByVal sessionRow As Long _
 )
-    SessionField(ws, COL_LAST_ACTIVITY, sessionRow).Cells(1, 1).Value = Now
+    SessionField(ws, COL_LAST_ACTIVITY, sessionRow).Cells(1, 1).value = Now
 End Sub
 
 

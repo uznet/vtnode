@@ -61,13 +61,13 @@ End Sub
 
 Public Sub OnRequestLog( _
     ByVal timestamp As String, _
-    ByVal socket As CVtHttpaSocket, _
-    ByVal request As CVtHttpaRequest)
+    ByVal Socket As CVtHttpaSocket, _
+    ByVal Request As CVtHttpaRequest)
 
     Dim ws As Worksheet
     Dim logRow As Long
 
-    If request Is Nothing Then Exit Sub
+    If Request Is Nothing Then Exit Sub
 
     
     logRow = FindLogRow(timestamp)
@@ -76,14 +76,14 @@ Public Sub OnRequestLog( _
     Set ws = ThisWorkbook.Worksheets(LOG_SHEET_NAME)
 
     
-    ws.Range(LOG_METHOD_COLUMN & logRow).Value2 = VTHttpaMethodToString(request.method)
+    ws.Range(LOG_METHOD_COLUMN & logRow).Value2 = VTHttpaMethodToString(Request.Method)
     
 '        ReadFirstMember( _
 '            request, _
 '            Array("MethodString", "Method", "RequestMethod", "HttpMethod"))
 
     
-    ws.Range(LOG_PATH_COLUMN & logRow).Value2 = socket.RemoteAddr & "->" & request.Uri
+    ws.Range(LOG_PATH_COLUMN & logRow).Value2 = Socket.RemoteAddr & "->" & Request.Uri
     
 '        ReadFirstMember( _
 '            request, _
@@ -93,20 +93,20 @@ End Sub
 
 Public Sub OnResponseLog( _
     ByVal timestamp As String, _
-    ByVal response As CVtHttpaResponse, _
+    ByVal Response As CVtHttpaResponse, _
     ByVal detail As String)
 
     Dim ws As Worksheet
     Dim logRow As Long
-    Dim status As String
-    Dim reason As String
+    Dim Status As String
+    Dim Reason As String
 
     logRow = FindLogRow(timestamp)
     If logRow = 0 Then Exit Sub
 
-    If Not response Is Nothing Then
+    If Not Response Is Nothing Then
     
-       status = CStr(response.StatusCode)
+       Status = CStr(Response.StatusCode)
        
     
 '        status = ReadFirstMember( _
@@ -125,7 +125,7 @@ Public Sub OnResponseLog( _
     End If
 
     Set ws = ThisWorkbook.Worksheets(LOG_SHEET_NAME)
-    ws.Range(LOG_STATUS_COLUMN & logRow).Value2 = status
+    ws.Range(LOG_STATUS_COLUMN & logRow).Value2 = Status
     ws.Range(LOG_DETAIL_COLUMN & logRow).Value2 = detail
 
 End Sub
@@ -235,14 +235,14 @@ Private Sub ClearLogCell(ByVal targetCell As Range)
 End Sub
 
 Private Function ReadFirstMember( _
-    ByVal source As Object, _
+    ByVal Source As Object, _
     ByVal memberNames As Variant) As String
 
     Dim memberName As Variant
     Dim memberValue As Variant
 
     For Each memberName In memberNames
-        If TryReadMember(source, CStr(memberName), memberValue) Then
+        If TryReadMember(Source, CStr(memberName), memberValue) Then
             ReadFirstMember = CStr(memberValue)
             Exit Function
         End If
@@ -251,14 +251,14 @@ Private Function ReadFirstMember( _
 End Function
 
 Private Function TryReadMember( _
-    ByVal source As Object, _
+    ByVal Source As Object, _
     ByVal memberName As String, _
     ByRef memberValue As Variant) As Boolean
 
     On Error Resume Next
 
     Err.Clear
-    memberValue = CallByName(source, memberName, VbGet)
+    memberValue = CallByName(Source, memberName, VbGet)
 
     If Err.Number = 0 Then
         TryReadMember = True
@@ -267,7 +267,7 @@ Private Function TryReadMember( _
     End If
 
     Err.Clear
-    memberValue = CallByName(source, memberName, VbMethod)
+    memberValue = CallByName(Source, memberName, VbMethod)
     TryReadMember = (Err.Number = 0)
 
     On Error GoTo 0

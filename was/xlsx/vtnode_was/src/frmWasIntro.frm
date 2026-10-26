@@ -21,8 +21,8 @@ Private mAccessUrl As String
 Private Sub UserForm_Initialize()
     lblStatus.caption = vbNullString
     lblQrPlaceholder.Visible = True
-    cmdOpenBrowser.enabled = False
-    cmdCopyUrl.enabled = False
+    cmdOpenBrowser.Enabled = False
+    cmdCopyUrl.Enabled = False
 End Sub
 
 Public Sub LoadIntro(ByVal accessUrl As String)
@@ -39,13 +39,13 @@ Public Sub LoadIntro(ByVal accessUrl As String)
         lblStatus.caption = "The VTNode WAS server is not running."
         lblQrPlaceholder.caption = "NO URL"
         lblQrPlaceholder.Visible = True
-        cmdOpenBrowser.enabled = False
-        cmdCopyUrl.enabled = False
+        cmdOpenBrowser.Enabled = False
+        cmdCopyUrl.Enabled = False
         Exit Sub
     End If
 
-    cmdOpenBrowser.enabled = True
-    cmdCopyUrl.enabled = True
+    cmdOpenBrowser.Enabled = True
+    cmdCopyUrl.Enabled = True
 
     qrImagePath = WasUIIntro.CreateQRCodeImage(mAccessUrl)
     If Len(qrImagePath) > 0 Then

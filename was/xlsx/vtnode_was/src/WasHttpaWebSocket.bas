@@ -25,13 +25,13 @@ Public Sub HandleEstablised(ByVal httpaSession As CVtHttpaSession)
     VtLogInfo MODULE_NAME, PROC_NAME
     
     result = WasUIWebSocketSessions.OnOpen( _
-        httpaSession.websocket, _
+        httpaSession.Websocket, _
         errorOut)
     
     If Not result Then
        VtLogError MODULE_NAME, PROC_NAME, _
            "WasUIWebSocketSessions.OnOpen() failed->" & errorOut
-       httpaSession.websocket.CloseSession
+       httpaSession.Websocket.CloseSession
         
     Else
        VtLogInfo MODULE_NAME, PROC_NAME, _
@@ -48,13 +48,13 @@ End Sub
 Public Sub HandleReceivedText(ByVal httpaSession As CVtHttpaSession)
     Const PROC_NAME As String = "HandleReceivedText"
     Dim msg As String
-    msg = httpaSession.websocket.LastText
+    msg = httpaSession.Websocket.LastText
         
     
     VtLogInfo MODULE_NAME, PROC_NAME, msg
     
     Call WasUIWebSocketSessions.OnRecv( _
-        httpaSession.websocket, _
+        httpaSession.Websocket, _
         msg)
      
 
@@ -71,7 +71,7 @@ Public Sub HandleClosed(ByVal httpaSession As CVtHttpaSession)
     
     VtLogInfo MODULE_NAME, PROC_NAME
     
-    Call WasUIWebSocketSessions.OnClose(httpaSession.websocket)
+    Call WasUIWebSocketSessions.OnClose(httpaSession.Websocket)
     
     
     

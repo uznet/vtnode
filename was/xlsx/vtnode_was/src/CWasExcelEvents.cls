@@ -14,14 +14,14 @@ Public WithEvents App As Excel.Application
 Attribute App.VB_VarHelpID = -1
 
 Private Sub App_WorkbookBeforeClose( _
-    ByVal Wb As Excel.Workbook, Cancel As Boolean)
+    ByVal wb As Excel.Workbook, Cancel As Boolean)
 
     Debug.Print "App_WorkbookBeforeClose.1"
     ' WAS와 런타임 통합 문서를 보호
-    If Not (Wb Is ThisWorkbook) Then
-        Debug.Print "App_WorkbookBeforeClose.2->" & Wb.Name
+    If Not (wb Is ThisWorkbook) Then
+        Debug.Print "App_WorkbookBeforeClose.2->" & wb.Name
         
-        If LCase$(Wb.Name) <> "vtnode_vba_rt64.xlsm" Then
+        If LCase$(wb.Name) <> "vtnode_vba_rt64.xlsm" Then
            Exit Sub
         End If
         

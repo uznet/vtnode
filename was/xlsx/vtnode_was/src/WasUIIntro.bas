@@ -42,8 +42,8 @@ Public Function GetAccessUrl() As String
 
     If Len(accessUrl) = 0 Or accessUrl = "-" Then Exit Function
 
-    If LCase$(Left$(accessUrl, 7)) <> "http://" And _
-       LCase$(Left$(accessUrl, 8)) <> "https://" Then
+    If LCase$(left$(accessUrl, 7)) <> "http://" And _
+       LCase$(left$(accessUrl, 8)) <> "https://" Then
         accessUrl = "http://" & accessUrl
     End If
 
