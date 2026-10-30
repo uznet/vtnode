@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>소상공인 테이블오더</title>
+  <style>
+    :root{
+      --bg:#f3f6fb;
+      --menu-bg:#eef6ff;
+      --cart-bg:#fff6ed;
+      --card:#ffffff;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --primary:#ef6c00;
+      --primary-dark:#d95f00;
+      --green:#16a34a;
+      --danger:#dc2626;
+      --shadow:0 12px 30px rgba(15,23,42,.10);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans KR",Arial,sans-serif;background:var(--bg);color:var(--text)}
+    button,select,input{font:inherit}
+    button{border:0;cursor:pointer}
+    .app{max-width:1180px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
+    .topbar{position:sticky;top:0;z-index:20;background:linear-gradient(135deg,#111827,#374151);color:white;padding:16px 18px 14px;box-shadow:0 6px 20px rgba(0,0,0,.18)}
+    .brand{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+    .brand h1{margin:0;font-size:22px;letter-spacing:-.4px}.brand small{color:#d1d5db}.badge{padding:7px 10px;background:rgba(255,255,255,.13);border-radius:999px;font-size:13px}
+    .controls{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px}.control{background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:10px}.control label{display:block;color:#d1d5db;font-size:12px;margin-bottom:5px}.control select,.control input{width:100%;border:0;border-radius:10px;padding:10px;background:white;color:#111827;font-weight:700}.people{display:flex;gap:7px;align-items:center}.people button{width:38px;height:38px;border-radius:10px;background:white;font-weight:900}.people strong{flex:1;text-align:center;background:white;color:#111827;border-radius:10px;padding:9px}
+    .call-btn,.history-btn{width:100%;height:42px;border-radius:11px;font-weight:800}.call-btn{background:#fbbf24;color:#111827}.history-btn{background:#e5e7eb;color:#111827}
+    .main{display:grid;grid-template-columns:1fr 370px;gap:18px;padding:18px}.menu-panel{background:var(--menu-bg);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}.cart-panel{background:var(--cart-bg);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);position:sticky;top:155px;height:calc(100vh - 175px);display:flex;flex-direction:column;border:2px solid #fed7aa}
+    .section-title{display:flex;align-items:end;justify-content:space-between;margin:4px 0 14px}.section-title h2{margin:0;font-size:21px}.section-title span{color:var(--muted);font-size:13px}.tabs{display:flex;gap:8px;overflow:auto;padding-bottom:12px}.tab{white-space:nowrap;padding:10px 14px;border-radius:999px;background:white;color:#374151;font-weight:800;border:1px solid var(--line)}.tab.active{background:var(--primary);color:white;border-color:var(--primary)}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.item{background:var(--card);border:1px solid #dbeafe;border-radius:18px;padding:13px;display:grid;grid-template-columns:88px 1fr;gap:12px;box-shadow:0 6px 14px rgba(37,99,235,.07)}.photo{width:88px;height:88px;border-radius:16px;background:linear-gradient(135deg,#fff7ed,#fed7aa);display:flex;align-items:center;justify-content:center;font-size:38px}.item h3{margin:1px 0 5px;font-size:17px}.desc{margin:0 0 8px;color:var(--muted);font-size:13px;line-height:1.35}.price{font-weight:900;color:#111827}.add{margin-top:10px;width:100%;padding:10px;border-radius:12px;background:var(--primary);color:white;font-weight:900}.add:active,.order-btn:active{transform:translateY(1px)}
+    .cart-head{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #fed7aa;padding-bottom:12px}.cart-head h2{margin:0;font-size:21px}.cart-meta{font-size:13px;color:#9a3412;font-weight:800}.cart-list{flex:1;overflow:auto;padding:10px 2px}.empty{text-align:center;color:#9a3412;background:#ffedd5;border:1px dashed #fdba74;border-radius:16px;padding:34px 16px;margin-top:12px}.cart-item{background:white;border:1px solid #fed7aa;border-radius:16px;padding:12px;margin-bottom:10px}.cart-item-top{display:flex;justify-content:space-between;gap:8px}.cart-item h4{margin:0;font-size:15px}.option{color:var(--muted);font-size:12px;margin-top:4px}.qty{display:flex;align-items:center;justify-content:space-between;margin-top:10px}.qty button{width:32px;height:32px;border-radius:10px;background:#f3f4f6;font-weight:900}.qty-controls{display:flex;align-items:center;gap:8px}.remove{color:var(--danger);background:#fee2e2!important}.summary{border-top:2px solid #fed7aa;padding-top:12px}.summary-row{display:flex;justify-content:space-between;margin:7px 0;color:#374151}.summary-row.total{font-size:21px;font-weight:900;color:#111827;margin-top:12px}.order-btn{width:100%;padding:15px;border-radius:15px;background:var(--primary);color:white;font-size:17px;font-weight:900;margin-top:12px}.order-btn:disabled{background:#d1d5db;cursor:not-allowed}.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#111827;color:white;padding:12px 16px;border-radius:999px;box-shadow:var(--shadow);z-index:50;display:none;max-width:90%;text-align:center}.toast.show{display:block}.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:60;padding:18px}.modal.show{display:flex}.modal-card{background:white;border-radius:24px;padding:24px;max-width:440px;width:100%;text-align:center;box-shadow:var(--shadow)}.modal-card .icon{font-size:54px}.modal-card h2{margin:10px 0}.modal-card p{color:var(--muted);line-height:1.55}.modal-actions{display:flex;gap:10px;margin-top:18px}.modal-actions button{flex:1;padding:13px;border-radius:14px;font-weight:900}.primary{background:var(--primary);color:white}.secondary{background:#e5e7eb;color:#111827}.call-time-box{margin:16px 0;padding:14px;border-radius:16px;background:#fff7ed;border:1px solid #fed7aa;color:#9a3412}.call-time-box b{display:block;color:#111827;font-size:21px;margin-top:6px}.mini-info{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.mini-info div{background:#f9fafb;border-radius:12px;padding:10px;font-weight:800}
+    @media (max-width:860px){.controls{grid-template-columns:1fr 1fr}.main{display:block;padding:12px}.menu-panel{border-radius:18px 18px 0 0;padding:13px}.cart-panel{position:relative;top:auto;height:auto;margin-top:14px;border-radius:18px;padding:13px;border-width:3px}.grid{grid-template-columns:1fr}.item{grid-template-columns:78px 1fr}.photo{width:78px;height:78px}.brand h1{font-size:20px}.cart-list{max-height:360px}.section-title h2,.cart-head h2{font-size:19px}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <div><h1>🍽️ 소상공인 테이블오더</h1><small>VTNode Excel WAS Demo</small></div>
+      <div class="badge" id="orderIdBadge">주문 준비</div>
+    </div>
+    <div class="controls">
+      <div class="control"><label>테이블 번호</label><select id="tableNo"></select></div>
+      <div class="control"><label>인원수</label><div class="people"><button id="peopleMinus">−</button><strong id="peopleCount">2</strong><button id="peoplePlus">＋</button></div></div>
+      <div class="control"><label>직원 호출</label><button class="call-btn" id="callStaff">직원 호출</button></div>
+      <div class="control"><label>주문 내역</label><button class="history-btn" id="showPayload">JSON 보기</button></div>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="menu-panel">
+      <div class="section-title"><h2>메뉴 선택</h2><span>카테고리별 주문</span></div>
+      <div class="tabs" id="tabs"></div>
+      <div class="grid" id="menuGrid"></div>
+    </section>
+
+    <aside class="cart-panel">
+      <div class="cart-head"><h2>🛒 장바구니</h2><div class="cart-meta"><span id="cartTableLabel">T-12</span> · <span id="cartPeopleLabel">2명</span></div></div>
+      <div class="cart-list" id="cartList"></div>
+      <div class="summary">
+        <div class="summary-row"><span>상품 금액</span><strong id="subTotal">0원</strong></div>
+        <div class="summary-row"><span>봉사료/수수료</span><strong>0원</strong></div>
+        <div class="summary-row total"><span>총 결제금액</span><span id="totalPrice">0원</span></div>
+        <button class="order-btn" id="finalOrder" disabled>최종 주문하기</button>
+      </div>
+    </aside>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="modal" id="completeModal">
+  <div class="modal-card">
+    <div class="icon">✅</div>
+    <h2>주문이 접수되었습니다</h2>
+    <p id="completeText"></p>
+    <div class="modal-actions"><button class="secondary" id="closeModal">닫기</button><button class="primary" id="newOrder">새 주문</button></div>
+  </div>
+</div>
+
+<div class="modal" id="callModal">
+  <div class="modal-card">
+    <div class="icon">🔔</div>
+    <h2>직원을 호출했습니다</h2>
+    <p>잠시만 기다려 주세요.</p>
+    <div class="mini-info">
+      <div id="callTableText">테이블 -</div>
+      <div id="callPeopleText">인원 -</div>
+    </div>
+    <div class="call-time-box">
+      호출시간
+      <b id="callTimeText">--:--:--.---</b>
+      <small id="callIsoText"></small>
+    </div>
+    <div class="modal-actions"><button class="primary" id="closeCallModal">확인</button></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  const categories = ['추천', '식사', '면/국물', '사이드', '음료'];
+  const menus = [
+    {id:'m01',cat:'추천',name:'불고기 정식',desc:'달콤한 간장 불고기와 반찬 구성',price:12000,emoji:'🥩',options:['기본','공기밥 추가','덜 맵게']},
+    {id:'m02',cat:'추천',name:'제육볶음',desc:'매콤한 직화 제육 인기 메뉴',price:11000,emoji:'🌶️',options:['기본','덜 맵게','많이 맵게']},
+    {id:'m03',cat:'식사',name:'김치볶음밥',desc:'계란후라이 포함 든든한 한 끼',price:9000,emoji:'🍳',options:['기본','치즈 추가','계란 추가']},
+    {id:'m04',cat:'식사',name:'돌솥비빔밥',desc:'고소한 참기름과 신선한 나물',price:10000,emoji:'🍚',options:['기본','고추장 따로','계란 추가']},
+    {id:'m05',cat:'면/국물',name:'잔치국수',desc:'따뜻한 멸치육수와 소면',price:8000,emoji:'🍜',options:['기본','곱빼기','김치 추가']},
+    {id:'m06',cat:'면/국물',name:'김치찌개',desc:'돼지고기 김치찌개와 공기밥',price:9500,emoji:'🥘',options:['기본','덜 맵게','라면사리 추가']},
+    {id:'m07',cat:'사이드',name:'왕만두',desc:'육즙 가득 찐만두 5개',price:6000,emoji:'🥟',options:['기본','간장 추가']},
+    {id:'m08',cat:'사이드',name:'감자튀김',desc:'바삭한 감자튀김',price:5000,emoji:'🍟',options:['기본','케첩 추가','치즈소스']},
+    {id:'m09',cat:'음료',name:'콜라',desc:'시원한 탄산음료',price:2500,emoji:'🥤',options:['기본','얼음컵']},
+    {id:'m10',cat:'음료',name:'아이스 아메리카노',desc:'식후에 좋은 커피',price:3500,emoji:'☕',options:['기본','연하게','샷 추가']}
+  ];
+
+  const STORE_NAME = '소상공인 식당';
+  const SESSION_COOKIE_NAME = 'VTORDERID';
+  const SESSION_COOKIE_MAX_AGE = 30 * 60; // 30 minutes
+
+  let selectedCat = '추천';
+  let people = 2;
+  let cartItems = [];
+  let lastPayload = null;
+  let lastServerSessionId = null;
+  let cartNotifyTimer = null;
+  let currentTableNo = null; let ready = false; let submitting = false; let pendingOrder = null; let apiQueue = Promise.resolve();
+
+  const $ = id => document.getElementById(id);
+  const money = n => n.toLocaleString('ko-KR') + '원';
+  const pad = n => String(n).padStart(2,'0');
+
+  function formatLocalTimeWithMs(date){
+    return pad(date.getHours()) + ':' + pad(date.getMinutes()) + ':' + pad(date.getSeconds()) + '.' + String(date.getMilliseconds()).padStart(3,'0');
+  }
+
+  function makeOrderId(){
+    return 'A-' + (globalThis.crypto?.randomUUID?.() || (Date.now().toString(36) + '-' + Math.random().toString(36).slice(2)));
+  }
+  function readCookie(name){
+    const prefix = encodeURIComponent(name) + '=';
+    const parts = document.cookie ? document.cookie.split(';') : [];
+
+    for(const part of parts){
+      const v = part.trim();
+      if(v.indexOf(prefix) === 0) return decodeURIComponent(v.substring(prefix.length));
+    }
+
+    return '';
+  }
+
+  function setClientCookie(name, value, maxAgeSec){
+    if(!value) return;
+
+    document.cookie = encodeURIComponent(name) + '=' + encodeURIComponent(value) +
+      '; Path=/; Max-Age=' + String(maxAgeSec || SESSION_COOKIE_MAX_AGE) +
+      '; SameSite=Lax';
+  }
+
+  function clearClientCookie(name){
+    document.cookie = encodeURIComponent(name) + '=; Path=/; Max-Age=0; SameSite=Lax';
+  }
+
+  function getOrderSessionId(){
+    return readCookie(SESSION_COOKIE_NAME) || lastServerSessionId || '';
+  }
+
+  function applySessionFromServer(json){
+    if(!json || typeof json !== 'object') return;
+
+    if(json.orderSessionId){
+      lastServerSessionId = String(json.orderSessionId);
+
+      // 서버가 Set-Cookie를 내려주면 이 코드는 필요 없지만,
+      // 데모/쿠키 테스트를 위해 응답 JSON에 orderSessionId가 있으면 클라이언트 쿠키도 저장한다.
+      setClientCookie(SESSION_COOKIE_NAME, lastServerSessionId, Number(json.maxAge || SESSION_COOKIE_MAX_AGE));
+    }
+  }
+
+  function handleSessionTimeout(json){
+    if(!json || json.eventType !== 'SESSION_TIMEOUT') return false;
+
+    clearClientCookie(SESSION_COOKIE_NAME);
+    lastServerSessionId = null;
+    cartItems = [];
+    renderCart();
+    $('orderIdBadge').textContent = '세션 만료';
+    toast(json.message || '주문 세션이 만료되었습니다. 다시 접속해 주세요.');
+
+    ready = false; $('tableNo').disabled = true; $('callStaff').disabled = true;
+    return true;
+  }
+  function tableNo(){ return $('tableNo').value; }
+  function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2200); }
+
+  function setSelectedTableNo(no){
+    const sel = $('tableNo');
+    const value = String(no);
+
+    if(!Array.from(sel.options).some(opt=>opt.value===value)){
+      const opt = document.createElement('option');
+      opt.value = value;
+      opt.textContent = value + '번 테이블';
+      sel.appendChild(opt);
+    }
+
+    sel.value = value;
+    currentTableNo = value;
+    renderCart();
+  }
+
+  function initTables(){
+    const sel = $('tableNo');
+    for(let i=1;i<=8;i++){
+      const opt = document.createElement('option'); opt.value=String(i); opt.textContent=i+'번 테이블'; if(i===1) opt.selected=true; sel.appendChild(opt);
+    }
+
+    currentTableNo = tableNo();
+
+    sel.addEventListener('change', async ()=>{
+      if(submitting) { sel.value = currentTableNo; return; }
+      const previousTableNo = currentTableNo;
+      const selectedTableNo = tableNo();
+      sel.disabled = true;
+      try {
+        await notifyTableSelection('TABLE_CHANGE', previousTableNo, selectedTableNo);
+        currentTableNo = selectedTableNo;
+        renderCart();
+        scheduleCartUpdate('TABLE_CHANGE');
+      } catch(e) {
+        sel.value = String(previousTableNo);
+        renderCart(); toast(e.message);
+      } finally { sel.disabled = !ready; }
+    });
+  }
+  function renderTabs(){
+    $('tabs').innerHTML = categories.map(c=>`<button class="tab ${c===selectedCat?'active':''}" data-cat="${c}">${c}</button>`).join('');
+    document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>{selectedCat=btn.dataset.cat;renderTabs();renderMenus();}));
+  }
+  function renderMenus(){
+    $('menuGrid').innerHTML = menus.filter(m=>m.cat===selectedCat).map(m=>`
+      <article class="item">
+        <div class="photo">${m.emoji}</div>
+        <div>
+          <h3>${m.name}</h3><p class="desc">${m.desc}</p><div class="price">${money(m.price)}</div>
+          <select id="opt-${m.id}" style="width:100%;margin-top:8px;padding:8px;border:1px solid #e5e7eb;border-radius:10px;background:white">${m.options.map(o=>`<option>${o}</option>`).join('')}</select>
+          <button class="add" data-id="${m.id}">담기</button>
+        </div>
+      </article>`).join('');
+    document.querySelectorAll('.add').forEach(btn=>btn.addEventListener('click',()=>addToCart(btn.dataset.id)));
+  }
+  function addToCart(id){
+    if(!ready || submitting) return;
+    const menu = menus.find(m=>m.id===id);
+    const option = $('opt-'+id).value;
+    const key = id + '|' + option;
+    const found = cartItems.find(x=>x.key===key);
+    if(found) found.qty += 1; else cartItems.push({key, id:menu.id, name:menu.name, price:menu.price, option, qty:1});
+    renderCart(); toast(menu.name + ' 담기 완료');
+    scheduleCartUpdate('MENU_ADD');
+  }
+  function changeQty(key, delta){
+    if(!ready || submitting) return;
+    const item = cartItems.find(x=>x.key===key); if(!item) return;
+    item.qty += delta; if(item.qty<=0) cartItems = cartItems.filter(x=>x.key!==key); renderCart();
+    scheduleCartUpdate(delta < 0 ? 'QTY_DECREASE' : 'QTY_INCREASE');
+  }
+  function renderCart(){
+    $('cartTableLabel').textContent = 'T-' + tableNo(); $('cartPeopleLabel').textContent = people + '명';
+    if(cartItems.length===0){ $('cartList').innerHTML='<div class="empty">아직 담긴 메뉴가 없습니다.<br>메뉴의 <b>담기</b> 버튼을 눌러주세요.</div>'; }
+    else{
+      $('cartList').innerHTML = cartItems.map(x=>`
+        <div class="cart-item">
+          <div class="cart-item-top"><div><h4>${x.name}</h4><div class="option">옵션: ${x.option}</div></div><strong>${money(x.price*x.qty)}</strong></div>
+          <div class="qty"><div class="qty-controls"><button data-key="${x.key}" data-d="-1">−</button><strong>${x.qty}</strong><button data-key="${x.key}" data-d="1">＋</button></div><button class="remove" data-key="${x.key}" data-d="-999">삭제</button></div>
+        </div>`).join('');
+      document.querySelectorAll('.qty button').forEach(b=>b.addEventListener('click',()=>changeQty(b.dataset.key, Number(b.dataset.d))));
+    }
+    const total = cartItems.reduce((sum,x)=>sum+x.price*x.qty,0);
+    $('subTotal').textContent = money(total); $('totalPrice').textContent = money(total); $('finalOrder').disabled = !ready || submitting || total<=0;
+  }
+  function buildEmptyTableRequestPayload(){
+    return {
+      eventType:'EMPTY_TABLE_REQUEST',
+      reason:'PAGE_LOAD',
+      storeName:STORE_NAME,
+      orderSessionId:getOrderSessionId() || undefined,
+      previousTableNo:null,
+      currentTableNo:null,
+      peopleCount:people,
+      eventTime:new Date().toISOString(),
+      requestedState:'ORDERING',
+      source:'VTNode Excel WAS TableOrder Demo'
+    };
+  }
+
+  function readTableNoFromAssignResponse(json){
+    if(!json || typeof json !== 'object') return null;
+
+    if(json.result && json.result !== 'OK'){
+      toast(json.message || '빈 테이블 배정에 실패했습니다.');
+      return null;
+    }
+
+    return json.tableNo || json.currentTableNo || json.emptyTableNo || json.assignedTableNo || null;
+  }
+
+  async function requestEmptyTableNo(){
+    const json = await postJson('/order/table/assign', buildEmptyTableRequestPayload());
+    const table = readTableNoFromAssignResponse(json);
+    if(!table) throw new Error('사용 가능한 테이블이 없습니다.');
+    return String(table);
+  }
+  async function bootPage(){
+    ready = false;
+    $('tableNo').disabled = true; $('callStaff').disabled = true; renderCart();
+    try {
+      const assignedTableNo = await requestEmptyTableNo();
+      setSelectedTableNo(assignedTableNo);
+      await notifyTableSelection('PAGE_LOAD', null, assignedTableNo);
+      ready = true;
+      $('tableNo').disabled = false; $('callStaff').disabled = false;
+      $('orderIdBadge').textContent = 'T-' + assignedTableNo + ' 연결';
+    } catch(e) { toast(e.message); $('orderIdBadge').textContent = '접속 실패 · 새로고침'; }
+    renderCart();
+  }
+  function buildTableSelectionPayload(reason, previousTableNo, selectedTableNo){
+    return {
+      eventType:'TABLE_SELECT',
+      reason:reason || 'TABLE_SELECT',
+      storeName:STORE_NAME,
+      orderSessionId:getOrderSessionId() || undefined,
+      previousTableNo:previousTableNo ? Number(previousTableNo) : null,
+      currentTableNo:Number(selectedTableNo),
+      tableNo:Number(selectedTableNo),
+      peopleCount:people,
+      eventTime:new Date().toISOString(),
+      tableState:'ORDERING',
+      source:'VTNode Excel WAS TableOrder Demo'
+    };
+  }
+
+  async function notifyTableSelection(reason, previousTableNo, selectedTableNo){
+    return await postJson('/order/table/select', buildTableSelectionPayload(reason, previousTableNo, selectedTableNo));
+  }
+  function buildPayload(type){
+    const orderId = makeOrderId();
+    const total = cartItems.reduce((sum,x)=>sum+x.price*x.qty,0);
+    return {
+      eventType:type || 'ORDER_REPORT',
+      orderId,
+      storeName:STORE_NAME,
+      orderSessionId:getOrderSessionId() || undefined,
+      tableNo:Number(tableNo()),
+      peopleCount:people,
+      orderTime:new Date().toISOString(),
+      currency:'KRW',
+      totalAmount:total,
+      items:cartItems.map(x=>({menuId:x.id, menuName:x.name, option:x.option, qty:x.qty, unitPrice:x.price, amount:x.price*x.qty})),
+      source:'VTNode Excel WAS TableOrder Demo'
+    };
+  }
+  function buildCartUpdatePayload(reason){
+    const total = cartItems.reduce((sum,x)=>sum+x.price*x.qty,0);
+    const itemCount = cartItems.reduce((sum,x)=>sum+x.qty,0);
+
+    return {
+      eventType:'CART_UPDATE',
+      reason:reason || 'CART_UPDATE',
+      storeName:STORE_NAME,
+      orderSessionId:getOrderSessionId() || undefined,
+      tableNo:Number(tableNo()),
+      peopleCount:people,
+      eventTime:new Date().toISOString(),
+      currency:'KRW',
+      itemCount,
+      totalAmount:total,
+      items:cartItems.map(x=>({
+        menuId:x.id,
+        menuName:x.name,
+        option:x.option,
+        qty:x.qty,
+        unitPrice:x.price,
+        amount:x.price*x.qty
+      })),
+      tableState:'ORDERING',
+      source:'VTNode Excel WAS TableOrder Demo'
+    };
+  }
+
+  function scheduleCartUpdate(reason){
+    pendingOrder = null; if(!ready || submitting) return;
+    // 장바구니가 0개가 되어도 서버에 CART_UPDATE를 전송해야 한다.
+    // 그래야 서버의 테이블 금액/주문수도 0으로 동기화된다.
+    if(cartNotifyTimer) clearTimeout(cartNotifyTimer);
+    cartNotifyTimer = setTimeout(()=>notifyCartUpdate(reason), 300);
+  }
+
+  async function notifyCartUpdate(reason){
+    const payload = buildCartUpdatePayload(reason);
+    lastPayload = payload;
+    $('orderIdBadge').textContent = '주문중 T-' + payload.tableNo;
+
+    try{
+      await postJson('/order/cart/update', payload);
+    }
+    catch(e){
+      console.warn(e);
+    }
+  }
+
+  function postJson(url, payload){
+    const run = async () => {
+      const controller = new AbortController();
+      const timer = setTimeout(()=>controller.abort(),15000);
+      let res, json;
+      try {
+        res = await fetch(url,{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json; charset=utf-8','Accept':'application/json'},body:JSON.stringify(payload),signal:controller.signal});
+        json = await res.json();
+      } finally { clearTimeout(timer); }
+      if(handleSessionTimeout(json)) throw new Error('세션이 종료되었습니다. 페이지를 새로 열어주세요.');
+      if(!res.ok || json.result !== 'OK') throw new Error(json.message || ('HTTP ' + res.status));
+      applySessionFromServer(json);
+      return json;
+    };
+    const result = apiQueue.then(run,run);
+    apiQueue = result.catch(()=>{});
+    return result;
+  }
+  async function submitOrder(){
+    if(!ready || submitting || cartItems.length === 0) return;
+    clearTimeout(cartNotifyTimer);
+    const payload = pendingOrder || buildPayload('ORDER_REPORT');
+    pendingOrder = payload; lastPayload = payload; submitting = true; renderCart();
+    try {
+      await postJson('/order/submit', payload);
+      $('completeText').textContent = payload.tableNo + '번 테이블 · 주문번호 ' + payload.orderId + ' · 총 ' + money(payload.totalAmount) + ' 주문이 접수되었습니다.';
+      $('completeModal').classList.add('show');
+      $('orderIdBadge').textContent = '주문 접수 완료';
+      cartItems = []; pendingOrder = null;
+    } catch(e) { console.warn(e); toast('주문 실패: ' + e.message); }
+    finally { submitting = false; renderCart(); }
+  }
+  async function callStaff(){
+    if(!ready) return;
+    $('callStaff').disabled = true;
+    const now = new Date();
+    const payload = {eventType:'STAFF_CALL',orderSessionId:getOrderSessionId(),tableNo:Number(tableNo()),peopleCount:people,callTime:now.toISOString()};
+    try {
+      await postJson('/order/call',payload);
+      $('callTableText').textContent = payload.tableNo + '번 테이블';
+      $('callPeopleText').textContent = people + '명';
+      $('callTimeText').textContent = formatLocalTimeWithMs(now);
+      $('callIsoText').textContent = payload.callTime;
+      $('callModal').classList.add('show');
+    } catch(e) { toast('직원 호출 실패: ' + e.message); }
+    finally { $('callStaff').disabled = !ready; }
+  }
+  $('peopleMinus').addEventListener('click',()=>{if(submitting || !ready) return; people=Math.max(1,people-1);$('peopleCount').textContent=people;renderCart();scheduleCartUpdate('PEOPLE_CHANGE');});
+  $('peoplePlus').addEventListener('click',()=>{if(submitting || !ready) return; people=Math.min(20,people+1);$('peopleCount').textContent=people;renderCart();scheduleCartUpdate('PEOPLE_CHANGE');});
+  $('finalOrder').addEventListener('click',submitOrder);
+  $('callStaff').addEventListener('click',callStaff);
+  $('showPayload').addEventListener('click',()=>{ const p = lastPayload || buildPayload('ORDER_REPORT_PREVIEW'); alert(JSON.stringify(p,null,2)); });
+  $('closeModal').addEventListener('click',()=>$('completeModal').classList.remove('show'));
+  $('closeCallModal').addEventListener('click',()=>$('callModal').classList.remove('show'));
+  $('newOrder').textContent = '추가 주문';
+  $('newOrder').addEventListener('click',()=>{
+    $('completeModal').classList.remove('show');
+    if(!ready) bootPage();
+  });
+  initTables(); renderTabs(); renderMenus(); renderCart();
+  bootPage();
+})();
+</script>
+</body>
+</html>

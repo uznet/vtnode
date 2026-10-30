@@ -1,0 +1,6 @@
+VTNode Runtime은 웹의 세계와 Excel의 세계를 연결하는 실행 엔진입니다.
+
+웹에서는 브라우저, 스마트폰, 다른 프로그램이 HTTP Request를 보냅니다. VTNode Runtime은 이 요청을 수신하고 Excel에 전달한 뒤 처리 결과를 다시 응답합니다. Excel에서는 VBA와 Sheet, 수식과 업무 규칙이 실제 작업을 담당합니다.
+
+즉, VTNode가 두 환경 사이의 연결과 실행을 맡습니다.
+

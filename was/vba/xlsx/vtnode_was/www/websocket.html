@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VTNode WebSocket Demo</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --navy: #142342;
+      --blue: #2e67e8;
+      --green: #14a84f;
+      --red: #e5252a;
+      --ink: #142342;
+      --muted: #52647e;
+      --line: #dce4ef;
+      --surface: #ffffff;
+      --canvas: #f3f6fa;
+      --input: #fbfcfe;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      background: var(--canvas);
+      color: var(--ink);
+    }
+
+    button, input, textarea { font: inherit; }
+
+    .page {
+      width: min(960px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: clamp(28px, 6vw, 64px) 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 22px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      color: var(--navy);
+      font-size: clamp(24px, 4vw, 38px);
+      letter-spacing: -0.04em;
+    }
+
+    .brand p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .eyebrow {
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .panel {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--surface);
+      box-shadow: 0 18px 55px rgba(20, 35, 66, 0.09);
+    }
+
+    .connection {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 16px;
+      padding: 22px;
+      border-bottom: 1px solid var(--line);
+      background: #f8faff;
+    }
+
+    .field label,
+    .section-label {
+      display: block;
+      margin-bottom: 8px;
+      color: #40516d;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    input, textarea {
+      width: 100%;
+      border: 1px solid #cfd9e7;
+      border-radius: 10px;
+      outline: none;
+      background: var(--input);
+      color: var(--ink);
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    input {
+      height: 46px;
+      padding: 0 14px;
+      font-size: 16px;
+      font-weight: 650;
+    }
+
+    textarea {
+      min-height: 170px;
+      padding: 14px;
+      resize: vertical;
+      line-height: 1.55;
+      font-size: 16px;
+      font-weight: 550;
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(46, 103, 232, 0.13);
+    }
+
+    .controls {
+      display: flex;
+      align-items: end;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      min-height: 46px;
+      padding: 0 18px;
+      border: 0;
+      border-radius: 10px;
+      color: #fff;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 120ms ease, opacity 120ms ease;
+    }
+
+    button:hover:not(:disabled) { transform: translateY(-1px); }
+    button:active:not(:disabled) { transform: translateY(0); }
+    button:disabled { cursor: not-allowed; opacity: 0.38; }
+    .connect { background: var(--green); }
+    .disconnect { background: var(--red); }
+    .send { min-width: 112px; background: var(--blue); }
+
+    .status {
+      display: inline-flex;
+      min-height: 46px;
+      align-items: center;
+      gap: 8px;
+      padding: 0 13px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .status::before {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #98a5b7;
+      content: "";
+    }
+
+    .status[data-state="connected"] { color: #087e37; }
+    .status[data-state="connected"]::before { background: var(--green); }
+    .status[data-state="connecting"] { color: #a66b00; }
+    .status[data-state="connecting"]::before { background: #f2a900; }
+    .status[data-state="error"] { color: #b51e22; }
+    .status[data-state="error"]::before { background: var(--red); }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .message-section { padding: 22px; }
+    .message-section + .message-section { border-left: 1px solid var(--line); }
+
+    .receive-box {
+      min-height: 244px;
+      color: #142342;
+      font-family: "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.7;
+    }
+
+    .composer {
+      display: flex;
+      flex-direction: column;
+      min-height: 244px;
+      gap: 12px;
+    }
+
+    .composer textarea { flex: 1; min-height: 168px; }
+
+    .composer-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .hint { color: var(--muted); font-size: 13px; font-weight: 600; }
+    .error { min-height: 20px; margin: 12px 22px 0; color: #a71116; font-size: 14px; font-weight: 650; }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #718198;
+      opacity: 1;
+      font-weight: 500;
+    }
+
+    @media (max-width: 760px) {
+      .page { width: min(100% - 20px, 620px); padding: 10px 0; }
+      .brand { align-items: flex-start; margin-bottom: 12px; }
+      .brand h1 { font-size: 24px; }
+      .brand p { margin-top: 4px; font-size: 12px; line-height: 1.4; }
+      .eyebrow { font-size: 11px; }
+      .connection { grid-template-columns: 1fr; gap: 10px; padding: 12px; }
+      .field label, .section-label { margin-bottom: 5px; font-size: 11px; }
+      input { height: 40px; padding: 0 10px; }
+      .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+      button { min-height: 40px; padding: 0 12px; }
+      .status { grid-column: 1 / -1; min-height: 26px; justify-content: center; font-size: 11px; }
+      .workspace { grid-template-columns: 1fr; }
+      .message-section { padding: 12px; }
+      .message-section + .message-section {
+        border-top: 1px solid var(--line);
+        border-left: 0;
+      }
+      .receive-box, .composer textarea {
+        display: block;
+        height: clamp(64px, 12vh, 112px);
+        height: clamp(64px, 12svh, 112px);
+        min-height: 64px;
+        padding: 10px;
+        line-height: 1.4;
+        overflow-y: auto;
+      }
+      .composer { min-height: 0; gap: 8px; }
+      .composer textarea { flex: none; }
+      .composer-footer { gap: 8px; }
+      .hint { font-size: 11px; }
+      .send { min-width: 90px; }
+      .error { margin: 8px 12px 0; min-height: 0; font-size: 12px; }
+      .error:empty { display: none; }
+    }
+
+    @media (max-width: 460px) {
+      .brand { display: block; }
+      .panel { border-radius: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="brand">
+      <div>
+        <div class="eyebrow">VTNode · Browser Client</div>
+        <h1>WebSocket Demo</h1>
+        <p>Connect to Excel, receive live messages, and send a reply.</p>
+      </div>
+    </header>
+
+    <section class="panel" aria-label="WebSocket client">
+      <div class="connection">
+        <div class="field">
+          <label for="websocket-url">WebSocket URL</label>
+          <input id="websocket-url" type="url" value="ws://192.168.0.4:12345/events"
+            autocomplete="off" spellcheck="false">
+        </div>
+
+        <div class="controls">
+          <button id="connect" class="connect" type="button">CONNECT</button>
+          <button id="disconnect" class="disconnect" type="button" disabled>DISCONNECT</button>
+          <span id="status" class="status" data-state="disconnected" role="status"
+            aria-live="polite">Disconnected</span>
+        </div>
+      </div>
+
+      <p id="error" class="error" role="alert"></p>
+
+      <div class="workspace">
+        <section class="message-section">
+          <label class="section-label" for="received-message">Received messages</label>
+          <textarea id="received-message" class="receive-box" readonly
+            placeholder="Messages from Excel will appear here."></textarea>
+        </section>
+
+        <section class="message-section">
+          <label class="section-label" for="send-message">Send message</label>
+          <div class="composer">
+            <textarea id="send-message" placeholder="Type a message to Excel…" disabled></textarea>
+            <div class="composer-footer">
+              <span class="hint">Ctrl + Enter to send</span>
+              <button id="send" class="send" type="button" disabled>SEND</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    "use strict";
+
+    const elements = {
+      url: document.querySelector("#websocket-url"),
+      connect: document.querySelector("#connect"),
+      disconnect: document.querySelector("#disconnect"),
+      status: document.querySelector("#status"),
+      error: document.querySelector("#error"),
+      received: document.querySelector("#received-message"),
+      message: document.querySelector("#send-message"),
+      send: document.querySelector("#send")
+    };
+
+    let websocket = null;
+
+    function setStatus(state, label) {
+      elements.status.dataset.state = state;
+      elements.status.textContent = label;
+    }
+
+    function setConnected(connected) {
+      elements.url.disabled = connected;
+      elements.connect.disabled = connected;
+      elements.disconnect.disabled = !connected;
+      elements.message.disabled = !connected;
+      elements.send.disabled = !connected || elements.message.value.trim() === "";
+    }
+
+    function showError(message = "") {
+      elements.error.textContent = message;
+    }
+
+    function appendReceived(message) {
+      const timestamp = new Date().toLocaleTimeString();
+      const prefix = elements.received.value ? "\n" : "";
+      elements.received.value += `${prefix}[${timestamp}] ${message}`;
+      elements.received.scrollTop = elements.received.scrollHeight;
+    }
+
+    function connect() {
+      const url = elements.url.value.trim();
+      showError();
+
+      if (!/^wss?:\/\//i.test(url)) {
+        showError("Enter a valid ws:// or wss:// URL.");
+        elements.url.focus();
+        return;
+      }
+
+      if (websocket && websocket.readyState < WebSocket.CLOSING) return;
+
+      setStatus("connecting", "Connecting");
+      elements.connect.disabled = true;
+
+      try {
+        websocket = new WebSocket(url);
+      } catch (error) {
+        setStatus("error", "Connection error");
+        setConnected(false);
+        showError(error.message);
+        return;
+      }
+
+      websocket.addEventListener("open", () => {
+        setStatus("connected", "Connected");
+        setConnected(true);
+        showError();
+        elements.message.focus();
+      });
+
+      websocket.addEventListener("message", (event) => {
+        if (typeof event.data === "string") {
+          appendReceived(event.data);
+        } else {
+          appendReceived(`[Binary message: ${event.data.size ?? "unknown"} bytes]`);
+        }
+      });
+
+      websocket.addEventListener("error", () => {
+        setStatus("error", "Connection error");
+        showError("The WebSocket connection failed.");
+      });
+
+      websocket.addEventListener("close", (event) => {
+        const detail = event.reason ? ` — ${event.reason}` : "";
+        setStatus("disconnected", "Disconnected");
+        setConnected(false);
+        websocket = null;
+        if (!event.wasClean) showError(`Connection closed unexpectedly${detail}.`);
+      });
+    }
+
+    function disconnect() {
+      showError();
+      if (websocket) websocket.close(1000, "Disconnected by user");
+    }
+
+    function sendMessage() {
+      const message = elements.message.value;
+      showError();
+
+      if (!websocket || websocket.readyState !== WebSocket.OPEN) {
+        showError("Connect to the WebSocket server before sending.");
+        return;
+      }
+
+      if (message.trim() === "") return;
+
+      websocket.send(message);
+      elements.message.value = "";
+      elements.send.disabled = true;
+      elements.message.focus();
+    }
+
+    elements.connect.addEventListener("click", connect);
+    elements.disconnect.addEventListener("click", disconnect);
+    elements.send.addEventListener("click", sendMessage);
+    elements.message.addEventListener("input", () => {
+      elements.send.disabled = !websocket ||
+        websocket.readyState !== WebSocket.OPEN ||
+        elements.message.value.trim() === "";
+    });
+    elements.message.addEventListener("keydown", (event) => {
+      if (event.ctrlKey && event.key === "Enter") sendMessage();
+    });
+    window.addEventListener("beforeunload", () => {
+      if (websocket && websocket.readyState === WebSocket.OPEN) {
+        websocket.close(1000, "Page closed");
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="VTNode WAS 기본 시작 페이지">
+  <title>VTNode WAS</title>
+  <style>
+    :root {
+      --navy: #142a4d;
+      --blue: #159fda;
+      --blue-dark: #087eb8;
+      --line: #d3deeb;
+      --muted: #637188;
+      --soft: #f2f6fb;
+      --white: #fff;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { min-height: 100%; }
+
+    body {
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 32px 20px;
+      color: var(--navy);
+      background:
+        linear-gradient(135deg, rgba(21,159,218,.08) 0 25%, transparent 25% 100%),
+        var(--soft);
+      font-family: Arial, "Malgun Gothic", sans-serif;
+    }
+
+    .shell {
+      width: min(900px, 100%);
+      overflow: hidden;
+      border: 1px solid #becddd;
+      background: var(--white);
+      box-shadow: 0 18px 55px rgba(20, 42, 77, .18);
+    }
+
+    .topbar {
+      height: 12px;
+      background: linear-gradient(90deg, var(--navy) 0 64%, var(--blue) 64% 100%);
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: 230px 1fr;
+      min-height: 430px;
+    }
+
+    .brand-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 34px 28px;
+      color: var(--white);
+      background: var(--navy);
+    }
+
+    .brand {
+      font-size: 23px;
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -.03em;
+    }
+
+    .brand span {
+      display: block;
+      margin-top: 6px;
+      color: #8fd9f8;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .08em;
+    }
+
+    .runtime-mark {
+      width: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .runtime-mark img {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .brand-note {
+      color: #aebdd2;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .main {
+      padding: 48px 52px 42px;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #16794b;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .03em;
+    }
+
+    .status::before {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #24a866;
+      box-shadow: 0 0 0 4px #e1f5ea;
+      content: "";
+    }
+
+    h1 {
+      margin: 22px 0 10px;
+      color: var(--navy);
+      font-size: clamp(32px, 6vw, 48px);
+      line-height: 1.1;
+      letter-spacing: -.045em;
+    }
+
+    .lead {
+      margin: 0;
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    .info {
+      margin: 34px 0;
+      padding: 20px 22px;
+      border-left: 4px solid var(--blue);
+      background: #f5faff;
+      color: #41516a;
+      font-size: 14px;
+    }
+
+    .info strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--navy);
+      font-size: 15px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .button {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 18px;
+      border: 1px solid var(--line);
+      color: var(--navy);
+      background: var(--white);
+      font-size: 14px;
+      font-weight: 800;
+      text-decoration: none;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+
+    .button.primary {
+      border-color: var(--blue);
+      color: var(--white);
+      background: var(--blue);
+    }
+
+    .button:hover,
+    .button:focus-visible {
+      border-color: var(--blue-dark);
+      transform: translateY(-2px);
+    }
+
+    .button.primary:hover,
+    .button.primary:focus-visible { background: var(--blue-dark); }
+
+    footer {
+      padding: 13px 22px;
+      border-top: 1px solid var(--line);
+      color: #7b8798;
+      background: #f8fafc;
+      font-size: 12px;
+      text-align: right;
+    }
+
+    @media (max-width: 680px) {
+      body { padding: 0; background: var(--white); }
+      .shell { min-height: 100svh; border: 0; box-shadow: none; }
+      .content { grid-template-columns: 1fr; }
+      .brand-panel {
+        min-height: 116px;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        padding: 24px 22px;
+      }
+      .runtime-mark { width: 76px; }
+      .brand-note { display: none; }
+      .main { padding: 38px 22px 34px; }
+      .actions { display: grid; }
+      .button { width: 100%; min-height: 50px; }
+      footer { text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="topbar"></div>
+    <div class="content">
+      <aside class="brand-panel">
+        <div class="brand">
+          VTNode WAS
+          <span>FOR EXCEL</span>
+        </div>
+        <div class="runtime-mark">
+          <img src="images/vt3.png" alt="VTNode">
+        </div>
+        <div class="brand-note">HTTP · WebSocket<br>URI Routing · VBA Apps</div>
+      </aside>
+
+      <section class="main">
+        <div class="status">SERVER IS RUNNING</div>
+        <h1>Welcome</h1>
+        <p class="lead">VTNode WAS is ready to receive requests.</p>
+
+        <div class="info">
+          <strong>This is the default VTNode WAS page.</strong>
+          Excel is providing this page through the VTNode HTTP runtime.
+          Add your own HTML and connect URI routes to Excel VBA applications.
+        </div>
+
+        <nav class="actions" aria-label="VTNode WAS 시작 링크">
+          <a class="button primary" href="what-is-vtnode-was.html">What is VTNode WAS?</a>
+          <a class="button" href="intro/index.html">자세히 알아보기</a>
+        </nav>
+      </section>
+    </div>
+    <footer>VTNode WAS · Default Document</footer>
+  </main>
+</body>
+</html>
