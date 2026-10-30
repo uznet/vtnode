@@ -1,5 +1,17 @@
 # VTNode WAS for XLSX (VBA)
 
+## Direct VBA import and build
+
+The agreed layout is `was/vba/common/src` (Office shared VBA), `was/vba/common/xlsx` (Excel only), `was/vba/common/pptx` (PowerPoint only), and `was/vba/xlsx/` (Excel apps/examples). An application's `src/` holds app-specific code; it does not replace the shared sources.
+
+1. Back up the target file. Save the Excel UI `.xlsx` as `.xlsm`; use `.pptm` for PowerPoint or `.docm` for Word to retain VBA.
+2. Open the target file's VBA editor. Use **File > Import File** to import the required `.bas` and `.cls` files and their dependencies from [common/src](https://github.com/uznet/vtnode/tree/main/was/vba/common/src/) directly into that file's VBA project.
+3. Add host-specific sources from [common/xlsx](https://github.com/uznet/vtnode/tree/main/was/vba/common/xlsx/) for Excel or [common/pptx](https://github.com/uznet/vtnode/tree/main/was/vba/common/pptx/) for PowerPoint. Keep Excel-only code out of other Office projects. For Word, use Office shared sources and implement and verify the required host integration separately.
+4. Import app-specific sources from the application's `src/`. Back up and replace components with matching names to avoid duplicates. Keep each UserForm's `.frm` and `.frx` together and import the `.frm`. Apply `ThisWorkbook`, worksheet, or document event code to the appropriate document modules.
+5. Do not open or reference an external runtime workbook. Remove any existing external runtime workbook project reference under **Tools > References**, then check required library references. Check that UI and macro bindings call procedures inside the target file.
+6. Run **Debug > Compile VBAProject** and save. Prepare the native VTNode Runtime with the same bitness as Office. Preserve the relative placement of `www`, `audio`, and configuration files, then verify start/stop, HTTP/WebSocket, and Runtime UI behavior. Classification as Office shared source does not establish tested compatibility with every Office host.
+
+
 > **Enable web service with VBA.**
 
 VTNode WAS for XLSX (VBA)는 Microsoft Excel/VBA를  
@@ -99,31 +111,15 @@ Response
 # Repository Structure
 
 ```text
-vtnode/
-└─ was/
-   └─ xlsx/
-      │
-      ├─ vtnode_hello/
-      │  ├─ vtnode_hello.xlsm
-      │  ├─ src/
-      │  ├─ audio/
-      │  └─ www/
-      │
-      ├─ vtnode_build_myapp/
-      │  ├─ vtnode_ui_only.xlsx
-      │  ├─ src/
-      │  ├─ audio/
-      │  └─ www/
-      │
-      ├─ vtnode_was/
-      │  ├─ vtnode_was.xlsm
-      │  ├─ src/
-      │  ├─ audio/
-      │  └─ www/
-      │
-      └─ vtnode_vba_rt64/
-         ├─ vtnode_vba_rt64.xlsm
-         └─ src/
+was/vba/
+├─ common/
+│  ├─ src/    # Office shared VBA
+│  ├─ xlsx/   # Excel only
+│  └─ pptx/   # PowerPoint only
+└─ xlsx/
+   ├─ vtnode_hello/
+   ├─ vtnode_build_myapp/
+   └─ vtnode_was/
 ```
 
 각 Folder는 서로 다른 목적을 가지고 있습니다.
@@ -133,7 +129,6 @@ vtnode/
 | [`vtnode_hello`](./vtnode_hello/) | 가장 작은 Quick Start Example | `vtnode_hello.xlsm` |
 | [`vtnode_build_myapp`](./vtnode_build_myapp/) | 제공된 구성요소를 직접 조립하는 Hands-on Project | `vtnode_ui_only.xlsx` |
 | [`vtnode_was`](./vtnode_was/) | Applications + Runtime + Live Monitor | `vtnode_was.xlsm` |
-| [`vtnode_vba_rt64`](./vtnode_vba_rt64/) | 공통 64-bit VBA Runtime | `vtnode_vba_rt64.xlsm` |
 
 ---
 
@@ -356,45 +351,11 @@ VTNode WAS의 Network Activity를 볼 수 있는 **Live Monitor** 역할도 합�
 
 ---
 
-# 4. VTNode VBA Runtime 64
+# 4. 공통 VBA 소스
 
-[`vtnode_vba_rt64`](./vtnode_vba_rt64/)는  
-VTNode WAS for XLSX Application에서 공통으로 사용하는  
-64-bit Excel/VBA Runtime입니다.
+`was/vba/common/src`의 Office 공통 VBA와 `was/vba/common/xlsx`의 Excel 전용 소스를 각 응용 Workbook에 직접 Import합니다. PowerPoint 전용 소스는 `was/vba/common/pptx`에서 관리합니다.
 
-Application Example이 아니라  
-Excel Application과 Native VTNode Runtime 사이의 공통 Runtime Layer입니다.
-
-```text
-Excel Application
-        │
-        ▼
-vtnode_vba_rt64
-        │
-        ▼
-VTNode Runtime
-        │
-        ▼
-HTTP / WebSocket
-```
-
-여러 Application에서 공통으로 사용할 수 있습니다.
-
-```text
-                   vtnode_vba_rt64
-                          │
-             ┌────────────┼────────────┐
-             │            │            │
-             ▼            ▼            ▼
-      vtnode_hello   vtnode_myapp   vtnode_was
-```
-
-처음 사용하는 경우 `vtnode_vba_rt64`부터 분석할 필요는 없습니다.
-
-`vtnode_hello` → `vtnode_build_myapp` → `vtnode_was`를 먼저 경험한 뒤  
-Runtime 구조가 필요할 때 살펴보는 것을 권장합니다.
-
-### [Open vtnode_vba_rt64](./vtnode_vba_rt64/)
+[공통 VBA 소스](https://github.com/uznet/vtnode/tree/main/was/vba/common)
 
 ---
 
@@ -420,7 +381,7 @@ HTML / CSS / JS
 VBA RUNTIME
 ─────────────────────
 
-vtnode_vba_rt64
+Imported common VBA sources
 
 
           │
@@ -670,7 +631,7 @@ vtnode.io
 
 # Quick Links
 
-### [Download Runtime](https://vtnode.io/download/runtime) | [Hello](./vtnode_hello/) | [Build My App](./vtnode_build_myapp/) | [Main Demo](./vtnode_was/) | [VBA Runtime](./vtnode_vba_rt64/) | [User Manual](https://vtnode.io/docs/was-xlsx/manual)
+### [Download Runtime](https://vtnode.io/download/runtime) | [Hello](./vtnode_hello/) | [Build My App](./vtnode_build_myapp/) | [Main Demo](./vtnode_was/) | [Common VBA sources](https://github.com/uznet/vtnode/tree/main/was/vba/common) | [User Manual](https://vtnode.io/docs/was-xlsx/manual)
 
 ---
 

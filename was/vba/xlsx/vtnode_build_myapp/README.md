@@ -1,6 +1,20 @@
 [English](README.md) | [한글](README.ko.md)
 
+[VBA project](https://github.com/uznet/vtnode/tree/main/was/vba) | [Current directory](https://github.com/uznet/vtnode/tree/main/was/vba/xlsx/vtnode_build_myapp)
+
 # VTNode Build My App
+
+## Direct VBA import and build
+
+The agreed layout is `was/vba/common/src` (Office shared VBA), `was/vba/common/xlsx` (Excel only), `was/vba/common/pptx` (PowerPoint only), and `was/vba/xlsx/` (Excel apps/examples). An application's `src/` holds app-specific code; it does not replace the shared sources.
+
+1. Back up the target file. Save the Excel UI `.xlsx` as `.xlsm`; use `.pptm` for PowerPoint or `.docm` for Word to retain VBA.
+2. Open the target file's VBA editor. Use **File > Import File** to import the required `.bas` and `.cls` files and their dependencies from [common/src](../../common/src/) directly into that file's VBA project.
+3. Add host-specific sources from [common/xlsx](../../common/xlsx/) for Excel or [common/pptx](../../common/pptx/) for PowerPoint. Keep Excel-only code out of other Office projects. For Word, use Office shared sources and implement and verify the required host integration separately.
+4. Import app-specific sources from the application's `src/`. Back up and replace components with matching names to avoid duplicates. Keep each UserForm's `.frm` and `.frx` together and import the `.frm`. Apply `ThisWorkbook`, worksheet, or document event code to the appropriate document modules.
+5. Do not open or reference an external runtime workbook. Remove any existing external runtime workbook project reference under **Tools > References**, then check required library references. Check that UI and macro bindings call procedures inside the target file.
+6. Run **Debug > Compile VBAProject** and save. Prepare the native VTNode Runtime with the same bitness as Office. Preserve the relative placement of `www`, `audio`, and configuration files, then verify start/stop, HTTP/WebSocket, and Runtime UI behavior. Classification as Office shared source does not establish tested compatibility with every Office host.
+
 
 > **Run it first. Then build it yourself.**
 
@@ -333,16 +347,16 @@ Step-by-step instructions for going from `vtnode_ui_only.xlsx`
 to `vtnode_myapp.xlsm` are planned for the separate
 **VTNode WAS for XLSX Build Manual**.
 
-### [Download Build Manual](https://github.com/uznet/vtnode/blob/main/docs/quick-start/MYAPP_BUILD_GUIDE.en.md)
+### [Download Build Manual](https://github.com/uznet/vtnode/blob/main/was/vba/documents/MYAPP_BUILD_GUIDE.en.md)
 
-[한글](https://github.com/uznet/vtnode/blob/main/docs/quick-start/MYAPP_BUILD_GUIDE.ko.md) | [English](https://github.com/uznet/vtnode/blob/main/docs/quick-start/MYAPP_BUILD_GUID.en.md)
+[한글](https://github.com/uznet/vtnode/blob/main/was/vba/documents/MYAPP_BUILD_GUIDE.ko.md) | [English](https://github.com/uznet/vtnode/blob/main/was/vba/documents/MYAPP_BUILD_GUIDE.en.md)
 
 ```text
 github.com/uznet/vtnode
     ↓
-docs/quick-start/
+was/vba/documents/
     ↓
-MYAPP_BUILD_GUID.en.md
+MYAPP_BUILD_GUIDE.en.md
 ```
 
 The manual is being prepared. It will walk you through the assembly process
@@ -361,7 +375,7 @@ Explore multiple applications and live HTTP / WebSocket monitoring in the
 
 # Start
 
-### [Quick Start](https://github.com/uznet/vtnode/blob/main/docs/quick-start/QUICK_START.md) | [VTNode Hello](../vtnode_hello/README.md) | [Build My App](../vtnode_build_myapp/README.md) | [Documentation](https://vtnode.io/docs/docs_login)
+### [Quick Start](https://github.com/uznet/vtnode/blob/main/was/vba/documents/QUICK_START.md) | [VTNode Hello](../vtnode_hello/README.md) | [Build My App](../vtnode_build_myapp/README.md) | [Documentation](https://vtnode.io/docs/docs_login)
 
 Run `vtnode_hello.xlsm` first.
 
@@ -383,4 +397,3 @@ Change It.
 
 **VTNode WAS for XLSX (VBA)**  
 *Enable web service with VBA.*
-
