@@ -1,0 +1,56 @@
+15/01/11.306:trace,httpa_worker_command_handler.c,26->_push_command: wid=0, cid=0, tid=0, type=2(XHTTPA_CMD_NET_ACCEPT)
+15/01/11.317:trace,httpa_worker.c,671->cmd type=XHTTPA_CMD_NET_ACCEPT 
+15/01/11.318:trace,httpa_worker_event_emitter.c,242->_emit_net_accepted: cid=1, userTag=0 
+15/01/11.318:trace,httpa_worker_event_emitter.c,21->_emit_event: wid=0, cid=1, tid=0, userTag=0, type=2(XHTTPA_ON_NET_ACCEPTED)
+15/01/11.323:trace,httpa_worker.c,542->_poll_net_conns: cid=1, new transaction created. type=2, tid=2 
+15/01/11.323:trace,httpa_hst_context.c,574->_hst_context_state_start_first_byte_timeout: cid=1, tid=2
+15/01/11.323:trace,httpa_worker_event_emitter.c,629->_emit_ht_begin: cid=1, tid=2, userTag=0 
+15/01/11.324:trace,httpa_worker_event_emitter.c,21->_emit_event: wid=0, cid=1, tid=2, userTag=0, type=8(XHTTPA_ON_HT_TRANSACTION_BEGIN)
+15/01/11.324:trace,httpa_hst_context.c,611->_hst_context_state_start_request_line: cid=1, tid=2,transactionCount=1
+15/01/11.324:trace,httpa_hst_context.c,279->_hst_conext_state_parse_request_line: cid=1, tid=2, request line='GET / HTTP/1.1
+', parseResult=TRUE
+15/01/11.324:trace,httpa_hst_context.c,318->_hst_context_state_start_request_headers: cid=1, tid=2
+15/01/11.324:trace,httpa_hst_context.c,158->_parse_on_headers_complete: cid=1, tid=2
+15/01/11.324:trace,httpa_hst_context.c,432->_hst_conext_state_parse_request_headers: cid=1, tid=2, header complete, validation decision=0,status=0,error=
+15/01/11.324:trace,httpa_worker_event_emitter.c,389->_emit_ht_request_header: cid=1, tid=2 
+15/01/11.325:trace,httpa_worker_event_emitter.c,21->_emit_event: wid=0, cid=1, tid=2, userTag=0, type=10(XHTTPA_ON_HT_REQUEST_HEADER)
+15/01/11.325:trace,httpa_worker_event_emitter.c,425->_emit_ht_request_end: cid=1, tid=2 
+15/01/11.325:trace,httpa_worker_event_emitter.c,21->_emit_event: wid=0, cid=1, tid=2, userTag=0, type=12(XHTTPA_ON_HT_REQUEST_END)
+15/01/11.325:trace,httpa_hst_context.c,551->_hst_conext_state_start_wait_response: cid=1, tid=2
+15/01/11.345:trace,httpa_worker_command_handler.c,26->_push_command: wid=0, cid=0, tid=0, type=2(XHTTPA_CMD_NET_ACCEPT)
+15/01/11.348:trace,httpa_worker.c,671->cmd type=XHTTPA_CMD_NET_ACCEPT 
+15/01/11.348:trace,httpa_worker_event_emitter.c,242->_emit_net_accepted: cid=3, userTag=0 
+15/01/11.348:trace,httpa_worker_event_emitter.c,21->_emit_event: wid=0, cid=3, tid=0, userTag=0, type=2(XHTTPA_ON_NET_ACCEPTED)
+15/01/11.348:trace,httpa_worker.c,542->_poll_net_conns: cid=3, new transaction created. type=2, tid=4 
+15/01/11.348:trace,httpa_hst_context.c,574->_hst_context_state_start_first_byte_timeout: cid=3, tid=4
+15/01/11.348:trace,httpa_worker_event_emitter.c,629->_emit_ht_begin: cid=3, tid=4, userTag=0 
+15/01/11.348:trace,httpa_worker_event_emitter.c,21->_emit_event: wid=0, cid=3, tid=4, userTag=0, type=8(XHTTPA_ON_HT_TRANSACTION_BEGIN)
+15/01/11.387:trace,httpa_worker_command_handler.c,26->_push_command: wid=0, cid=1, tid=2, type=5(XHTTPA_CMD_RESPONSE_SET_HEADERS)
+15/01/11.388:trace,httpa_worker_command_handler.c,26->_push_command: wid=0, cid=1, tid=2, type=6(XHTTPA_CMD_RESPONSE_WRITE)
+15/01/11.388:trace,httpa_worker_command_handler.c,26->_push_command: wid=0, cid=1, tid=2, type=7(XHTTPA_CMD_RESPONSE_END)
+15/01/11.410:trace,httpa_worker.c,671->cmd type=XHTTPA_CMD_RESPONSE_SET_HEADERS 
+15/01/11.410:trace,httpa_worker.c,671->cmd type=XHTTPA_CMD_RESPONSE_WRITE 
+15/01/11.410:trace,httpa_worker.c,671->cmd type=XHTTPA_CMD_RESPONSE_END 
+15/01/11.425:trace,httpa_worker_event_emitter.c,649->_emit_ht_end: cid=1, tid=2, userTag=0 
+15/01/11.425:trace,httpa_worker_event_emitter.c,21->_emit_event: wid=0, cid=1, tid=2, userTag=0, type=9(XHTTPA_ON_HT_TRANSACTION_END)
+15/01/11.425:trace,httpa_worker.c,542->_poll_net_conns: cid=1, new transaction created. type=2, tid=5 
+15/01/11.425:trace,httpa_hst_context.c,595->_hst_context_state_start_keep_alive_timeout: cid=1, tid=5
+15/01/11.425:trace,httpa_worker_event_emitter.c,629->_emit_ht_begin: cid=1, tid=5, userTag=0 
+15/01/11.426:trace,httpa_worker_event_emitter.c,21->_emit_event: wid=0, cid=1, tid=5, userTag=0, type=8(XHTTPA_ON_HT_TRANSACTION_BEGIN)
+15/01/19.707:trace,httpa_worker.c,1159->_worker_thread: WorkerId=0, Name=worker0 is stopping... 
+15/01/19.707:trace,httpa_worker.c,1161->_worker_thread: WorkerId=0, Name=worker0 all connections disconnect requested. waiting for all connections closed... 
+15/01/19.707:trace,httpa_worker_event_emitter.c,649->_emit_ht_end: cid=1, tid=5, userTag=0 
+15/01/19.707:trace,httpa_worker_event_emitter.c,21->_emit_event: wid=0, cid=1, tid=5, userTag=0, type=9(XHTTPA_ON_HT_TRANSACTION_END)
+15/01/19.707:trace,httpa_worker_event_emitter.c,217->_emit_net_disconnected: cid=1, userTag=0 
+15/01/19.707:trace,httpa_worker_event_emitter.c,21->_emit_event: wid=0, cid=1, tid=0, userTag=0, type=6(XHTTPA_ON_NET_DISCONNECTED)
+15/01/19.707:trace,httpa_connection_manager.c,262->Free connection: cid=1->000001B4DAD63068
+15/01/19.708:trace,httpa_worker_event_emitter.c,21->_emit_event: wid=0, cid=1, tid=0, userTag=0, type=1(XHTTPA_ON_DESTROYED)
+15/01/19.708:trace,httpa_worker_command_handler.c,26->_push_command: wid=0, cid=1, tid=0, type=14(XHTTPA_CMD_INJECT_USER_TIMEOUT)
+15/01/19.708:trace,httpa_worker_event_emitter.c,649->_emit_ht_end: cid=3, tid=4, userTag=0 
+15/01/19.708:trace,httpa_worker_event_emitter.c,21->_emit_event: wid=0, cid=3, tid=4, userTag=0, type=9(XHTTPA_ON_HT_TRANSACTION_END)
+15/01/19.708:trace,httpa_worker_event_emitter.c,217->_emit_net_disconnected: cid=3, userTag=0 
+15/01/19.708:trace,httpa_worker_event_emitter.c,21->_emit_event: wid=0, cid=3, tid=0, userTag=0, type=6(XHTTPA_ON_NET_DISCONNECTED)
+15/01/19.708:trace,httpa_connection_manager.c,262->Free connection: cid=3->000001B4DAD6F1F8
+15/01/19.708:trace,httpa_worker_event_emitter.c,21->_emit_event: wid=0, cid=3, tid=0, userTag=0, type=1(XHTTPA_ON_DESTROYED)
+15/01/19.708:trace,httpa_worker_command_handler.c,26->_push_command: wid=0, cid=3, tid=0, type=14(XHTTPA_CMD_INJECT_USER_TIMEOUT)
+15/01/19.708:trace,httpa_worker.c,1175->_worker_thread: WorkerId=0, Name=worker0 all connections closed. worker stopped. 

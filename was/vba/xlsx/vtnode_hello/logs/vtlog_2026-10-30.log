@@ -1,0 +1,55 @@
+2026-10-30 15:01:03 [INFO] [VtLog] [VtLogInitialize] VtLog Initialized
+2026-10-30 15:01:03 [INFO] [WasMain] [WasInit] WasInit() started. VTNODE_HOME=C:\Program Files (x86)\VTNode
+2026-10-30 15:01:03 [INFO] [WasMain] [WasInit] VtNodeInit() success
+2026-10-30 15:01:03 [INFO] [WasMain] [WasInit] VtNodeVerify() success
+2026-10-30 15:01:03 [INFO] [WasMain] [WasInit] WasInit() completed successfully
+2026-10-30 15:01:05 [INFO] [WasMain] [WasStartHttpa] ---------------------------------------------
+2026-10-30 15:01:05 [INFO] [WasMain] [WasStartHttpa] Requesting VTNode HTTPA Service start.
+2026-10-30 15:01:05 [INFO] [WasMain] [WasStartHttpa]  - Application Home : F:\vtnode\was\vba\xlsx\vtnode_hello
+2026-10-30 15:01:05 [INFO] [WasMain] [WasStartHttpa]  - VTNode Home      : C:\Program Files (x86)\VTNode
+2026-10-30 15:01:05 [INFO] [WasMain] [WasStartHttpa]  - Config File      : F:\vtnode\was\vba\xlsx\vtnode_hello\vtnode_httpa_params.ini
+2026-10-30 15:01:05 [INFO] [WasHttpaService] [RequestStart] Start requested. vtnodeHomeDir=C:\Program Files (x86)\VTNode, vbaHomeDir=F:\vtnode\was\vba\xlsx\vtnode_hello, configFile=F:\vtnode\was\vba\xlsx\vtnode_hello\vtnode_httpa_params.ini
+2026-10-30 15:01:07 [INFO] [WasHttpaService] [RequestStart] Start request accepted; event loop scheduled.
+2026-10-30 15:01:07 [INFO] [WasMain] [WasStartHttpa] HTTPA Service start request accepted. message=
+2026-10-30 15:01:07 [INFO] [WasMain] [WasStartHttpa] Httpa status=RUNNING
+2026-10-30 15:01:07 [INFO] [WasMain] [WasStartHttpa] Loop status=SCHEDULED
+2026-10-30 15:01:08 [INFO] [WasHttpaService] [TimerForBegin] TimerForBegin
+2026-10-30 15:01:08 [INFO] [WasHttpaService] [EnterHttpaLoop] Event loop initialization started.
+2026-10-30 15:01:08 [INFO] [WasHttpaService] [EnterHttpaLoop] Event loop started.
+2026-10-30 15:01:11 [INFO] [WasHttpaService] [PrintEventHeader] CID:1    | NET_ACCEPTED             | 192.168.0.4    :59153 -> 192.168.0.4    :12345
+2026-10-30 15:01:11 [INFO] [WasHttpaService] [PrintEventHeader] CID:1    | HT_TRANSACTION_BEGIN     | 192.168.0.4    :59153 -> 192.168.0.4    :12345
+2026-10-30 15:01:11 [INFO] [WasHttpaService] [PrintEventHeader] CID:1    | HT_REQUEST_COMPLETED     | 192.168.0.4    :59153 -> 192.168.0.4    :12345
+2026-10-30 15:01:11 [INFO] [WasHttpaServer] [HandleRequest] ---------------------------------------------------------------------
+2026-10-30 15:01:11 [INFO] [WasHttpaServer] [HandleRequest] >>> HTTP REQUEST:
+HTTP Request: GET / HTTP/1.1, ContentCount=1
+2026-10-30 15:01:11 [INFO] [WasHttpaServer] [HandleRequest] >>> REQUEST CONTENTS:
+Contents
+  Count: 1
+  IsAttached: False
+  HasMultipleParts: False
+
+Part[1]
+  Headers
+host: 192.168.0.4:12345
+connection: keep-alive
+upgrade-insecure-requests: 1
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36 Edg/156.0.0.0
+accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+accept-encoding: gzip, deflate
+accept-language: ko,en;q=0.9,en-US;q=0.8
+  ContentPart {IsValid=True, Type=BYTES, ContentType="", ByteLength=0}
+
+2026-10-30 15:01:11 [INFO] [WasHttpaServer] [RespondFile] Response.SendFile(F:\vtnode\was\vba\xlsx\vtnode_hello\www\default.html) -> Success
+2026-10-30 15:01:11 [INFO] [WasHttpaService] [PrintEventHeader] CID:2    | NET_ACCEPTED             | 192.168.0.4    :53190 -> 192.168.0.4    :12345
+2026-10-30 15:01:11 [INFO] [WasHttpaService] [PrintEventHeader] CID:2    | HT_TRANSACTION_BEGIN     | 192.168.0.4    :53190 -> 192.168.0.4    :12345
+2026-10-30 15:01:11 [INFO] [WasHttpaService] [PrintEventHeader] CID:1    | HT_TRANSACTION_END       | 192.168.0.4    :59153 -> 192.168.0.4    :12345
+2026-10-30 15:01:11 [INFO] [WasHttpaService] [PrintEventHeader] CID:1    | HT_TRANSACTION_BEGIN     | 192.168.0.4    :59153 -> 192.168.0.4    :12345
+2026-10-30 15:01:18 [INFO] [WasMain] [WasStopHttpa] Stop requested. serviceStatus=RUNNING, loopStatus=RUNNING
+2026-10-30 15:01:18 [INFO] [WasHttpaService] [RequestStop] Stop requested. loopStatus=RUNNING
+2026-10-30 15:01:18 [INFO] [WasHttpaService] [RequestStop] Stop request accepted.
+2026-10-30 15:01:18 [INFO] [WasMain] [WasStopHttpa] Stop request accepted. message=Stop request accepted.
+2026-10-30 15:01:18 [INFO] [WasMain] [WasStopHttpa] Current httpaStatus=RUNNING, loopStatus=STOP_REQUESTED
+2026-10-30 15:01:18 [INFO] [WasHttpaService] [EnterHttpaLoop] Event loop stopping.
+2026-10-30 15:01:18 [INFO] [WasHttpaService] [EnterHttpaLoop] Event loop stopped.
+2026-10-30 15:01:19 [INFO] [WasHttpaService] [TimerForTerminate] TimerForTerminate started.
+2026-10-30 15:01:19 [INFO] [WasHttpaService] [TimerForTerminate] HTTPA service stopped.

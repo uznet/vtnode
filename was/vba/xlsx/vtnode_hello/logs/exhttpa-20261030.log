@@ -1,0 +1,16 @@
+15/01/11.318:trace,eXHttpa_handler.c,949->'XHTTPA_ON_NET_ACCEPTED'->iid=0000000000100000, wid=0,cid=1,tid=0, uid=0
+15/01/11.324:trace,eXHttpa_handler.c,949->'XHTTPA_ON_HT_TRANSACTION_BEGIN'->iid=0000000000100002, wid=0,cid=1,tid=2, uid=0
+15/01/11.325:trace,eXHttpa_handler.c,949->'XHTTPA_ON_HT_REQUEST_HEADER'->iid=0000000000100002, wid=0,cid=1,tid=2, uid=0
+15/01/11.325:trace,eXHttpa_handler.c,949->'XHTTPA_ON_HT_REQUEST_END'->iid=0000000000100002, wid=0,cid=1,tid=2, uid=0
+15/01/11.348:trace,eXHttpa_handler.c,949->'XHTTPA_ON_NET_ACCEPTED'->iid=0000000000300000, wid=0,cid=3,tid=0, uid=0
+15/01/11.348:trace,eXHttpa_handler.c,949->'XHTTPA_ON_HT_TRANSACTION_BEGIN'->iid=0000000000300004, wid=0,cid=3,tid=4, uid=0
+15/01/11.425:trace,eXHttpa_handler.c,949->'XHTTPA_ON_HT_TRANSACTION_END'->iid=0000000000100002, wid=0,cid=1,tid=2, uid=0
+15/01/11.426:trace,eXHttpa_handler.c,949->'XHTTPA_ON_HT_TRANSACTION_BEGIN'->iid=0000000000100005, wid=0,cid=1,tid=5, uid=0
+15/01/19.707:trace,eXHttpa_handler.c,949->'XHTTPA_ON_HT_TRANSACTION_END'->iid=0000000000100005, wid=0,cid=1,tid=5, uid=0
+15/01/19.707:trace,eXHttpa_handler.c,949->'XHTTPA_ON_NET_DISCONNECTED'->iid=0000000000100000, wid=0,cid=1,tid=0, uid=0
+15/01/19.708:trace,eXHttpa_handler.c,949->'XHTTPA_ON_DESTROYED'->iid=0000000000100000, wid=0,cid=1,tid=0, uid=0
+15/01/19.708:trace,eXHttpa_handler.c,65->_inject_user_timeout: workerId=0, connectionId=1, transactionId=0, timeoutId=1, timeoutSec=5
+15/01/19.708:trace,eXHttpa_handler.c,949->'XHTTPA_ON_HT_TRANSACTION_END'->iid=0000000000300004, wid=0,cid=3,tid=4, uid=0
+15/01/19.708:trace,eXHttpa_handler.c,949->'XHTTPA_ON_NET_DISCONNECTED'->iid=0000000000300000, wid=0,cid=3,tid=0, uid=0
+15/01/19.708:trace,eXHttpa_handler.c,949->'XHTTPA_ON_DESTROYED'->iid=0000000000300000, wid=0,cid=3,tid=0, uid=0
+15/01/19.708:trace,eXHttpa_handler.c,65->_inject_user_timeout: workerId=0, connectionId=3, transactionId=0, timeoutId=2, timeoutSec=5
