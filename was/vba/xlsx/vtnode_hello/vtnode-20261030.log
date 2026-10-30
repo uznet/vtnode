@@ -1,6 +1,0 @@
-15/01/05.575:trace,vtnode_log.c,26->Log initialized successfully in directory: F:/vtnode/was/vba/xlsx/vtnode_hello
-15/01/05.576:trace,vtnode_httpa.c,49->vtnode_httpa_start() called with homeDir='F:\vtnode\was\vba\xlsx\vtnode_hello', iniFile='F:\vtnode\was\vba\xlsx\vtnode_hello\vtnode_httpa_params.ini'
-15/01/05.576:trace,vtnode_httpa.c,84->Starting HTTPA engine with homeDir='F:\vtnode\was\vba\xlsx\vtnode_hello', iniFile='F:\vtnode\was\vba\xlsx\vtnode_hello\vtnode_httpa_params.ini', license.enabled=FALSE,license.id='VIRTUAL-VTNODE-WAS-1F784EBD7B933A66E8D70FA6A36882CD.',channels=1
-15/01/07.726:trace,vtnode_httpa.c,119->vtnode_httpa_start() completed successfully
-15/01/11.362:trace,vtnode_httpa.c,1023->BUILD=2026-08-12 004: vtnode_httpa_content_get_data() called with content=000001B4DB9D6100, outData=000001B5DF552998, outDataLen=0, outIsFile=0, return=1
-15/01/19.698:trace,vtnode_httpa.c,140->vtnode_httpa_stop() called
