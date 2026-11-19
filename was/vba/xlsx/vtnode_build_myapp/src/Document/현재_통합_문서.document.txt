@@ -1,0 +1,76 @@
+Option Explicit
+
+Private Sub Workbook_Activate()
+   Debug.Print "Workbook_Deactivate"
+
+End Sub
+
+Private Sub Workbook_Deactivate()
+
+   Debug.Print "Workbook_Deactivate"
+   
+   'VtWin32.Sleep 5000
+'   MyTest_StopHttpa
+'   MyTest_Uninit
+   
+End Sub
+
+Private Sub Workbook_Open()
+
+    Dim previousEnableEvents As Boolean
+
+    On Error GoTo OpenError
+
+    Debug.Print "Workbook_Open: BEGIN"
+
+    previousEnableEvents = Application.EnableEvents
+    Application.EnableEvents = False
+
+
+    ' 1. UI 및 Runtime 초기화
+    MyHelloUI.UI_InitButtons
+
+    Debug.Print "Workbook_Open: END"
+
+OpenExit:
+    Application.EnableEvents = previousEnableEvents
+    Exit Sub
+
+OpenError:
+    MsgBox _
+        "VTNode 화면 초기화 중 오류가 발생했습니다." & vbCrLf & _
+        Err.description, _
+        vbExclamation, _
+        "VTNode"
+
+    Resume OpenExit
+
+End Sub
+
+
+Private Sub Workbook_BeforeClose(Cancel As Boolean)
+
+    Dim previousEnableEvents As Boolean
+
+    On Error GoTo CloseError
+
+    previousEnableEvents = Application.EnableEvents
+    Application.EnableEvents = False
+
+    Debug.Print "Workbook_BeforeClose"
+    
+
+   ' VtWin32.Sleep 5000
+CloseExit:
+    Application.EnableEvents = previousEnableEvents
+    Exit Sub
+
+CloseError:
+
+    Debug.Print _
+        "Workbook_BeforeClose Error " & _
+        Err.number & ": " & Err.description
+
+    Resume CloseExit
+
+End Sub
