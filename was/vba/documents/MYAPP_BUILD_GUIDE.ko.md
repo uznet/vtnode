@@ -122,10 +122,8 @@ Private Sub Workbook_Open()
 Debug.Print "Workbook_Open()"
     Application.EnableEvents = False
 
-    HelloUI.UI_InitButtons
-    WasMain.WasInit
-
-    Call VtRuntimeManager.VtRuntimeAttach(Me.Name)
+  ' 1. UI 및 Runtime 초기화
+    MyHelloUI.UI_InitButtons
 
 OpenExit:
     Application.EnableEvents = True
@@ -148,35 +146,6 @@ Private Sub Workbook_BeforeClose(Cancel As Boolean)
 
     Application.EnableEvents = False
 
-    Debug.Print "Workbook_BeforeClose: BEGIN"
-
-    ' ---------------------------------------------------------
-    ' 1. Native HTTP Engine 종료
-    '
-    ' HTTP Engine이 실행 중인 경우, 새로운 요청 수신 및
-    ' 처리 작업을 중지한 후 Native Runtime을 해제합니다.
-    ' ---------------------------------------------------------
-    If VtHttpaEngine.VtHttpaIsRun Then
-
-        Debug.Print "Workbook_BeforeClose: VtHttpaStop"
-        VtHttpaEngine.VtHttpaStop
-
-
-    End If
-        
-    Debug.Print "Workbook_BeforeClose: VtNodeUnInit"
-    VtNode.VtNodeUnInit
-
-    ' ---------------------------------------------------------
-    ' 2. Runtime 관리 대상에서 현재 Workbook 분리
-    '
-    ' Native Resource 정리가 완료된 후 Runtime에 등록된
-    ' 현재 Workbook의 관리 정보를 제거합니다.
-    ' ---------------------------------------------------------
-    Debug.Print "Workbook_BeforeClose: VtRuntimeDetach"
-    VtRuntimeManager.VtRuntimeDetach Me.Name
-
-    Debug.Print "Workbook_BeforeClose: END"
 
 CloseExit:
     Application.EnableEvents = True
