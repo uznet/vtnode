@@ -281,8 +281,7 @@
       <div class="connection">
         <div class="field">
           <label for="websocket-url">WebSocket URL</label>
-          <input id="websocket-url" type="url" value="ws://192.168.0.4:12345/events"
-            autocomplete="off" spellcheck="false">
+          <input id="websocket-url" type="url">
         </div>
 
         <div class="controls">
@@ -447,6 +446,12 @@
         websocket.close(1000, "Page closed");
       }
     });
+	document.addEventListener("DOMContentLoaded", function () {
+    const protocol = location.protocol === "https:" ? "wss:" : "ws:";
+    const url = `${protocol}//${location.host}/events`;
+
+    document.getElementById("websocket-url").value = url;
+});
   </script>
 </body>
 </html>
