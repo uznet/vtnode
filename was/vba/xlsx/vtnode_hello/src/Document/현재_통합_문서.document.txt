@@ -1,0 +1,32 @@
+Private Sub Workbook_Open()
+
+    Dim previousEnableEvents As Boolean
+
+    On Error GoTo OpenError
+
+    Debug.Print "Workbook_Open: BEGIN"
+
+    previousEnableEvents = Application.EnableEvents
+    Application.EnableEvents = False
+
+
+    ' 1. UI 및 Runtime 초기화
+    MyHelloUI.UI_InitButtons
+
+    Debug.Print "Workbook_Open: END"
+
+OpenExit:
+    Application.EnableEvents = previousEnableEvents
+    Exit Sub
+
+OpenError:
+    MsgBox _
+        "VTNode 화면 초기화 중 오류가 발생했습니다." & vbCrLf & _
+        Err.description, _
+        vbExclamation, _
+        "VTNode"
+
+    Resume OpenExit
+
+End Sub
+
