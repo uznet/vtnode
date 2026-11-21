@@ -245,7 +245,7 @@ Public Function StartHttpa() As Boolean
 
     ' HTTPA Service 시작 요청
     loopAccepted = WasHttpaLooper.BeginLoop( _
-                          WASHttpaEventLoopType.WAS_HTTPA_EVENT_LOOP_SCHEDULED, _
+                          WASHttpaEventLoopType.WAS_HTTPA_EVENT_LOOP_CONTINUOUS, _
                           httpaConfigFile, _
                           ErrorMessage)
 
