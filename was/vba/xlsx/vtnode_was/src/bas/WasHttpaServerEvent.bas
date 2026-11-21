@@ -148,24 +148,24 @@ Public Sub HandleRequest(ByVal httpaSession As CVtHttpaSession)
 
         'for Test Only
         Case "/test/get/status"
-            Call RouterTest.GetStatus(httpaSession, CustomData)
+            Call WasTest.GetStatus(httpaSession, CustomData)
         
         Case "/test/get/text"
-            Call RouterTest.GetText(httpaSession, CustomData)
+            Call WasTest.GetText(httpaSession, CustomData)
         
         Case "/test/get/file"
-            Call RouterTest.GetFile(httpaSession, CustomData)
+            Call WasTest.GetFile(httpaSession, CustomData)
         Case "/test/get/multipart"
             
-            Call RouterTest.GetMultipart(httpaSession, CustomData)
+            Call WasTest.GetMultipart(httpaSession, CustomData)
         Case "/test/post/text"
-            Call RouterTest.PostText(httpaSession, CustomData)
+            Call WasTest.PostText(httpaSession, CustomData)
         
         Case "/test/post/file"
-            Call RouterTest.PostFile(httpaSession, CustomData)
+            Call WasTest.PostFile(httpaSession, CustomData)
         Case "/test/post/multipart"
             
-            Call RouterTest.PostMultipart(httpaSession, CustomData)
+            Call WasTest.PostMultipart(httpaSession, CustomData)
                                                 
         Case Else
                         

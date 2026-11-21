@@ -1,0 +1,52 @@
+Option Explicit
+'
+Private Sub Workbook_Open()
+
+    On Error GoTo OpenError
+
+
+Debug.Print "Workbook_Open()"
+    Application.EnableEvents = False
+
+    WasUIController.UI_InitButtons
+
+OpenExit:
+    Application.EnableEvents = True
+    Exit Sub
+
+OpenError:
+    MsgBox _
+        "VTNode 화면 초기화 중 오류가 발생했습니다." & vbCrLf & _
+        Err.description, _
+        vbExclamation, _
+        "VTNode"
+
+    Resume OpenExit
+End Sub
+
+Private Sub Workbook_BeforeClose(Cancel As Boolean)
+
+    On Error GoTo CloseError
+
+
+    Application.EnableEvents = False
+
+    Debug.Print "Workbook_BeforeClose: BEGIN"
+    
+
+    Debug.Print "Workbook_BeforeClose: END"
+    
+
+CloseExit:
+    Application.EnableEvents = True
+    Exit Sub
+
+CloseError:
+
+    Debug.Print _
+        "Workbook_BeforeClose Error " & _
+        Err.number & ": " & Err.description
+
+    Resume CloseExit
+
+End Sub
